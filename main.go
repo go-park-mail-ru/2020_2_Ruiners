@@ -81,7 +81,7 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 	setupResponse(&w, r)
 	l := Login{}
 	err := json.NewDecoder(r.Body).Decode(&l)
-	fmt.Println("aaa")
+	fmt.Println(r.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
