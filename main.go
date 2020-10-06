@@ -284,7 +284,7 @@ func chengepass(w http.ResponseWriter, r *http.Request) {
 		user := users[login]
 
 		delete(users, user.Login)
-		user.Password = l.PasswordOld
+		user.Password = l.Password
 		users[login] = user
 		fmt.Println(users[login].Password)
 
