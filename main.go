@@ -153,6 +153,7 @@ func isMe(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	fmt.Println("aaa")
 	login := ids[id.Value]
 	if login == "" {
 		w.WriteHeader(http.StatusBadRequest)
