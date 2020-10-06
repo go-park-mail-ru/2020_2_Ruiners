@@ -78,11 +78,11 @@ func mainPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func loginPage(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r)
+	fmt.Println(r.Body)
 	setupResponse(&w, r)
 	l := Login{}
 	err := json.NewDecoder(r.Body).Decode(&l)
-	fmt.Println(r)
+	fmt.Println(l)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
