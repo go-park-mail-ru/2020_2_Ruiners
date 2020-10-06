@@ -59,7 +59,7 @@ func main() {
 	http.HandleFunc("/logout", logoutPage)
 	http.HandleFunc("/", mainPage)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("../public"))))
-	fmt.Println("starting server at :8000")
+	fmt.Println("starting server at :3000")
 	err := http.ListenAndServe(":8000", nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
