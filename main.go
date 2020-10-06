@@ -76,7 +76,7 @@ func mainPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func loginPage(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r.Body)
+	fmt.Println(r.Method)
 	setupResponse(&w, r)
 	l := Login{}
 	err := json.NewDecoder(r.Body).Decode(&l)
