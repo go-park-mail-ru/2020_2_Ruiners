@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
 	"github.com/lithammer/shortuuid"
 	"html/template"
 	"log"
@@ -50,19 +49,18 @@ func setupResponse(w *http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	router := mux.NewRouter()
-	router.HandleFunc("/signup", signupPage)
-	router.HandleFunc("/login", loginPage)
-	router.HandleFunc("/me", isMe)
-	router.HandleFunc("/whois", Whois).Methods("GET", "OPTIONS")
-	router.HandleFunc("/chengelogin", chengelogin)
-	router.HandleFunc("/chengepass", chengepass)
-	router.HandleFunc("/chengeavatar", chengeavatar)
-	router.HandleFunc("/logout", logoutPage)
-	router.HandleFunc("/", mainPage)
+	http.HandleFunc("/signup", signupPage)
+	http.HandleFunc("/login", loginPage)
+	http.HandleFunc("/me", isMe)
+	http.HandleFunc("/whois", Whois)
+	http.HandleFunc("/chengelogin", chengelogin)
+	http.HandleFunc("/chengepass", chengepass)
+	http.HandleFunc("/chengeavatar", chengeavatar)
+	http.HandleFunc("/logout", logoutPage)
+	http.HandleFunc("/", mainPage)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("../public"))))
 	fmt.Println("starting server at :3000")
-	err := http.ListenAndServe(":8000", router)
+	err := http.ListenAndServe(":8000", nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
