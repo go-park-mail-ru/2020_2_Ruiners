@@ -62,7 +62,7 @@ func main() {
 	router.HandleFunc("/", mainPage)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("../public"))))
 	fmt.Println("starting server at :3000")
-	err := http.ListenAndServe(":8080", router)
+	err := http.ListenAndServe(":8000", router)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
