@@ -52,7 +52,7 @@ func setupResponse(w *http.ResponseWriter, req *http.Request) {
 func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/signup", signupPage)
-	router.HandleFunc("/login", loginPage)
+	router.HandleFunc("/login", loginPage).Methods("POST", "OPTIONS")
 	router.HandleFunc("/me", isMe)
 	router.HandleFunc("/whois", Whois).Methods("GET", "OPTIONS")
 	router.HandleFunc("/chengelogin", chengelogin)
