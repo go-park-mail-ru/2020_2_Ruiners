@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/lithammer/shortuuid"
 	"html/template"
@@ -41,6 +42,38 @@ func CreateSession(w http.ResponseWriter, login string) {
 	ids[id] = login
 }
 
+type CORSConfig struct {
+	AllowedOrigins []string
+	AllowedHeaders []string
+	AllowedMethods []string
+	ExposedHeaders []string
+}
+
+var GlobalCORSConfig = CORSConfig{
+	AllowedOrigins: []string{"http://localhost", "http://95.163.208.72:3000", "http://localhost:3000"},
+	AllowedHeaders: []string{"If-Modified-Since", "Cache-Control", "Content-Type", "Range"},
+	AllowedMethods: []string{"GET", "POST", "OPTIONS", "PUT", "PATCH", "DELETE"},
+	ExposedHeaders: []string{"Content-Length", "Content-Range"},
+}
+
+func enableCORS(cfg *CORSConfig, handler http.Handler) http.Handler {
+	var (
+		allowedOrigins = handlers.AllowedOrigins(cfg.AllowedOrigins)
+		allowedHeaders = handlers.AllowedHeaders(cfg.AllowedHeaders)
+		exposedHeaders = handlers.ExposedHeaders(cfg.ExposedHeaders)
+		allowedMethods = handlers.AllowedMethods(cfg.AllowedMethods)
+		credentials = handlers.AllowCredentials()
+	)
+
+	return handlers.CORS(allowedOrigins, allowedHeaders, exposedHeaders, allowedMethods, credentials)(handler)
+}
+func CORSMiddleware() mux.MiddlewareFunc {
+	return func(next http.Handler) http.Handler {
+		return enableCORS(&GlobalCORSConfig, next)
+	}
+}
+
+
 func setupResponse(w *http.ResponseWriter, req *http.Request) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "http://95.163.208.72:3000")
 	(*w).Header().Set("Access-Control-Max-Age", "86400")
@@ -60,6 +93,7 @@ func main() {
 	router.HandleFunc("/chengeavatar", chengeavatar)
 	router.HandleFunc("/logout", logoutPage)
 	router.HandleFunc("/", mainPage)
+	router.Use(CORSMiddleware())
 	router.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("../public"))))
 	fmt.Println("starting server at :3000")
 	err := http.ListenAndServe(":8000", router)
@@ -69,7 +103,6 @@ func main() {
 }
 
 func mainPage(w http.ResponseWriter, r *http.Request) {
-	setupResponse(&w, r)
 	tmpl := template.Must(template.ParseGlob("../public/*.html"))
 	err := tmpl.ExecuteTemplate(w, "index.html", nil)
 	if err != nil {
@@ -82,7 +115,6 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
 		return
 	}
-	setupResponse(&w, r)
 	l := Login{}
 	err := json.NewDecoder(r.Body).Decode(&l)
 	fmt.Println(l)
@@ -100,7 +132,6 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func signupPage(w http.ResponseWriter, r *http.Request) {
-	setupResponse(&w, r)
 	u := User{}
 	err := json.NewDecoder(r.Body).Decode(&u)
 	if err != nil {
@@ -117,7 +148,6 @@ func signupPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func isMe(w http.ResponseWriter, r *http.Request) {
-	setupResponse(&w, r)
 	id, err := r.Cookie("127.0.0.1")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -136,7 +166,6 @@ func isMe(w http.ResponseWriter, r *http.Request) {
 }
 
 func Whois(w http.ResponseWriter, r *http.Request) {
-	setupResponse(&w, r)
 	id, err := r.Cookie("session_id")
 	if err != nil {
 		var u User
@@ -175,7 +204,6 @@ type LoginChenge struct {
 }
 
 func chengelogin(w http.ResponseWriter, r *http.Request) {
-	setupResponse(&w, r)
 	l := LoginChenge{}
 	err := json.NewDecoder(r.Body).Decode(&l)
 	if err != nil {
@@ -228,7 +256,6 @@ type passChenge struct {
 }
 
 func chengepass(w http.ResponseWriter, r *http.Request) {
-	setupResponse(&w, r)
 	l := passChenge{}
 	fmt.Println(r.Body)
 	err := json.NewDecoder(r.Body).Decode(&l)
@@ -270,7 +297,6 @@ func chengeavatar(w http.ResponseWriter, r *http.Request) {
 }
 
 func logoutPage(w http.ResponseWriter, r *http.Request) {
-	setupResponse(&w, r)
 	session, err := r.Cookie("session_id")
 	if err == http.ErrNoCookie {
 		http.Redirect(w, r, "/", 401)
