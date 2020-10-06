@@ -148,7 +148,7 @@ func signupPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func isMe(w http.ResponseWriter, r *http.Request) {
-	id, err := r.Cookie("127.0.0.1")
+	id, err := r.Cookie("session_id")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
