@@ -85,6 +85,7 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	fmt.Println("aaa")
 	if l.Password == users[l.Login].Password && l.Password != "" && l.Login != "" {
 		CreateSession(w, l.Login)
 		w.WriteHeader(http.StatusOK)
