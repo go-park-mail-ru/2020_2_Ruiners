@@ -140,7 +140,6 @@ func signupPage(w http.ResponseWriter, r *http.Request) {
 	}
 	if users[u.Login].Login != u.Login {
 		users[u.Login] = u
-		//fmt.Println(users)
 		w.WriteHeader(http.StatusOK)
 	} else {
 		w.WriteHeader(http.StatusBadRequest)
@@ -305,5 +304,6 @@ func logoutPage(w http.ResponseWriter, r *http.Request) {
 	}
 	session.Expires = time.Now().AddDate(0, 0, -1)
 	http.SetCookie(w, session)
+	w.Write([]byte("ok"))
 	http.Redirect(w, r, "/", http.StatusOK)
 }
