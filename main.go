@@ -149,13 +149,21 @@ func signupPage(w http.ResponseWriter, r *http.Request) {
 func isMe(w http.ResponseWriter, r *http.Request) {
 	id, err := r.Cookie("session_id")
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		user := User{Login: "", Email: "", Password: ""}
+		u := &user
+		result, _ := json.Marshal(u)
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(result)
 		return
 	}
 	fmt.Println("aaa")
 	login := ids[id.Value]
 	if login == "" {
+		user := User{Login: "", Email: "", Password: ""}
+		u := &user
+		result, _ := json.Marshal(u)
 		w.WriteHeader(http.StatusBadRequest)
+		w.Write(result)
 	} else {
 		user := users[login]
 		u := &user
