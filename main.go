@@ -307,11 +307,18 @@ func chengeavatar(w http.ResponseWriter, r *http.Request) {
 func logoutPage(w http.ResponseWriter, r *http.Request) {
 	session, err := r.Cookie("session_id")
 	if err == http.ErrNoCookie {
-		http.Redirect(w, r, "/", 401)
+		user := User{Login: "", Email: "", Password: ""}
+		u := &user
+		result, _ := json.Marshal(u)
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Write(result)
 		return
 	}
 	session.Expires = time.Now().AddDate(0, 0, -1)
 	http.SetCookie(w, session)
-	w.Write([]byte("ok"))
-	http.Redirect(w, r, "/", http.StatusOK)
+	w.WriteHeader(http.StatusOK)
+	user := User{Login: "", Email: "", Password: ""}
+	u := &user
+	result, _ := json.Marshal(u)
+	w.Write(result)
 }
