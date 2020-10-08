@@ -16,7 +16,7 @@ func main() {
 	router.HandleFunc("/whois", Handlers.Whois)
 	router.HandleFunc("/chengelogin", Handlers.Chengelogin)
 	router.HandleFunc("/chengepass", Handlers.Chengepass)
-	router.HandleFunc("/chengeavatar", Handlers.Chengeavatar)
+	router.HandleFunc("/changeAvatar", Handlers.Changeavatar)
 	router.HandleFunc("/logout", Handlers.LogoutPage)
 	router.HandleFunc("/", Handlers.MainPage)
 	router.Use(Handlers.CORSMiddleware())

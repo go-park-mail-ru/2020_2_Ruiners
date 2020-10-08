@@ -6,7 +6,10 @@ import (
 	"fmt"
 	"github.com/lithammer/shortuuid"
 	"html/template"
+	"io"
 	"net/http"
+	"os"
+	"strconv"
 	"time"
 )
 
@@ -225,8 +228,23 @@ func Chengepass(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func Chengeavatar(w http.ResponseWriter, r *http.Request) {
-
+func Changeavatar(w http.ResponseWriter, r *http.Request) {
+	file, _, err := r.FormFile("file")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	defer file.Close()
+	Models.ImgId++
+	s := strconv.Itoa(Models.ImgId)
+	str := "./images/upload" + s + ".png"
+	f, _ := os.Create(str)
+	defer f.Close()
+	_, err = io.Copy(f, file)
+	if err != nil {
+		fmt.Fprintln(w, err)
+	}
+	w.WriteHeader(http.StatusOK)
 }
 
 func LogoutPage(w http.ResponseWriter, r *http.Request) {
