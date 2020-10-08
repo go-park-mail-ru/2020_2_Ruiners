@@ -1,5 +1,7 @@
 package Models
 
+var ImgId = 0
+
 type Login struct {
 	Login    string
 	Password string
