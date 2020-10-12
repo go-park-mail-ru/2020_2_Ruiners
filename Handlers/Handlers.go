@@ -225,6 +225,8 @@ func Chengepass(w http.ResponseWriter, r *http.Request) {
 		Models.Users[login] = user
 		http.Redirect(w, r, "/", http.StatusOK)
 		// http.Redirect(w, r, "/signup", http.StatusBadRequest)
+	} else {
+		w.WriteHeader(http.StatusBadRequest)
 	}
 }
 
