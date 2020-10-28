@@ -57,11 +57,14 @@ func (s *APIServer) configureLogger() error {
 
 func (s *APIServer) configureRouter() {
 	user := s.InitHandler()
+	//User routes ...
 	s.router.HandleFunc("/hello", s.handleHello())
 	s.router.HandleFunc("/signup", user.Signup)
 	s.router.HandleFunc("/login", user.Login)
 	s.router.HandleFunc("/me", user.Me)
 	s.router.HandleFunc("/logout", user.Logout)
+	s.router.HandleFunc("/chengelogin", user.ChangeLogin())
+
 	s.router.Use(middleware.CORSMiddleware(s.config.CORS))
 }
 

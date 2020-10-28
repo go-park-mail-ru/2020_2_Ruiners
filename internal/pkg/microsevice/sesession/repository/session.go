@@ -47,3 +47,12 @@ func (r *SessionRepository) Delete(s string) error {
 	}
 	return nil
 }
+func (r *SessionRepository) UpdateLogin(oldLogin string, newLogin string) error {
+	_, err := r.db.Exec("UPDATE session SET username = ? WHERE username = ?", newLogin, oldLogin)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+

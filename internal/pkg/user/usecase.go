@@ -7,4 +7,5 @@ type UseCase interface {
 	Login(input *models.Login, session *models.Session) (*models.User, error)
 	Me(s string) (*models.User, error)
 	Logout(s string) error
+	ChangeLogin(s string, newLogin string) error
 }

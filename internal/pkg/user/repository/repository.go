@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 )
 
@@ -32,7 +33,15 @@ func (r *UserRepository) FindByLogin(login string) (*models.User, error) {
 	if id.Next() {
 		id.Scan(&user.Id, &user.Username, &user.Password, &user.Email, &user.Image)
 	} else {
-		return nil, nil
+		return nil,errors.New("no user")
 	}
 	return &user, nil
+}
+
+func (r *UserRepository) UpdadeLogin(oldLogin string, newLogin string) error {
+	_, err := r.db.Exec("UPDATE users SET username = ? WHERE username = ?", newLogin, oldLogin)
+	if err != nil {
+		return err
+	}
+	return nil
 }

@@ -20,12 +20,9 @@ func NewUserUseCase(userRepository user.Repository, sessionRepository sesession.
 }
 
 func (u *UserUseCase) Signup(input *models.User, session *models.Session) (*models.User, error)  {
-	user, err := u.UserRepository.FindByLogin(input.Username)
+	user, _ := u.UserRepository.FindByLogin(input.Username)
 	if user != nil {
 		return nil, errors.New("user alredy exist")
-	}
-	if err != nil {
-		return nil, err
 	}
 	_, err1 := u.UserRepository.Create(input)
 	if err1 != nil {
@@ -77,3 +74,18 @@ func (u *UserUseCase) Logout(s string) error {
 	return nil
 }
 
+func (u *UserUseCase) ChangeLogin(s string, newLogin string) error {
+	session, err := u.SessionRepository.FindById(s)
+	if err != nil {
+		return err
+	}
+	err1 := u.UserRepository.UpdadeLogin(session.Username, newLogin)
+	if err1 != nil {
+		return err1
+	}
+	err = u.SessionRepository.UpdateLogin(session.Username, newLogin)
+	if err != nil {
+		return err
+	}
+	return nil
+}
