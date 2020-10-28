@@ -10,3 +10,9 @@ create table users
     email    varchar(80) not null,
     image    varchar(80)
 );
+
+create table session
+(
+    id varchar(80) primary key,
+    username varchar(80) not null
+);

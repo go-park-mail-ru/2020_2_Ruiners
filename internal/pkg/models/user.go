@@ -2,10 +2,15 @@ package models
 
 type User struct {
 	Id       int `json:"id"`
-	Username string `'json:"username"'`
+	Username string `'json:"login"'`
 	Password string `'json:"password"'`
 	Email    string `'json:"email"'`
-	image    string `'json:"image"'`
+	Image    string `'json:"image"'`
+}
+
+type PublicUser struct {
+	Login string `'json:"login"'`
+	Email    string `'json:"email"'`
 }
 
 type Login struct {
