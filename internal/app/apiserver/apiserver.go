@@ -2,6 +2,9 @@ package apiserver
 
 import (
 	"fmt"
+	filmHandler"github.com/Arkadiyche/http-rest-api/internal/pkg/film/delivery/http"
+	filmRep "github.com/Arkadiyche/http-rest-api/internal/pkg/film/repository"
+	filmUC "github.com/Arkadiyche/http-rest-api/internal/pkg/film/usecase"
 	sessionRep"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/sesession/repository"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/middleware"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/store"
@@ -56,7 +59,7 @@ func (s *APIServer) configureLogger() error {
 }
 
 func (s *APIServer) configureRouter() {
-	user := s.InitHandler()
+	user, film := s.InitHandler()
 	//User routes ...
 	s.router.HandleFunc("/hello", s.handleHello())
 	s.router.HandleFunc("/signup", user.Signup)
@@ -65,6 +68,8 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/logout", user.Logout)
 	s.router.HandleFunc("/chengelogin", user.ChangeLogin())
 	s.router.HandleFunc("/chengepass", user.ChangePassword())
+	//Film routes ...
+	s.router.HandleFunc("/film/{id:[0-9]+}", film.FilmById)
 
 	s.router.Use(middleware.CORSMiddleware(s.config.CORS))
 }
@@ -81,14 +86,21 @@ func (s *APIServer) configureStore() error {
 	return nil
 }
 
-func (s *APIServer) InitHandler() userHandler.UserHandler {
+func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHandler) {
+	//user
 	UserRep := 	userRep.NewUserRepository(s.store.Db)
 	SessionRep := sessionRep.NewSessionRepository(s.store.Db)
 	UserUC := userUC.NewUserUseCase(UserRep, SessionRep)
 	UserHandler := userHandler.UserHandler{
 		UseCase: UserUC,
 	}
-	return UserHandler
+	//film
+	FilmRep := filmRep.NewFilmRepository(s.store.Db)
+	FilmUC := filmUC.NewFilmUseCase(FilmRep)
+	FilmHandler := filmHandler.FilmHandler{
+		UseCase: FilmUC,
+	}
+	return UserHandler, FilmHandler
 }
 
 func (s *APIServer) handleHello() http.HandlerFunc {
