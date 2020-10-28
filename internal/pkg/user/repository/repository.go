@@ -38,8 +38,16 @@ func (r *UserRepository) FindByLogin(login string) (*models.User, error) {
 	return &user, nil
 }
 
-func (r *UserRepository) UpdadeLogin(oldLogin string, newLogin string) error {
+func (r *UserRepository) UpdateLogin(oldLogin string, newLogin string) error {
 	_, err := r.db.Exec("UPDATE users SET username = ? WHERE username = ?", newLogin, oldLogin)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *UserRepository) UpdatePassword(login string, newPassword string) error {
+	_, err := r.db.Exec("UPDATE users SET password = ? WHERE username = ?", newPassword, login)
 	if err != nil {
 		return err
 	}

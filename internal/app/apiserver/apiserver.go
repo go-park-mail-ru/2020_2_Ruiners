@@ -64,6 +64,7 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/me", user.Me)
 	s.router.HandleFunc("/logout", user.Logout)
 	s.router.HandleFunc("/chengelogin", user.ChangeLogin())
+	s.router.HandleFunc("/chengepass", user.ChangePassword())
 
 	s.router.Use(middleware.CORSMiddleware(s.config.CORS))
 }

@@ -8,4 +8,5 @@ type UseCase interface {
 	Me(s string) (*models.User, error)
 	Logout(s string) error
 	ChangeLogin(s string, newLogin string) error
+	ChangePassword(s string, oldPassword string, newPassword string) error
 }

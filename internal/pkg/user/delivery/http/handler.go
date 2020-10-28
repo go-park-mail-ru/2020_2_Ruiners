@@ -140,6 +140,32 @@ func (uh *UserHandler) ChangeLogin() http.HandlerFunc {
 	}
 }
 
+func (uh *UserHandler) ChangePassword() http.HandlerFunc {
+	type ChangePassword struct {
+		PasswordOld string
+		Password    string
+	}
+	return func(w http.ResponseWriter, r *http.Request) {
+		l := ChangePassword{}
+		err := json.NewDecoder(r.Body).Decode(&l)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		session, err := r.Cookie("session_id")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		err1 := uh.UseCase.ChangePassword(session.Value, l.PasswordOld, l.Password)
+		if err1 != nil {
+			http.Error(w, err1.Error(), http.StatusBadRequest)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
 func CreateSession(w http.ResponseWriter, sessionId string) {
 	cookie := http.Cookie{
 		Name:    "session_id",

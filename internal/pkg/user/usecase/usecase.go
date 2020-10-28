@@ -79,7 +79,7 @@ func (u *UserUseCase) ChangeLogin(s string, newLogin string) error {
 	if err != nil {
 		return err
 	}
-	err1 := u.UserRepository.UpdadeLogin(session.Username, newLogin)
+	err1 := u.UserRepository.UpdateLogin(session.Username, newLogin)
 	if err1 != nil {
 		return err1
 	}
@@ -88,4 +88,23 @@ func (u *UserUseCase) ChangeLogin(s string, newLogin string) error {
 		return err
 	}
 	return nil
+}
+
+func (u *UserUseCase) ChangePassword(s string, oldPassword string, newPassword string) error {
+	session, err := u.SessionRepository.FindById(s)
+	if err != nil {
+		return err
+	}
+	user, err1 := u.UserRepository.FindByLogin(session.Username)
+	if err1 != nil {
+		return err1
+	}
+	if user.Password != oldPassword {
+		return errors.New("wrong old password")
+	}
+	err = u.UserRepository.UpdatePassword(session.Username, newPassword)
+	if err != nil {
+		return err
+	}
+	return  nil
 }
