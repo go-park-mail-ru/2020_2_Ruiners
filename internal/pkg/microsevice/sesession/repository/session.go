@@ -1,0 +1,49 @@
+package repository
+
+import (
+	"database/sql"
+	"errors"
+	"fmt"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
+)
+
+type SessionRepository struct {
+	db *sql.DB
+}
+
+func NewSessionRepository(db *sql.DB) *SessionRepository {
+	return &SessionRepository{
+		db: db,
+	}
+}
+
+func (r *SessionRepository) Create(session *models.Session) (*models.Session, error)  {
+	fmt.Println(session)
+	_, err := r.db.Exec("INSERT INTO session (id, username) VALUES(?, ?)", session.Id, session.Username)
+	if err != nil {
+		return nil, err
+	}
+	return  nil, nil
+}
+
+func (r *SessionRepository) FindById(s string) (*models.Session, error) {
+	id, err := r.db.Query("SELECT id, username FROM session WHERE id = ? ORDER BY id ASC LIMIT 1", s)
+	if err != nil {
+		return nil, err
+	}
+	session := models.Session{}
+	if id.Next() {
+		id.Scan(&session.Id, &session.Username)
+	} else {
+		return nil, errors.New("session not found")
+	}
+	return &session, nil
+}
+
+func (r *SessionRepository) Delete(s string) error {
+	_, err := r.db.Exec("DELETE FROM session WHERE id=?", s)
+	if err != nil {
+		return err
+	}
+	return nil
+}

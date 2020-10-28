@@ -2,6 +2,8 @@ package apiserver
 
 import (
 	"fmt"
+	sessionRep"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/sesession/repository"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/middleware"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/store"
 	userHandler "github.com/Arkadiyche/http-rest-api/internal/pkg/user/delivery/http"
 	userRep "github.com/Arkadiyche/http-rest-api/internal/pkg/user/repository"
@@ -38,7 +40,6 @@ func (s *APIServer) Start() error {
 	s.configureRouter()
 
 	s.logger.Info("starting api server")
-	//fmt.Println(s.store.Config())
 	
 	return http.ListenAndServe(s.config.BindAddr, s.router)
 }
@@ -57,7 +58,11 @@ func (s *APIServer) configureLogger() error {
 func (s *APIServer) configureRouter() {
 	user := s.InitHandler()
 	s.router.HandleFunc("/hello", s.handleHello())
-	s.router.HandleFunc("/add", user.Signup)
+	s.router.HandleFunc("/signup", user.Signup)
+	s.router.HandleFunc("/login", user.Login)
+	s.router.HandleFunc("/me", user.Me)
+	s.router.HandleFunc("/logout", user.Logout)
+	s.router.Use(middleware.CORSMiddleware(s.config.CORS))
 }
 
 func (s *APIServer) configureStore() error {
@@ -74,7 +79,8 @@ func (s *APIServer) configureStore() error {
 
 func (s *APIServer) InitHandler() userHandler.UserHandler {
 	UserRep := 	userRep.NewUserRepository(s.store.Db)
-	UserUC := userUC.NewUserUseCase(UserRep)
+	SessionRep := sessionRep.NewSessionRepository(s.store.Db)
+	UserUC := userUC.NewUserUseCase(UserRep, SessionRep)
 	UserHandler := userHandler.UserHandler{
 		UseCase: UserUC,
 	}
