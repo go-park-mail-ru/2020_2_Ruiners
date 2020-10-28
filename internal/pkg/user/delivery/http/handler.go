@@ -142,8 +142,8 @@ func (uh *UserHandler) ChangeLogin() http.HandlerFunc {
 
 func (uh *UserHandler) ChangePassword() http.HandlerFunc {
 	type ChangePassword struct {
-		PasswordOld string
-		Password    string
+		PasswordOld string `'json:"password_old"'`
+		Password    string `'json:"password"'`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		l := ChangePassword{}
