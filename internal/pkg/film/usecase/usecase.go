@@ -17,13 +17,23 @@ func NewFilmUseCase(filmRepository film.Repository) *FilmUseCase {
 }
 
 func (uc *FilmUseCase) FindById(id string) (*models.Film, error) {
-	id_int, err := strconv.Atoi(id)
+	idInt, err := strconv.Atoi(id)
 	if err != nil {
 		return nil, err
 	}
-	film, err := uc.FilmRepository.FindByLId(id_int)
+	film, err := uc.FilmRepository.FindByLId(idInt)
 	if err != nil {
 		return nil, err
 	}
 	return film, nil
 }
+
+func (uc *FilmUseCase) FilmsByGenre(genre string) (*models.FilmCards, error)  {
+	films, err := uc.FilmRepository.FindFilmsByGenre(models.TranslateGenre[genre])
+	if err != nil {
+		return nil, err
+	}
+	return films, nil
+}
+
+

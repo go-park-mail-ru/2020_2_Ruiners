@@ -30,3 +30,20 @@ func (fh *FilmHandler) FilmById(w http.ResponseWriter, r *http.Request)  {
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
+
+func (fh *FilmHandler) FilmsByGenre(w http.ResponseWriter, r *http.Request)  {
+	vars := mux.Vars(r)
+	genre := vars["genre"]
+	films, err := fh.UseCase.FilmsByGenre(genre)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	res, err := json.Marshal(&films)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}
