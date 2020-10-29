@@ -20,14 +20,14 @@ create table session
 create table films
 (
     id          int auto_increment primary key,
-    title       varchar(80) not null,
-    description varchar(255) not null,
-    mainGenre   varchar(80) not null,
-    youtubeLink varchar(255) not null,
+    title       varchar(80) character set 'utf8' not null,
+    description varchar(255) character set 'utf8' not null,
+    mainGenre   varchar(80) character set 'utf8' not null,
+    youtubeLink varchar(255) character set 'utf8' not null,
     bigImg      varchar(255) not null,
     smallImg    varchar(255) not null,
     year        int not null,
-    country     varchar(80)
+    country     varchar(80) character set 'utf8'
 );
 
 INSERT INTO films(id, title, description, mainGenre, youtubeLink, bigImg, smallImg, year, country)
