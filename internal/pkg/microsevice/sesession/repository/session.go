@@ -28,6 +28,7 @@ func (r *SessionRepository) Create(session *models.Session) (*models.Session, er
 
 func (r *SessionRepository) FindById(s string) (*models.Session, error) {
 	id, err := r.db.Query("SELECT id, username FROM session WHERE id = ? ORDER BY id ASC LIMIT 1", s)
+	defer id.Close()
 	if err != nil {
 		return nil, err
 	}
