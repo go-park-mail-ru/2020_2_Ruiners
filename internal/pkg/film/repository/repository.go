@@ -19,6 +19,7 @@ func NewFilmRepository(db *sql.DB) *FilmRepository {
 func (r *FilmRepository) FindByLId(id int) (*models.Film, error) {
 	film := models.Film{}
 	filmQuery, err := r.db.Query("SELECT id, title, description, mainGenre, youtubeLink, bigImg, smallImg, year, country  FROM films WHERE id = ?", id)
+	defer filmQuery.Close()
 	if err != nil {
 		return nil, err
 	}

@@ -27,6 +27,7 @@ func (r *UserRepository) Create(u *models.User) (*models.User, error)  {
 func (r *UserRepository) FindByLogin(login string) (*models.User, error) {
 	user := models.User{}
 	id, err := r.db.Query("SELECT id, username, password, email, image  FROM users WHERE username = ? ORDER BY id ASC LIMIT 1", login)
+	defer id.Close()
 	if err != nil {
 		return nil, err
 	}

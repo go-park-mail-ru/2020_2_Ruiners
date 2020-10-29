@@ -75,6 +75,10 @@ func (u *UserUseCase) Logout(s string) error {
 }
 
 func (u *UserUseCase) ChangeLogin(s string, newLogin string) error {
+	user, _ := u.UserRepository.FindByLogin(newLogin)
+	if user != nil {
+		return errors.New("user alredy exist")
+	}
 	session, err := u.SessionRepository.FindById(s)
 	if err != nil {
 		return err
