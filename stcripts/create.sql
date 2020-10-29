@@ -32,4 +32,59 @@ create table films
 
 INSERT INTO films(id, title, description, mainGenre, youtubeLink, bigImg, smallImg, year, country)
 VALUES
-    (2, 'Начало', 'Шпионаж фантастического уровня. С помощью сверхтехнологии герой Ди Каприо и его команда проникают в чужие сны', 'Фантастика', 'https://www.youtube.com/embed/85Zz1CCXyDI', 'http://fullhdwallpapers.ru/image/movies/24609/film-nachalo-inception.jpg', 'https://st.kp.yandex.net/im/poster/1/3/1/kinopoisk.ru-Inception-1310268.jpg', 2010, 'США/Великобритания');
+    (1, 'Начало', 'Шпионаж фантастического уровня. С помощью сверхтехнологии герой Ди Каприо и его команда проникают в чужие сны', 'Фантастика', 'https://www.youtube.com/embed/85Zz1CCXyDI', 'http://fullhdwallpapers.ru/image/movies/24609/film-nachalo-inception.jpg', 'https://st.kp.yandex.net/im/poster/1/3/1/kinopoisk.ru-Inception-1310268.jpg', 2010, 'США/Великобритания'),
+    (
+        2,
+        'Интерстеллар',
+        'Фантастический эпос про задыхающуюся Землю, космические полеты и парадоксы времени. «Оскар» за спецэффекты',
+        'Фантастика',
+        'https://www.youtube.com/embed/qcPfI0y7wRU',
+        'https://free4kwallpapers.com/uploads/originals/2020/05/01/interstellar-wallpaper.jpg',
+        'https://st.kp.yandex.net/im/poster/2/7/6/kinopoisk.ru-Interstellar-2769180.jpg',
+        2014,
+        'США, Великобритания, Канада'
+    ),
+    (
+        3,
+        'Аватар',
+        'Путешествие в дивный новый мир Джеймса Кэмерона',
+        'Фантастика',
+        'https://www.youtube.com/embed/4HFlPcX2HFo',
+        'https://wallpaper-house.com/data/out/5/wallpaper2you_77895.jpg',
+        'https://st.kp.yandex.net/im/poster/1/0/8/kinopoisk.ru-Avatar-1089521.jpg',
+        2009,
+        'США'
+    ),
+    (
+        4,
+        '1+1',
+        'Бывший зек возвращает вкус к жизни чопорному аристократу, прикованному к инвалидному креслу',
+        'Комедия',
+        'https://www.youtube.com/embed/tTwFeGArcrs',
+        'https://s1.afisha.ru/mediastorage/c9/00/a0d8a64f4f4d47bda29f9c7f00c9.jpg',
+        'https://st.kp.yandex.net/im/poster/1/8/5/kinopoisk.ru-Intouchables-1855841.jpg',
+        2011,
+        'Франция'
+    ),
+    (
+        5,
+        'Мальчишник в Вегасе',
+        'Друзья решили оторваться в городе грехов — и у них получилось. Бодрая американская комедия от автора «Джокера»',
+        'Комедия',
+        'https://www.youtube.com/embed/m0PgxVqZLvU',
+        'https://i.pinimg.com/originals/c7/e6/d2/c7e6d27ad40abadec57fca3ca217f33c.jpg',
+        'https://st.kp.yandex.net/im/poster/9/6/1/kinopoisk.ru-The-Hangover-961419.jpg',
+        2009,
+        'США'
+    ),
+    (
+        6,
+        'Большой Лебовски',
+        'Фильм братьев Коэн о Чуваке, который жил счастливой жизнью, пока ему не испортили ковер',
+        'Комедия',
+        'https://www.youtube.com/embed/M6_JJK5IIDU',
+        'https://cdn.wallpapersafari.com/43/60/yXVIzC.jpg',
+        'https://st.kp.yandex.net/im/poster/2/1/0/kinopoisk.ru-The-Big-Lebowski-2107864.jpg',
+        1998,
+        'США'
+    );
