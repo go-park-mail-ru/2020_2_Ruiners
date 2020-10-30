@@ -70,6 +70,7 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/chengepass", user.ChangePassword())
 	//Film routes ...
 	s.router.HandleFunc("/film/{id:[0-9]+}", film.FilmById)
+	s.router.HandleFunc("/film/{genre:[A-z]+}", film.FilmsByGenre)
 
 	s.router.Use(middleware.CORSMiddleware(s.config.CORS))
 }
