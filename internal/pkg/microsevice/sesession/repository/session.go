@@ -41,6 +41,20 @@ func (r *SessionRepository) FindById(s string) (*models.Session, error) {
 	return &session, nil
 }
 
+func (r *SessionRepository) GetUserIdBySession(s string) (int, error) {
+	userId := 0
+	id, err := r.db.Query("SELECT u.id FROM users u JOIN session s ON u.username = s.username WHERE s.id = ? ORDER BY id ASC LIMIT 1", s)
+	defer id.Close()
+	if err != nil {
+		return 0, err
+	}
+	if id.Next() {
+		id.Scan(&userId)
+		return userId, nil
+	}
+	return 0, errors.New("user with session not found")
+}
+
 func (r *SessionRepository) Delete(s string) error {
 	_, err := r.db.Exec("DELETE FROM session WHERE id=?", s)
 	if err != nil {

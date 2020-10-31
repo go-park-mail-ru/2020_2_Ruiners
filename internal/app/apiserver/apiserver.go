@@ -5,8 +5,11 @@ import (
 	filmHandler"github.com/Arkadiyche/http-rest-api/internal/pkg/film/delivery/http"
 	filmRep "github.com/Arkadiyche/http-rest-api/internal/pkg/film/repository"
 	filmUC "github.com/Arkadiyche/http-rest-api/internal/pkg/film/usecase"
-	sessionRep"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/sesession/repository"
+	sessionRep "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/sesession/repository"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/middleware"
+	ratingHandler "github.com/Arkadiyche/http-rest-api/internal/pkg/rating/delivery/http"
+	ratingRep "github.com/Arkadiyche/http-rest-api/internal/pkg/rating/repository"
+	ratingUC "github.com/Arkadiyche/http-rest-api/internal/pkg/rating/usecase"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/store"
 	userHandler "github.com/Arkadiyche/http-rest-api/internal/pkg/user/delivery/http"
 	userRep "github.com/Arkadiyche/http-rest-api/internal/pkg/user/repository"
@@ -59,7 +62,7 @@ func (s *APIServer) configureLogger() error {
 }
 
 func (s *APIServer) configureRouter() {
-	user, film := s.InitHandler()
+	user, film, rating := s.InitHandler()
 	//User routes ...
 	s.router.HandleFunc("/hello", s.handleHello())
 	s.router.HandleFunc("/signup", user.Signup)
@@ -71,6 +74,8 @@ func (s *APIServer) configureRouter() {
 	//Film routes ...
 	s.router.HandleFunc("/film/{id:[0-9]+}", film.FilmById)
 	s.router.HandleFunc("/film/{genre:[A-z]+}", film.FilmsByGenre)
+	//Rate
+	s.router.HandleFunc("/rate", rating.Rate())
 
 	s.router.Use(middleware.CORSMiddleware(s.config.CORS))
 }
@@ -87,10 +92,11 @@ func (s *APIServer) configureStore() error {
 	return nil
 }
 
-func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHandler) {
+func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHandler, ratingHandler.RatingHandler) {
+
+	SessionRep := sessionRep.NewSessionRepository(s.store.Db)
 	//user
 	UserRep := 	userRep.NewUserRepository(s.store.Db)
-	SessionRep := sessionRep.NewSessionRepository(s.store.Db)
 	UserUC := userUC.NewUserUseCase(UserRep, SessionRep)
 	UserHandler := userHandler.UserHandler{
 		UseCase: UserUC,
@@ -101,7 +107,14 @@ func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHand
 	FilmHandler := filmHandler.FilmHandler{
 		UseCase: FilmUC,
 	}
-	return UserHandler, FilmHandler
+	//rating
+	RatingRep := ratingRep.NewRatingRepository(s.store.Db)
+	RatingUC := ratingUC.NewRatingUseCase(RatingRep, SessionRep)
+	RatingHandler := ratingHandler.RatingHandler{
+		UseCase: RatingUC,
+	}
+
+	return UserHandler, FilmHandler, RatingHandler
 }
 
 func (s *APIServer) handleHello() http.HandlerFunc {
