@@ -7,4 +7,5 @@ type Repository interface {
 	FindById(s string) (*models.Session, error)
 	Delete(s string) error
 	UpdateLogin(oldLogin string, newLogin string) error
+	GetUserIdBySession(s string) (int, error)
 }

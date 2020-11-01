@@ -3,6 +3,8 @@ package models
 type Film struct {
 	Id int `json:"id"`
 	Title string `json:"title"`
+	Rating int `'json:"rating"'`
+	SumVotes int `'json:"sum_votes"'`
 	Description string `'json:"description"'`
 	MainGenre string `'json:"main_genre"'`
 	YoutubeLink	string `'json:"youtube_link"'`
