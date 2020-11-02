@@ -74,8 +74,10 @@ func (s *APIServer) configureRouter() {
 	//Film routes ...
 	s.router.HandleFunc("/film/{id:[0-9]+}", film.FilmById)
 	s.router.HandleFunc("/film/{genre:[A-z]+}", film.FilmsByGenre)
-	//Rate
+	//Rate routes ...
 	s.router.HandleFunc("/rate", rating.Rate())
+	s.router.HandleFunc("/review/add", rating.AddReview())
+	s.router.HandleFunc("/review/{film_id:[0-9]+}", rating.ShowReviews)
 
 	s.router.Use(middleware.CORSMiddleware(s.config.CORS))
 }
