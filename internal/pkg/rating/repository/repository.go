@@ -3,7 +3,6 @@ package repository
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 )
 
@@ -46,7 +45,7 @@ func (r *RatingRepository) UpdateRating(rating int, filmId int, userId int) erro
 }
 
 func (r *RatingRepository) AddReview(body string, filmId int, userId int) error {
-	_, err := r.db.Exec("insert into rating(body, film_id, user_id) VALUE(?, ?, ?)", body, filmId, userId)
+	_, err := r.db.Exec("insert into review(body, film_id, user_id) VALUE(?, ?, ?)", body, filmId, userId)
 	if err != nil {
 		return err
 	}
@@ -96,6 +95,5 @@ func (r *RatingRepository) GetRating(filmId int, userId int) (int, error) {
 	if ratingQuery.Next() {
 		ratingQuery.Scan(&rating)
 	}
-	fmt.Println(rating, filmId, userId)
 	return rating, nil
 }

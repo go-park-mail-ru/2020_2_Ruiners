@@ -89,7 +89,20 @@ VALUES
         'https://st.kp.yandex.net/im/poster/2/1/0/kinopoisk.ru-The-Big-Lebowski-2107864.jpg',
         1998,
         'США'
-    );
+    ),
+    (
+  7,
+     'Бегущий по лезвию 2049',
+
+     'Продолжение культового фильма «Бегущий по лезвию»,
+      действие которого разворачивается через несколько десятилетий.',
+     'Фантастика',
+     'https://www.youtube.com/embed/taQW31SVPCk',
+     'https://i.pinimg.com/originals/d3/d2/db/d3d2dbf0cc05af5c6cf236e7e82f6ef8.jpg',
+     'http://kinodrive.org/uploads/posts/2020-03/1585010486_38.jpg',
+      2017,
+     'США'
+);
 
 create table rating
 (

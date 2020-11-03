@@ -2,11 +2,9 @@ package http
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/rating"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
-	"io/ioutil"
 	"net/http"
 )
 
@@ -22,8 +20,8 @@ func (rh *RatingHandler) Rate() http.HandlerFunc {
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		l := Rate{}
-		body, _ := ioutil.ReadAll(r.Body)
-		fmt.Println(string(body))
+		//body, _ := ioutil.ReadAll(r.Body)
+		//fmt.Println(string(body))
 		id, err := r.Cookie("session_id")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
@@ -34,7 +32,6 @@ func (rh *RatingHandler) Rate() http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		fmt.Println(l)
 		err = rh.UseCase.Rate(l.Rating, l.FilmId, id.Value)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
