@@ -52,7 +52,7 @@ VALUES
         'Путешествие в дивный новый мир Джеймса Кэмерона',
         'Фантастика',
         'https://www.youtube.com/embed/4HFlPcX2HFo',
-        'https://wallpaper-house.com/data/out/5/wallpaper2you_77895.jpg',
+        'https://images6.alphacoders.com/674/thumb-1920-674358.jpg',
         'https://st.kp.yandex.net/im/poster/1/0/8/kinopoisk.ru-Avatar-1089521.jpg',
         2009,
         'США'
@@ -102,7 +102,18 @@ VALUES
      'http://kinodrive.org/uploads/posts/2020-03/1585010486_38.jpg',
       2017,
      'США'
-);
+),
+(
+  8,
+     'Горько',
+     'С пациками чиста паугарать)',
+     'Комедия',
+     'https://www.youtube.com/embed/cEcaAY3gpZk',
+     'https://elyastories.com/wp-content/uploads/2018/01/gorko.jpg',
+     'https://st.kp.yandex.net/im/poster/2/1/7/kinopoisk.ru-Gorko_21-2179555.jpg',
+      2013,
+     'Россия'
+),
 
 create table rating
 (
