@@ -39,6 +39,21 @@ func (r *UserRepository) FindByLogin(login string) (*models.User, error) {
 	return &user, nil
 }
 
+func (r *UserRepository) FindById(id int) (*models.User, error) {
+	user := models.User{}
+	queryUsers, err := r.db.Query("SELECT id, username, password, email, image  FROM users WHERE id = ? ORDER BY id ASC LIMIT 1", id)
+	defer queryUsers.Close()
+	if err != nil {
+		return nil, err
+	}
+	if queryUsers.Next() {
+		queryUsers.Scan(&user.Id, &user.Username, &user.Password, &user.Email, &user.Image)
+	} else {
+		return nil,errors.New("no user")
+	}
+	return &user, nil
+}
+
 func (r *UserRepository) UpdateLogin(oldLogin string, newLogin string) error {
 	_, err := r.db.Exec("UPDATE users SET username = ? WHERE username = ?", newLogin, oldLogin)
 	if err != nil {
@@ -54,3 +69,12 @@ func (r *UserRepository) UpdatePassword(login string, newPassword string) error 
 	}
 	return nil
 }
+
+func (r *UserRepository) UpdateAvatar(login string, name string) error {
+	_, err := r.db.Exec("UPDATE users SET image = ? where username = ?", name, login)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+

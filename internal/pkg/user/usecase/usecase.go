@@ -2,9 +2,16 @@ package usecase
 
 import (
 	"errors"
+	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/sesession"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"
+	uuid2 "github.com/satori/go.uuid"
+	"image"
+	"image/png"
+	"mime/multipart"
+	"os"
+	"strconv"
 )
 
 type UserUseCase struct {
@@ -112,3 +119,59 @@ func (u *UserUseCase) ChangePassword(s string, oldPassword string, newPassword s
 	}
 	return  nil
 }
+
+func (u *UserUseCase) ChangeAvatar(s string, file multipart.File) error  {
+	str := uuid2.NewV4().String()
+	f, err := os.Create("uploads/" + str + ".png")
+	if err != nil {
+		fmt.Println("aaa")
+		return err
+	}
+	defer f.Close()
+	img, err := png.Decode(file)
+	err = png.Encode(f, img)
+	if err != nil {
+		fmt.Println("aa")
+		return err
+	}
+	session, err := u.SessionRepository.FindById(s)
+	if err != nil {
+		return err
+	}
+	_, err1 := u.UserRepository.FindByLogin(session.Username)
+	if err1 != nil {
+		return err1
+	}
+	err = u.UserRepository.UpdateAvatar(session.Username, str)
+	if err != nil {
+		fmt.Println("aa")
+		return err
+	}
+	return nil
+}
+
+func (u *UserUseCase) GetAvatar(ids string) (*image.Image, error) {
+	id, err := strconv.Atoi(ids)
+	if err != nil {
+		return nil, err
+	}
+	user, err := u.UserRepository.FindById(id)
+	if err != nil {
+		return nil, err
+	}
+	file, err := os.Open("uploads/" + user.Image + ".png")
+	if err != nil {
+		return nil, err
+	}
+	img, err := png.Decode(file)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("ok")
+	return &img, nil
+}
+
+
+
+
+

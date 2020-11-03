@@ -71,6 +71,8 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/logout", user.Logout)
 	s.router.HandleFunc("/chengelogin", user.ChangeLogin())
 	s.router.HandleFunc("/chengepass", user.ChangePassword())
+	s.router.HandleFunc("/changeAvatar", user.ChangeAvatar)
+	s.router.HandleFunc("/user/avatar/{id:[0-9]+}", user.AvatarById)
 	//Film routes ...
 	s.router.HandleFunc("/film/{id:[0-9]+}", film.FilmById)
 	s.router.HandleFunc("/film/{genre:[A-z]+}", film.FilmsByGenre)

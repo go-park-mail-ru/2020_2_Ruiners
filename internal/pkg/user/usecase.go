@@ -1,6 +1,10 @@
 package user
 
-import "github.com/Arkadiyche/http-rest-api/internal/pkg/models"
+import (
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
+	"image"
+	"mime/multipart"
+)
 
 type UseCase interface {
 	Signup(input *models.User, session *models.Session) (*models.User, error)
@@ -9,4 +13,6 @@ type UseCase interface {
 	Logout(s string) error
 	ChangeLogin(s string, newLogin string) error
 	ChangePassword(s string, oldPassword string, newPassword string) error
+	ChangeAvatar(s string, file multipart.File) error
+	GetAvatar(id string) (*image.Image, error)
 }
