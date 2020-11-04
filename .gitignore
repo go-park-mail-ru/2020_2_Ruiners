@@ -1,1 +1,4 @@
 .idea
+
+uploads
+!uploads/def.png
