@@ -118,3 +118,23 @@ create table review
     film_id int,
     user_id int
 );
+
+create table person
+(
+    id int auto_increment primary key,
+    image varchar(255) not null,
+    name varchar(255) character set 'utf8' not null,
+    born_date varchar(255) character set 'utf8' not null,
+    born_place varchar(255) character set 'utf8' not null
+);
+
+create table person_film
+(
+    id int auto_increment primary key,
+    film_id int,
+    person_id int,
+    role varchar(10)
+);
+
+insert into person(name, image, born_date, born_place) VALUES('Киану Ривз', 'affaaf', '1964, 2 сентября', 'Канада');
+insert into person_film(film_id, person_id, role) VALUES(1, 1, 'actor');
