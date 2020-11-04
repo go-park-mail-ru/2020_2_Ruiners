@@ -3,7 +3,6 @@ package http
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"
 	"github.com/gorilla/mux"
@@ -82,7 +81,7 @@ func (uh *UserHandler) Me(w http.ResponseWriter, r *http.Request) {
 		w.Write(result)
 		return
 	}
-	public := models.PublicUser{Login: user.Username, Email: user.Email}
+	public := models.PublicUser{Id: user.Id, Login: user.Username, Email: user.Email}
 	result, err := json.Marshal(&public)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -173,10 +172,8 @@ func (uh *UserHandler) ChangePassword() http.HandlerFunc {
 }
 
 func (uh *UserHandler) ChangeAvatar(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Avatar")
 	file, _, err := r.FormFile("file")
 	if err != nil {
-		fmt.Println("aaa")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -188,37 +185,33 @@ func (uh *UserHandler) ChangeAvatar(w http.ResponseWriter, r *http.Request) {
 	}
 	err = uh.UseCase.ChangeAvatar(session.Value, file)
 	if err != nil {
-		fmt.Println("aa")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	fmt.Println("ok")
 	w.WriteHeader(http.StatusOK)
 }
 
 func (uh *UserHandler) AvatarById(w http.ResponseWriter, r *http.Request)  {
-	fmt.Println("111")
 	vars := mux.Vars(r)
 	id := vars["id"]
+
+
 	file, err := uh.UseCase.GetAvatar(id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+
 	buffer := new(bytes.Buffer)
 	if err := png.Encode(buffer, *file); err != nil {
-		log.Println("unable to encode image.")
+		uh.logger.Error("unable to encode image.")
 	}
-
-	w.Header().Set("Content-Type", "image/jpeg")
+	w.Header().Set("Content-Type", "image/png")
 	w.Header().Set("Content-Length", strconv.Itoa(len(buffer.Bytes())))
+	w.WriteHeader(http.StatusOK)
 	if _, err := w.Write(buffer.Bytes()); err != nil {
 		log.Println("unable to write image.")
 	}
-	fmt.Println("1111111111111111111111111")
-	w.Header().Set("Content-Type", "image/png")
-	w.WriteHeader(http.StatusOK)
-	w.Write(buffer.Bytes())
 }
 
 

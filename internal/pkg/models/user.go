@@ -9,6 +9,7 @@ type User struct {
 }
 
 type PublicUser struct {
+	Id       int `json:"id"`
 	Login string `'json:"login"'`
 	Email    string `'json:"email"'`
 }

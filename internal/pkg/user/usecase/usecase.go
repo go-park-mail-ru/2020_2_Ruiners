@@ -161,7 +161,7 @@ func (u *UserUseCase) GetAvatar(ids string) (*image.Image, error) {
 	}
 	file, err := os.Open("uploads/" + user.Image + ".png")
 	if err != nil {
-		return nil, err
+		file, _ = os.Open("uploads/def.png")
 	}
 	img, err := png.Decode(file)
 	if err != nil {
