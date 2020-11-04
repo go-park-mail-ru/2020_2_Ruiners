@@ -136,5 +136,5 @@ create table person_film
     role varchar(10)
 );
 
-insert into person(name, image, born_date, born_place) VALUES('Киану Ривз', 'affaaf', '1964, 2 сентября', 'Канада');
+insert into person(name, image, born_date, born_place) VALUES('Киану Ривз', 'https://fs.kinomania.ru/image/file/person/7/ea/7eabe3a1649ffa2b3ff8c02ebfd5659f.243.321.jpeg', '1964, 2 сентября', 'Канада');
 insert into person_film(film_id, person_id, role) VALUES(1, 1, 'actor');
