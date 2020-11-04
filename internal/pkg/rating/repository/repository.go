@@ -46,7 +46,7 @@ func (r *RatingRepository) UpdateRating(rating int, filmId int, userId int) erro
 }
 
 func (r *RatingRepository) AddReview(body string, filmId int, userId int) error {
-	_, err := r.db.Exec("insert into rating(body, film_id, user_id) VALUE(?, ?, ?)", body, filmId, userId)
+	_, err := r.db.Exec("insert into review(body, film_id, user_id) VALUE(?, ?, ?)", body, filmId, userId)
 	if err != nil {
 		return err
 	}
