@@ -7,8 +7,7 @@ import (
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"
 	uuid2 "github.com/satori/go.uuid"
-	"image"
-	"image/png"
+	"io"
 	"mime/multipart"
 	"os"
 	"strconv"
@@ -128,8 +127,7 @@ func (u *UserUseCase) ChangeAvatar(s string, file multipart.File) error  {
 		return err
 	}
 	defer f.Close()
-	img, err := png.Decode(file)
-	err = png.Encode(f, img)
+	io.Copy(f, file)
 	if err != nil {
 		fmt.Println("aa")
 		return err
@@ -150,7 +148,7 @@ func (u *UserUseCase) ChangeAvatar(s string, file multipart.File) error  {
 	return nil
 }
 
-func (u *UserUseCase) GetAvatar(ids string) (*image.Image, error) {
+func (u *UserUseCase) GetAvatar(ids string) (*os.File, error) {
 	id, err := strconv.Atoi(ids)
 	if err != nil {
 		return nil, err
@@ -163,12 +161,8 @@ func (u *UserUseCase) GetAvatar(ids string) (*image.Image, error) {
 	if err != nil {
 		file, _ = os.Open("uploads/def.png")
 	}
-	img, err := png.Decode(file)
-	if err != nil {
-		return nil, err
-	}
 	fmt.Println("ok")
-	return &img, nil
+	return file, nil
 }
 
 

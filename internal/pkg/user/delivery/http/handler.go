@@ -1,17 +1,15 @@
 package http
 
 import (
-	"bytes"
 	"encoding/json"
+	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"
 	"github.com/gorilla/mux"
 	uuid2 "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
-	"image/png"
-	"log"
+	"io"
 	"net/http"
-	"strconv"
 	"time"
 )
 
@@ -172,8 +170,10 @@ func (uh *UserHandler) ChangePassword() http.HandlerFunc {
 }
 
 func (uh *UserHandler) ChangeAvatar(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("change av")
 	file, _, err := r.FormFile("file")
 	if err != nil {
+		fmt.Println()
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -202,16 +202,9 @@ func (uh *UserHandler) AvatarById(w http.ResponseWriter, r *http.Request)  {
 		return
 	}
 
-	buffer := new(bytes.Buffer)
-	if err := png.Encode(buffer, *file); err != nil {
-		uh.logger.Error("unable to encode image.")
-	}
-	w.Header().Set("Content-Type", "image/png")
-	w.Header().Set("Content-Length", strconv.Itoa(len(buffer.Bytes())))
+
 	w.WriteHeader(http.StatusOK)
-	if _, err := w.Write(buffer.Bytes()); err != nil {
-		log.Println("unable to write image.")
-	}
+	io.Copy(w, file)
 }
 
 
