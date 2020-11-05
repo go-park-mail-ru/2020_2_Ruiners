@@ -123,7 +123,6 @@ func (u *UserUseCase) ChangeAvatar(s string, file multipart.File) error  {
 	str := uuid2.NewV4().String()
 	f, err := os.Create("uploads/" + str + ".png")
 	if err != nil {
-		fmt.Println("aaa")
 		return err
 	}
 	defer f.Close()
@@ -142,7 +141,6 @@ func (u *UserUseCase) ChangeAvatar(s string, file multipart.File) error  {
 	}
 	err = u.UserRepository.UpdateAvatar(session.Username, str)
 	if err != nil {
-		fmt.Println("aa")
 		return err
 	}
 	return nil
@@ -161,7 +159,6 @@ func (u *UserUseCase) GetAvatar(ids string) (*os.File, error) {
 	if err != nil {
 		file, _ = os.Open("uploads/def.png")
 	}
-	fmt.Println("ok")
 	return file, nil
 }
 

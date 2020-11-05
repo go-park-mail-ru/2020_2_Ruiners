@@ -18,7 +18,7 @@ func NewPersonRepository(db *sql.DB) *PersonRepository {
 func (r *PersonRepository) FindByFilmIdAndRole(id int, role string) (*models.FilmPersons, error) {
 	filmPerson := models.FilmPerson{}
 	filmPersons := models.FilmPersons{}
-	filmPersonQuery, err := r.db.Query("SELECT p.id, p.name  FROM person_film f join person p WHERE f.film_id = ? AND f.role = ?", id, role)
+	filmPersonQuery, err := r.db.Query("SELECT p.id, p.name  FROM person_film f join person p ON f.person_id = p.id WHERE f.film_id = ? AND f.role = ?", id, role)
 	defer filmPersonQuery.Close()
 	if err != nil {
 		return nil, err

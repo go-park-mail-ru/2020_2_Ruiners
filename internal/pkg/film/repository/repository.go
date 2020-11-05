@@ -45,3 +45,18 @@ func (r *FilmRepository) FindFilmsByGenre(genre string) (*models.FilmCards, erro
 	}
 	return &filmCards, nil
 }
+
+func (r *FilmRepository) FindFilmsByPerson(id int) (*models.FilmCards, error) {
+	filmCard := models.FilmCard{}
+	filmCards := models.FilmCards{}
+	filmQuery, err := r.db.Query("SELECT f.id, f.title, f.mainGenre, f.smallImg, f.year FROM films f JOIN person_film p ON f.id = p.film_id WHERE p.person_id = ? LIMIT 10", id)
+	defer filmQuery.Close()
+	if err != nil {
+		return nil, err
+	}
+	for filmQuery.Next() {
+		filmQuery.Scan(&filmCard.Id, &filmCard.Title, &filmCard.MainGenre, &filmCard.SmallImg, &filmCard.Year)
+		filmCards = append(filmCards, filmCard)
+	}
+	return &filmCards, nil
+}

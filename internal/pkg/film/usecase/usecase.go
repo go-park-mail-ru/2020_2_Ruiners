@@ -36,4 +36,13 @@ func (uc *FilmUseCase) FilmsByGenre(genre string) (*models.FilmCards, error)  {
 	return films, nil
 }
 
+func (uc *FilmUseCase) FilmsByPerson(id string) (*models.FilmCards, error)  {
+	idInt, err := strconv.Atoi(id)
+	films, err := uc.FilmRepository.FindFilmsByPerson(idInt)
+	if err != nil {
+		return nil, err
+	}
+	return films, nil
+}
+
 
