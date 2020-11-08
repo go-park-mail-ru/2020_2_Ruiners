@@ -16,12 +16,12 @@ func NewUserRepository(db *sql.DB) *UserRepository {
 	}
 }
 
-func (r *UserRepository) Create(u *models.User) (*models.User, error)  {
+func (r *UserRepository) Create(u *models.User) (*models.User, error) {
 	_, err := r.db.Exec("INSERT INTO users (username, password, email) VALUES(?, ?, ?)", u.Username, u.Password, u.Email)
 	if err != nil {
 		return nil, err
 	}
-	return  nil, nil
+	return nil, nil
 }
 
 func (r *UserRepository) FindByLogin(login string) (*models.User, error) {
@@ -34,7 +34,7 @@ func (r *UserRepository) FindByLogin(login string) (*models.User, error) {
 	if id.Next() {
 		id.Scan(&user.Id, &user.Username, &user.Password, &user.Email, &user.Image)
 	} else {
-		return nil,errors.New("no user")
+		return nil, errors.New("no user")
 	}
 	return &user, nil
 }
@@ -49,7 +49,7 @@ func (r *UserRepository) FindById(id int) (*models.User, error) {
 	if queryUsers.Next() {
 		queryUsers.Scan(&user.Id, &user.Username, &user.Password, &user.Email, &user.Image)
 	} else {
-		return nil,errors.New("no user")
+		return nil, errors.New("no user")
 	}
 	return &user, nil
 }
@@ -77,4 +77,3 @@ func (r *UserRepository) UpdateAvatar(login string, name string) error {
 	}
 	return nil
 }
-

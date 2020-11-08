@@ -9,18 +9,18 @@ import (
 )
 
 type RatingUseCase struct {
-	RatingRepository rating.Repository
+	RatingRepository  rating.Repository
 	SessionRepository sesession.Repository
 }
 
 func NewRatingUseCase(ratingRepository rating.Repository, sessionRepository sesession.Repository) *RatingUseCase {
 	return &RatingUseCase{
-		RatingRepository: ratingRepository,
+		RatingRepository:  ratingRepository,
 		SessionRepository: sessionRepository,
 	}
 }
 
-func (uc *RatingUseCase) Rate(rating int, filmId int, session string) error{
+func (uc *RatingUseCase) Rate(rating int, filmId int, session string) error {
 	userId, err := uc.SessionRepository.GetUserIdBySession(session)
 	if err != nil {
 		return err
@@ -75,4 +75,3 @@ func (uc *RatingUseCase) GetReviews(filmId string) (*models.Reviews, error) {
 	fmt.Println(rs)
 	return &rs, nil
 }
-

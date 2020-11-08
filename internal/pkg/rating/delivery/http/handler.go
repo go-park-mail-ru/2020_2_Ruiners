@@ -11,7 +11,7 @@ import (
 
 type RatingHandler struct {
 	UseCase rating.UseCase
-	logger *logrus.Logger
+	logger  *logrus.Logger
 }
 
 func (rh *RatingHandler) Rate() http.HandlerFunc {
@@ -43,8 +43,8 @@ func (rh *RatingHandler) Rate() http.HandlerFunc {
 
 func (rh *RatingHandler) AddReview() http.HandlerFunc {
 	type AddReview struct {
-		FilmId int `'json:"film_id"'`
-		Body string `'json:"body"'`
+		FilmId int    `'json:"film_id"'`
+		Body   string `'json:"body"'`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		l := AddReview{}

@@ -71,7 +71,7 @@ func (r *RatingRepository) GetReviewsByFilmId(filmId int) (*models.Reviews, erro
 	return &rev, nil
 }
 
-func(r *RatingRepository) GetUserById(id int) (string, error) {
+func (r *RatingRepository) GetUserById(id int) (string, error) {
 	var login string
 	queryUser, err := r.db.Query("SELECT username FROM users WHERE id = ?", id)
 	defer queryUser.Close()

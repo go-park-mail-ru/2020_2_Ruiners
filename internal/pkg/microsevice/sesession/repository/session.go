@@ -17,13 +17,13 @@ func NewSessionRepository(db *sql.DB) *SessionRepository {
 	}
 }
 
-func (r *SessionRepository) Create(session *models.Session) (*models.Session, error)  {
+func (r *SessionRepository) Create(session *models.Session) (*models.Session, error) {
 	fmt.Println(session)
 	_, err := r.db.Exec("INSERT INTO session (id, username) VALUES(?, ?)", session.Id, session.Username)
 	if err != nil {
 		return nil, err
 	}
-	return  nil, nil
+	return nil, nil
 }
 
 func (r *SessionRepository) FindById(s string) (*models.Session, error) {
@@ -69,5 +69,3 @@ func (r *SessionRepository) UpdateLogin(oldLogin string, newLogin string) error 
 	}
 	return nil
 }
-
-

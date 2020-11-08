@@ -1,7 +1,7 @@
 package models
 
 type User struct {
-	Id       int `json:"id"`
+	Id       int    `json:"id"`
 	Username string `'json:"login"'`
 	Password string `'json:"password"'`
 	Email    string `'json:"email"'`
@@ -9,9 +9,9 @@ type User struct {
 }
 
 type PublicUser struct {
-	Id       int `json:"id"`
+	Id    int    `json:"id"`
 	Login string `'json:"login"'`
-	Email    string `'json:"email"'`
+	Email string `'json:"email"'`
 }
 
 type Login struct {
