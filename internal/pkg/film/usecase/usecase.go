@@ -28,7 +28,7 @@ func (uc *FilmUseCase) FindById(id string) (*models.Film, error) {
 	return film, nil
 }
 
-func (uc *FilmUseCase) FilmsByGenre(genre string) (*models.FilmCards, error)  {
+func (uc *FilmUseCase) FilmsByGenre(genre string) (*models.FilmCards, error) {
 	films, err := uc.FilmRepository.FindFilmsByGenre(models.TranslateGenre[genre])
 	if err != nil {
 		return nil, err
@@ -36,7 +36,7 @@ func (uc *FilmUseCase) FilmsByGenre(genre string) (*models.FilmCards, error)  {
 	return films, nil
 }
 
-func (uc *FilmUseCase) FilmsByPerson(id string) (*models.FilmCards, error)  {
+func (uc *FilmUseCase) FilmsByPerson(id string) (*models.FilmCards, error) {
 	idInt, err := strconv.Atoi(id)
 	films, err := uc.FilmRepository.FindFilmsByPerson(idInt)
 	if err != nil {
@@ -44,5 +44,3 @@ func (uc *FilmUseCase) FilmsByPerson(id string) (*models.FilmCards, error)  {
 	}
 	return films, nil
 }
-
-
