@@ -26,31 +26,25 @@ func (r *UserRepository) Create(u *models.User) (*models.User, error) {
 
 func (r *UserRepository) FindByLogin(login string) (*models.User, error) {
 	user := models.User{}
-	id, err := r.db.Query("SELECT id, username, password, email, image  FROM users WHERE username = ? ORDER BY id ASC LIMIT 1", login)
-	defer id.Close()
+	err := r.db.QueryRow("SELECT id, username, password, email, image  FROM users WHERE username = ? ORDER BY id ASC LIMIT 1", login).
+		Scan(&user.Id, &user.Username, &user.Password, &user.Email, &user.Image)
+
 	if err != nil {
-		return nil, err
-	}
-	if id.Next() {
-		id.Scan(&user.Id, &user.Username, &user.Password, &user.Email, &user.Image)
-	} else {
 		return nil, errors.New("no user")
 	}
+
 	return &user, nil
 }
 
 func (r *UserRepository) FindById(id int) (*models.User, error) {
 	user := models.User{}
-	queryUsers, err := r.db.Query("SELECT id, username, password, email, image  FROM users WHERE id = ? ORDER BY id ASC LIMIT 1", id)
-	defer queryUsers.Close()
+	err := r.db.QueryRow("SELECT id, username, password, email, image  FROM users WHERE id = ? ORDER BY id ASC LIMIT 1", id).
+		Scan(&user.Id, &user.Username, &user.Password, &user.Email, &user.Image)
+
 	if err != nil {
-		return nil, err
-	}
-	if queryUsers.Next() {
-		queryUsers.Scan(&user.Id, &user.Username, &user.Password, &user.Email, &user.Image)
-	} else {
 		return nil, errors.New("no user")
 	}
+
 	return &user, nil
 }
 
