@@ -33,7 +33,7 @@ func (uc *PersonUseCase) GetPerson(id string) (*models.Person, error) {
 	return p, nil
 }
 
-func (uc *PersonUseCase) GetPersonsByFilm(id string, role string) (*models.FilmPersons, error)  {
+func (uc *PersonUseCase) GetPersonsByFilm(id string, role string) (*models.FilmPersons, error) {
 	idInt, err := strconv.Atoi(id)
 	if err != nil {
 		return nil, err
@@ -42,6 +42,5 @@ func (uc *PersonUseCase) GetPersonsByFilm(id string, role string) (*models.FilmP
 	if err != nil {
 		return nil, err
 	}
-	return  persons, nil
+	return persons, nil
 }
-

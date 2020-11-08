@@ -8,13 +8,13 @@ import (
 	"github.com/sirupsen/logrus"
 	"net/http"
 )
+
 type FilmHandler struct {
 	UseCase film.UseCase
-	logger *logrus.Logger
+	logger  *logrus.Logger
 }
 
-
-func (fh *FilmHandler) FilmById(w http.ResponseWriter, r *http.Request)  {
+func (fh *FilmHandler) FilmById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 	film, err := fh.UseCase.FindById(id)
@@ -32,7 +32,7 @@ func (fh *FilmHandler) FilmById(w http.ResponseWriter, r *http.Request)  {
 	w.Write(res)
 }
 
-func (fh *FilmHandler) FilmsByGenre(w http.ResponseWriter, r *http.Request)  {
+func (fh *FilmHandler) FilmsByGenre(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	genre := vars["genre"]
 	films, err := fh.UseCase.FilmsByGenre(genre)
@@ -49,7 +49,7 @@ func (fh *FilmHandler) FilmsByGenre(w http.ResponseWriter, r *http.Request)  {
 	w.Write(res)
 }
 
-func (fh *FilmHandler) FilmsByPerson(w http.ResponseWriter, r *http.Request)  {
+func (fh *FilmHandler) FilmsByPerson(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Person")
 	vars := mux.Vars(r)
 	id := vars["id"]
