@@ -27,32 +27,27 @@ func (r *SessionRepository) Create(session *models.Session) (*models.Session, er
 }
 
 func (r *SessionRepository) FindById(s string) (*models.Session, error) {
-	id, err := r.db.Query("SELECT id, username FROM session WHERE id = ? ORDER BY id ASC LIMIT 1", s)
-	defer id.Close()
-	if err != nil {
-		return nil, err
-	}
 	session := models.Session{}
-	if id.Next() {
-		id.Scan(&session.Id, &session.Username)
-	} else {
+	err := r.db.QueryRow("SELECT id, username FROM session WHERE id = ? ORDER BY id ASC LIMIT 1", s).
+		Scan(&session.Id, &session.Username)
+
+	if err != nil {
 		return nil, errors.New("session not found")
 	}
+
 	return &session, nil
 }
 
 func (r *SessionRepository) GetUserIdBySession(s string) (int, error) {
 	userId := 0
-	id, err := r.db.Query("SELECT u.id FROM users u JOIN session s ON u.username = s.username WHERE s.id = ? ORDER BY id ASC LIMIT 1", s)
-	defer id.Close()
+	err := r.db.QueryRow("SELECT u.id FROM users u JOIN session s ON u.username = s.username WHERE s.id = ? ORDER BY id ASC LIMIT 1", s).
+		Scan(&userId)
+
 	if err != nil {
-		return 0, err
+		return 0, errors.New("user with session not found")
 	}
-	if id.Next() {
-		id.Scan(&userId)
-		return userId, nil
-	}
-	return 0, errors.New("user with session not found")
+
+	return userId, nil
 }
 
 func (r *SessionRepository) Delete(s string) error {
@@ -62,6 +57,7 @@ func (r *SessionRepository) Delete(s string) error {
 	}
 	return nil
 }
+
 func (r *SessionRepository) UpdateLogin(oldLogin string, newLogin string) error {
 	_, err := r.db.Exec("UPDATE session SET username = ? WHERE username = ?", newLogin, oldLogin)
 	if err != nil {
