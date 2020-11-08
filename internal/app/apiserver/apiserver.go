@@ -2,7 +2,7 @@ package apiserver
 
 import (
 	"fmt"
-	filmHandler"github.com/Arkadiyche/http-rest-api/internal/pkg/film/delivery/http"
+	filmHandler "github.com/Arkadiyche/http-rest-api/internal/pkg/film/delivery/http"
 	filmRep "github.com/Arkadiyche/http-rest-api/internal/pkg/film/repository"
 	filmUC "github.com/Arkadiyche/http-rest-api/internal/pkg/film/usecase"
 	sessionRep "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/sesession/repository"
@@ -26,10 +26,10 @@ type APIServer struct {
 	config *Config
 	logger *logrus.Logger
 	router *mux.Router
-	store *store.Store
+	store  *store.Store
 }
 
-func New(config *Config) *APIServer{
+func New(config *Config) *APIServer {
 	return &APIServer{
 		config: config,
 		logger: logrus.New(),
@@ -49,7 +49,7 @@ func (s *APIServer) Start() error {
 	s.configureRouter()
 
 	s.logger.Info("starting api server")
-	
+
 	return http.ListenAndServe(s.config.BindAddr, s.router)
 }
 
@@ -108,7 +108,7 @@ func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHand
 
 	SessionRep := sessionRep.NewSessionRepository(s.store.Db)
 	//user
-	UserRep := 	userRep.NewUserRepository(s.store.Db)
+	UserRep := userRep.NewUserRepository(s.store.Db)
 	UserUC := userUC.NewUserUseCase(UserRep, SessionRep)
 	UserHandler := userHandler.UserHandler{
 		UseCase: UserUC,
@@ -137,6 +137,6 @@ func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHand
 
 func (s *APIServer) handleHello() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		 w.Write([]byte("Hello"))
+		w.Write([]byte("Hello"))
 	}
 }

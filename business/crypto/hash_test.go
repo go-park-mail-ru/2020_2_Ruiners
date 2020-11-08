@@ -27,4 +27,3 @@ func TestCheckPasswordWrong(t *testing.T) {
 	assert.Nil(t, err)
 	assert.False(t, res)
 }
-

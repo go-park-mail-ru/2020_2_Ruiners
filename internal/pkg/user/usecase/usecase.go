@@ -15,18 +15,18 @@ import (
 )
 
 type UserUseCase struct {
-	UserRepository user.Repository
+	UserRepository    user.Repository
 	SessionRepository sesession.Repository
 }
 
 func NewUserUseCase(userRepository user.Repository, sessionRepository sesession.Repository) *UserUseCase {
 	return &UserUseCase{
-		UserRepository: userRepository,
+		UserRepository:    userRepository,
 		SessionRepository: sessionRepository,
 	}
 }
 
-func (u *UserUseCase) Signup(input *models.User, session *models.Session) (*models.User, error)  {
+func (u *UserUseCase) Signup(input *models.User, session *models.Session) (*models.User, error) {
 	user, err := u.UserRepository.FindByLogin(input.Username)
 	if user != nil {
 		return nil, errors.New("user alredy exist")
@@ -47,8 +47,7 @@ func (u *UserUseCase) Signup(input *models.User, session *models.Session) (*mode
 	return nil, nil
 }
 
-
-func (u *UserUseCase) Login(input *models.Login, session *models.Session) (*models.User, error)  {
+func (u *UserUseCase) Login(input *models.Login, session *models.Session) (*models.User, error) {
 	user, err := u.UserRepository.FindByLogin(input.Login)
 	if user == nil {
 		return nil, errors.New("user not found")
@@ -131,10 +130,10 @@ func (u *UserUseCase) ChangePassword(s string, oldPassword string, newPassword s
 	if err != nil {
 		return err
 	}
-	return  nil
+	return nil
 }
 
-func (u *UserUseCase) ChangeAvatar(s string, file multipart.File) error  {
+func (u *UserUseCase) ChangeAvatar(s string, file multipart.File) error {
 	str := uuid2.NewV4().String()
 	f, err := os.Create("uploads/" + str + ".png")
 	if err != nil {
@@ -176,8 +175,3 @@ func (u *UserUseCase) GetAvatar(ids string) (*os.File, error) {
 	}
 	return file, nil
 }
-
-
-
-
-

@@ -13,7 +13,7 @@ func enableCORS(cfg *models.CORSConfig, handler http.Handler) http.Handler {
 		allowedHeaders = handlers.AllowedHeaders(cfg.AllowedHeaders)
 		exposedHeaders = handlers.ExposedHeaders(cfg.ExposedHeaders)
 		allowedMethods = handlers.AllowedMethods(cfg.AllowedMethods)
-		credentials = handlers.AllowCredentials()
+		credentials    = handlers.AllowCredentials()
 	)
 
 	return handlers.CORS(allowedOrigins, allowedHeaders, exposedHeaders, allowedMethods, credentials)(handler)

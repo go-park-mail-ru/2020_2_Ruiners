@@ -7,10 +7,10 @@ import (
 
 type Store struct {
 	config *Config
-	Db *sql.DB
+	Db     *sql.DB
 }
 
-func New(config *Config)  *Store{
+func New(config *Config) *Store {
 	//fmt.Println(config.DatabaseURL)
 	return &Store{
 		config: config,
@@ -32,7 +32,7 @@ func (s *Store) Open() error {
 	return nil
 }
 
-func (s *Store) Close()  {
+func (s *Store) Close() {
 	s.Db.Close()
 }
 

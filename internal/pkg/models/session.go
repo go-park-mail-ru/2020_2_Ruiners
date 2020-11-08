@@ -1,6 +1,6 @@
 package models
 
 type Session struct {
-	Id string
+	Id       string
 	Username string
 }

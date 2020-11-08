@@ -15,9 +15,8 @@ import (
 
 type UserHandler struct {
 	UseCase user.UseCase
-	logger *logrus.Logger
+	logger  *logrus.Logger
 }
-
 
 func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 	u := models.Signup{}
@@ -45,7 +44,7 @@ func (uh *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	session := models.Session{Id: uuid2.NewV4().String(), Username: l.Login}
-	_, err1 :=uh.UseCase.Login(&l, &session)
+	_, err1 := uh.UseCase.Login(&l, &session)
 	if err1 != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -119,7 +118,7 @@ func (uh *UserHandler) Logout(w http.ResponseWriter, r *http.Request) {
 }
 
 func (uh *UserHandler) ChangeLogin() http.HandlerFunc {
-	type ChangeLogin struct{
+	type ChangeLogin struct {
 		Login string `'json:"login"'`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -134,7 +133,7 @@ func (uh *UserHandler) ChangeLogin() http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-	    err1 := uh.UseCase.ChangeLogin(session.Value, l.Login)
+		err1 := uh.UseCase.ChangeLogin(session.Value, l.Login)
 		if err1 != nil {
 			http.Error(w, err1.Error(), http.StatusBadRequest)
 			return
@@ -191,10 +190,9 @@ func (uh *UserHandler) ChangeAvatar(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func (uh *UserHandler) AvatarById(w http.ResponseWriter, r *http.Request)  {
+func (uh *UserHandler) AvatarById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
-
 
 	file, err := uh.UseCase.GetAvatar(id)
 	if err != nil {
@@ -202,12 +200,9 @@ func (uh *UserHandler) AvatarById(w http.ResponseWriter, r *http.Request)  {
 		return
 	}
 
-
 	w.WriteHeader(http.StatusOK)
 	io.Copy(w, file)
 }
-
-
 
 func CreateSession(w http.ResponseWriter, sessionId string) {
 	cookie := http.Cookie{
