@@ -22,7 +22,7 @@ create table films
     id          int auto_increment primary key,
     title       varchar(80) character set 'utf8' not null,
     description varchar(255) character set 'utf8' not null,
-    rating      int DEFAULT 0,
+    rating      float DEFAULT 0,
     sumVotes      int DEFAULT 0,
     mainGenre   varchar(80) character set 'utf8' not null,
     youtubeLink varchar(255) character set 'utf8' not null,
@@ -103,13 +103,13 @@ CREATE TRIGGER trigger1
 AFTER INSERT
 ON rating
 FOR EACH ROW
-update films set rating = ((rating * sumVotes + new.rating) / (sumVotes + 1)), sumVotes = sumVotes + 1 where id = new.film_id;
+update films f set rating = ((f.rating * sumVotes + new.rating) / (sumVotes + 1)), sumVotes = sumVotes + 1 where id = new.film_id;
 
 CREATE TRIGGER trigger2
 BEFORE UPDATE
 ON rating
 FOR EACH ROW
-update films set rating = ((rating * sumVotes - old.rating + new.rating) / sumVotes) where id = new.film_id;
+update films f set rating = ((f.rating * sumVotes - old.rating + new.rating) / sumVotes) where id = new.film_id;
 
 create table review
 (

@@ -6,7 +6,6 @@ import (
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/rating"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
-	"io/ioutil"
 	"net/http"
 )
 
@@ -22,8 +21,6 @@ func (rh *RatingHandler) Rate() http.HandlerFunc {
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		l := Rate{}
-		body, _ := ioutil.ReadAll(r.Body)
-		fmt.Println(string(body))
 		id, err := r.Cookie("session_id")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)

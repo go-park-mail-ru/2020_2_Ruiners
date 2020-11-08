@@ -3,6 +3,7 @@ package usecase
 import (
 	"errors"
 	"fmt"
+	"github.com/Arkadiyche/http-rest-api/business/crypto"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/sesession"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"
@@ -26,10 +27,15 @@ func NewUserUseCase(userRepository user.Repository, sessionRepository sesession.
 }
 
 func (u *UserUseCase) Signup(input *models.User, session *models.Session) (*models.User, error)  {
-	user, _ := u.UserRepository.FindByLogin(input.Username)
+	user, err := u.UserRepository.FindByLogin(input.Username)
 	if user != nil {
 		return nil, errors.New("user alredy exist")
 	}
+	input.Password, err = crypto.HashPassword(input.Password)
+	if err != nil {
+		return nil, errors.New("bad hash")
+	}
+	fmt.Println(input.Password)
 	_, err1 := u.UserRepository.Create(input)
 	if err1 != nil {
 		return nil, err1
@@ -50,7 +56,8 @@ func (u *UserUseCase) Login(input *models.Login, session *models.Session) (*mode
 	if err != nil {
 		return nil, err
 	}
-	if user.Password != input.Password {
+	check, err := crypto.CheckPassword(input.Password, user.Password)
+	if !check {
 		return nil, errors.New("wrong password")
 	}
 	_, err1 := u.SessionRepository.Create(session)
@@ -109,8 +116,16 @@ func (u *UserUseCase) ChangePassword(s string, oldPassword string, newPassword s
 	if err1 != nil {
 		return err1
 	}
-	if user.Password != oldPassword {
+	check, err := crypto.CheckPassword(oldPassword, user.Password)
+	if err != nil {
+		return err
+	}
+	if !check {
 		return errors.New("wrong old password")
+	}
+	newPassword, err = crypto.HashPassword(newPassword)
+	if err != nil {
+		return err
 	}
 	err = u.UserRepository.UpdatePassword(session.Username, newPassword)
 	if err != nil {
