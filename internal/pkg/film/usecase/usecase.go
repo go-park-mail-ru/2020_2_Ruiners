@@ -3,6 +3,7 @@ package usecase
 import (
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/film"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
+	"math"
 	"strconv"
 )
 
@@ -25,6 +26,7 @@ func (uc *FilmUseCase) FindById(id string) (*models.Film, error) {
 	if err != nil {
 		return nil, err
 	}
+	film.Rating = math.Round(film.Rating*100)/100
 	return film, nil
 }
 

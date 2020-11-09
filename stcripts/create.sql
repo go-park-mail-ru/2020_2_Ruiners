@@ -161,5 +161,21 @@ create table person_film
     role varchar(10)
 );
 
-insert into person(name, image, born_date, born_place) VALUES('Киану Ривз', 'affaaf', '1964, 2 сентября', 'Канада');
-insert into person_film(film_id, person_id, role) VALUES(1, 1, 'actor');
+insert into person(id, name, image, born_date, born_place)
+    VALUES(1, 'Леонардо ДиКаприо', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1629390/24d5c3b1-7dea-4dc2-a756-361264a9d007/280x420', '1974, 11 ноября', 'США'),
+    (2, 'Джозеф Гордон-Левитт', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/e63e5d24-843f-4266-a6ba-22d2c24ce5ce/280x420', '1981, 17 февраля', 'США'),
+    (3, 'Мэттью МакКонахи', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/7b37ed50-2bb0-4f22-adba-d94023ed9a38/280x420', '1969, 4 ноября', 'США'),
+    (4, 'Энн Хэтэуэй', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1629390/aa53725c-6099-4278-9bba-6d6bd2bc6998/280x420', '1982, 12 ноября', 'США'),
+    (5, 'Сэм Уортингтон', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1600647/fd0bdc62-0686-40c9-8924-3e86de31d11a/280x420', '1976, 2 августа', 'Великобритания'),
+    (6, 'Зои Салдана', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1704946/1d6f7c29-4c37-4ccb-a412-472b2216c659/280x420', '1978, 19 июня', 'США'),
+    (7, 'Райан Гослинг', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1629390/865d2d0e-bac6-4a78-a0ed-17a87b285069/280x420', '1980, 12 ноября', 'Канада'),
+    (8, 'Харрисон Форд', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/eccd6b13-9c81-460a-a379-f10c5f6e82d6/280x420', '1942, 13 июля', 'США');
+insert into person_film(film_id, person_id, role)
+    VALUES(1, 1, 'actor'),
+    (1, 2, 'actor'),
+    (2, 3, 'actor'),
+    (2, 4, 'actor'),
+    (3, 5, 'actor'),
+    (3, 6, 'actor'),
+    (4, 7, 'actor'),
+    (4, 9, 'actor');
