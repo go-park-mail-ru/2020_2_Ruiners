@@ -9,7 +9,7 @@ create table users
     username varchar(80) not null,
     password varchar(80) not null,
     email    varchar(80) not null,
-    image    varchar(80)
+    image    varchar(80) DEFAULT 'def.png'
 );
 
 create table session
@@ -169,7 +169,17 @@ insert into person(id, name, image, born_date, born_place)
     (5, 'Сэм Уортингтон', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1600647/fd0bdc62-0686-40c9-8924-3e86de31d11a/280x420', '1976, 2 августа', 'Великобритания'),
     (6, 'Зои Салдана', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1704946/1d6f7c29-4c37-4ccb-a412-472b2216c659/280x420', '1978, 19 июня', 'США'),
     (7, 'Райан Гослинг', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1629390/865d2d0e-bac6-4a78-a0ed-17a87b285069/280x420', '1980, 12 ноября', 'Канада'),
-    (8, 'Харрисон Форд', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/eccd6b13-9c81-460a-a379-f10c5f6e82d6/280x420', '1942, 13 июля', 'США');
+    (8, 'Харрисон Форд', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/eccd6b13-9c81-460a-a379-f10c5f6e82d6/280x420', '1942, 13 июля', 'США'),
+    (9, 'Франсуа Клюзе', 'https://vokrug-tv.ru/pic/person/9/2/6/2/92623015cb1b85b94487b68b7e779ba5.jpeg', '1955, 21 сентября', 'Франция'),
+    (10, 'Омар Си', 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Omar_Sy_2012.jpg', '20 января 1978 года', 'Франция'),
+    (11, 'Брэдли Купер', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/12475b69-b6f5-46c6-a057-786206c617c3/280x420', '5 января, 1975', 'США'),
+    (12, 'Зак Галифианакис', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/f46d808e-7ad3-447d-b891-c16506587f25/280x420', '1 октября, 1969', 'США'),
+    (13, 'Эд Хелмс', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/e7b4c2ae-6d82-41d8-93b1-66cec8368fac/280x420', '24 января, 1974', 'США'),
+    (14, 'Джефф Бриджес', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/8a34fed1-4ca1-4ac3-9b68-c1f45e852b99/280x420', '4 декабря, 1949', 'США'),
+    (15, 'Джон Гудман', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/5314f983-8a8a-422c-8019-ebd41ffae162/280x420', '20 июня, 1952', 'США'),
+    (16, 'Сергей Светлаков', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1946459/ca3aa329-cd7f-4137-9db7-b8ce9080ef9c/280x420', '1977, 2 декабря', 'СССР(Россия)'),
+    (17, 'Александр Паль', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/32eb2f4a-7140-41c3-aa1a-97b9e0a19b7d/280x420', '1988, 16 декабря', 'СССР(Россия)'),
+    (18, 'Юлия Александрова', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/b399342a-bff0-442d-8869-bfb379e956f9/280x420', '1982, 14 апреля', 'СССР(Россия)');
 insert into person_film(film_id, person_id, role)
     VALUES(1, 1, 'actor'),
     (1, 2, 'actor'),
@@ -177,5 +187,15 @@ insert into person_film(film_id, person_id, role)
     (2, 4, 'actor'),
     (3, 5, 'actor'),
     (3, 6, 'actor'),
-    (4, 7, 'actor'),
-    (4, 9, 'actor');
+    (7, 7, 'actor'),
+    (7, 8, 'actor'),
+    (4, 9, 'actor'),
+    (4, 10, 'actor'),
+    (5, 11, 'actor'),
+    (5, 12, 'actor'),
+    (5, 13, 'actor'),
+    (6, 14, 'actor'),
+    (6, 15, 'actor'),
+    (8, 16, 'actor'),
+    (8, 17, 'actor'),
+    (8, 18, 'actor');
