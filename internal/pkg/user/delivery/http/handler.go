@@ -2,7 +2,6 @@ package http
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"
 	"github.com/gorilla/mux"
@@ -15,13 +14,15 @@ import (
 
 type UserHandler struct {
 	UseCase user.UseCase
-	logger  *logrus.Logger
+	Logger  *logrus.Logger
 }
 
 func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 	u := models.Signup{}
+	uh.Logger.Info("signup")
 	err := json.NewDecoder(r.Body).Decode(&u)
 	if err != nil {
+		uh.Logger.Warn("Error with user signup delivery json")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -37,9 +38,11 @@ func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 }
 
 func (uh *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
+	uh.Logger.Info("Login")
 	l := models.Login{}
 	err := json.NewDecoder(r.Body).Decode(&l)
 	if err != nil {
+		uh.Logger.Error("Error with user login delivery json")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -54,11 +57,14 @@ func (uh *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func (uh *UserHandler) Me(w http.ResponseWriter, r *http.Request) {
+	uh.Logger.Info("Me")
 	id, err := r.Cookie("session_id")
 	if err != nil {
+		uh.Logger.Warn("Error with user Me delivery get cookie")
 		user := models.PublicUser{Login: "", Email: ""}
 		result, err := json.Marshal(&user)
 		if err != nil {
+			uh.Logger.Error("Error with user me delivery json")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
@@ -71,6 +77,7 @@ func (uh *UserHandler) Me(w http.ResponseWriter, r *http.Request) {
 		user := models.PublicUser{Login: "", Email: ""}
 		result, err := json.Marshal(&user)
 		if err != nil {
+			uh.Logger.Error("Error with user Me delivery json-Marshal")
 			http.Error(w, err1.Error(), http.StatusBadRequest)
 			return
 		}
@@ -81,6 +88,7 @@ func (uh *UserHandler) Me(w http.ResponseWriter, r *http.Request) {
 	public := models.PublicUser{Id: user.Id, Login: user.Username, Email: user.Email}
 	result, err := json.Marshal(&public)
 	if err != nil {
+		uh.Logger.Error("Error with user Me delivery json - marshal")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -89,11 +97,14 @@ func (uh *UserHandler) Me(w http.ResponseWriter, r *http.Request) {
 }
 
 func (uh *UserHandler) Logout(w http.ResponseWriter, r *http.Request) {
+	uh.Logger.Info("logout")
 	session, err := r.Cookie("session_id")
 	if err != nil {
+		uh.Logger.Warn("No cookie")
 		user := models.PublicUser{Login: "", Email: ""}
 		result, err := json.Marshal(&user)
 		if err != nil {
+			uh.Logger.Error("Error with user logout delivery json")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
@@ -111,6 +122,7 @@ func (uh *UserHandler) Logout(w http.ResponseWriter, r *http.Request) {
 	user := models.PublicUser{Login: "", Email: ""}
 	result, err := json.Marshal(&user)
 	if err != nil {
+		uh.Logger.Error("Error with user logout delivery json-marshal")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -122,14 +134,17 @@ func (uh *UserHandler) ChangeLogin() http.HandlerFunc {
 		Login string `'json:"login"'`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
+		uh.Logger.Info("Change login")
 		l := ChangeLogin{}
 		err := json.NewDecoder(r.Body).Decode(&l)
 		if err != nil {
+			uh.Logger.Error("Error with user changelogin delivery json-decode")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		session, err := r.Cookie("session_id")
 		if err != nil {
+			uh.Logger.Error("No cookie changelogin")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
@@ -148,14 +163,17 @@ func (uh *UserHandler) ChangePassword() http.HandlerFunc {
 		Password    string `'json:"password"'`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
+		uh.Logger.Info("Change password")
 		l := ChangePassword{}
 		err := json.NewDecoder(r.Body).Decode(&l)
 		if err != nil {
+			uh.Logger.Error("Error with user change password delivery json-decode")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		session, err := r.Cookie("session_id")
 		if err != nil {
+			uh.Logger.Error("No cookie change password")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
@@ -169,16 +187,17 @@ func (uh *UserHandler) ChangePassword() http.HandlerFunc {
 }
 
 func (uh *UserHandler) ChangeAvatar(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("change av")
+	uh.Logger.Info("Change avatar")
 	file, _, err := r.FormFile("file")
 	if err != nil {
-		fmt.Println()
+		uh.Logger.Error("Error with user Change avatar delivery file")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	defer file.Close()
 	session, err := r.Cookie("session_id")
 	if err != nil {
+		uh.Logger.Error("No cookie change avatar")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
