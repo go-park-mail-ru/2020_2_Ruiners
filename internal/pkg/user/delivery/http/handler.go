@@ -2,6 +2,7 @@ package http
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"
 	"github.com/gorilla/mux"
@@ -18,6 +19,7 @@ type UserHandler struct {
 }
 
 func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(r.Method)
 	u := models.Signup{}
 	uh.Logger.Info("signup")
 	err := json.NewDecoder(r.Body).Decode(&u)
@@ -228,6 +230,15 @@ func CreateSession(w http.ResponseWriter, sessionId string) {
 		Name:    "session_id",
 		Value:   sessionId,
 		Expires: time.Now().Add(10 * time.Hour),
+	}
+	http.SetCookie(w, &cookie)
+}
+
+func CreateCSRF(w http.ResponseWriter, CSRFToken string) {
+	cookie := http.Cookie{
+		Name:    "csrf_token",
+		Value:   CSRFToken,
+		Expires: time.Now().Add(15 * time.Minute),
 	}
 	http.SetCookie(w, &cookie)
 }

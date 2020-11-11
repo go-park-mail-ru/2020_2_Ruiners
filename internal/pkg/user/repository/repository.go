@@ -71,3 +71,15 @@ func (r *UserRepository) UpdateAvatar(login string, name string) error {
 	}
 	return nil
 }
+
+func (r *UserRepository) CheckExist(login string) (bool, error)  {
+	query, err := r.db.Query("SELECT id FROM users WHERE username = ?", login)
+	if err != nil {
+		return false, err
+	}
+	defer query.Close()
+	if query.Next() {
+		return true, nil
+	}
+	return false, nil
+}
