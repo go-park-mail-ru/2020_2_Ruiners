@@ -30,6 +30,7 @@ func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 	user := models.User{Username: u.Login, Password: u.Password, Email: u.Email}
 	_, err1 := uh.UseCase.Signup(&user, &session)
 	if err1 != nil {
+		uh.Logger.Error("error with usecase signup")
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -49,6 +50,7 @@ func (uh *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 	session := models.Session{Id: uuid2.NewV4().String(), Username: l.Login}
 	_, err1 := uh.UseCase.Login(&l, &session)
 	if err1 != nil {
+		uh.Logger.Error("error with usecase login")
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -74,6 +76,7 @@ func (uh *UserHandler) Me(w http.ResponseWriter, r *http.Request) {
 	}
 	user, err1 := uh.UseCase.Me(id.Value)
 	if err1 != nil {
+		uh.Logger.Error("error with usecase me")
 		user := models.PublicUser{Login: "", Email: ""}
 		result, err := json.Marshal(&user)
 		if err != nil {
@@ -116,6 +119,7 @@ func (uh *UserHandler) Logout(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, session)
 	err1 := uh.UseCase.Logout(session.Value)
 	if err1 != nil {
+		uh.Logger.Error("error with usecase logout")
 		http.Error(w, err1.Error(), http.StatusBadRequest)
 		return
 	}
@@ -150,6 +154,7 @@ func (uh *UserHandler) ChangeLogin() http.HandlerFunc {
 		}
 		err1 := uh.UseCase.ChangeLogin(session.Value, l.Login)
 		if err1 != nil {
+			uh.Logger.Error("error with usecase change login")
 			http.Error(w, err1.Error(), http.StatusBadRequest)
 			return
 		}
@@ -179,6 +184,7 @@ func (uh *UserHandler) ChangePassword() http.HandlerFunc {
 		}
 		err1 := uh.UseCase.ChangePassword(session.Value, l.PasswordOld, l.Password)
 		if err1 != nil {
+			uh.Logger.Error("error with usecase change password")
 			http.Error(w, err1.Error(), http.StatusBadRequest)
 			return
 		}
@@ -203,6 +209,7 @@ func (uh *UserHandler) ChangeAvatar(w http.ResponseWriter, r *http.Request) {
 	}
 	err = uh.UseCase.ChangeAvatar(session.Value, file)
 	if err != nil {
+		uh.Logger.Error("error with usecase change avatar")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -215,6 +222,7 @@ func (uh *UserHandler) AvatarById(w http.ResponseWriter, r *http.Request) {
 
 	file, err := uh.UseCase.GetAvatar(id)
 	if err != nil {
+		uh.Logger.Error("error with usecase avatar by id")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}

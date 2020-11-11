@@ -126,12 +126,14 @@ func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHand
 	RatingUC := ratingUC.NewRatingUseCase(RatingRep, SessionRep)
 	RatingHandler := ratingHandler.RatingHandler{
 		UseCase: RatingUC,
+		Logger: s.logger,
 	}
 	//person
 	PersonRep := personRep.NewPersonRepository(s.store.Db)
 	PersonUC := personUC.NewPersonUseCase(PersonRep)
 	PersonHandler := personHandler.PersonHandler{
 		UseCase: PersonUC,
+		Logger: s.logger,
 	}
 
 	return UserHandler, FilmHandler, RatingHandler, PersonHandler
