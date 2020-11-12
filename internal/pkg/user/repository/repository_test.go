@@ -256,3 +256,96 @@ func TestCreate(t *testing.T) {
 		return
 	}
 }
+
+func TestCheckExist(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("cant create mock: %s", err)
+	}
+	defer db.Close()
+
+	repo := NewUserRepository(db)
+
+	var username = "Admin"
+	admin := models.User{1, username, "fdvvvccc", "gg@gmail.com", "my_img"}
+
+	// good query
+	rows := sqlmock.
+		NewRows([]string{"id"}).
+		AddRow(admin.Id)
+
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(username).
+		WillReturnRows(rows)
+
+	item, err := repo.CheckExist(username)
+	if err != nil {
+		t.Errorf("unexpected err: %s", err)
+		return
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
+	if !reflect.DeepEqual(item, true) {
+		t.Errorf("results not match, want %v, have %v", true, item)
+		return
+	}
+
+	// query error
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(username).
+		WillReturnError(fmt.Errorf("db_error"))
+
+	_, err = repo.CheckExist(username)
+
+	if err == nil {
+		t.Errorf("expected error, got nil")
+		return
+	}
+
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
+
+	// row scan error
+	rows = sqlmock.NewRows([]string{"id", "name", "count_rolls"}).
+		AddRow(1, "title", 3)
+
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(username).
+		WillReturnRows(rows)
+
+	_, err = repo.CheckExist(username)
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
+
+	rows = sqlmock.NewRows([]string{"id"})
+
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(username).
+		WillReturnRows(rows)
+
+	item, err = repo.CheckExist(username)
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
+
+	if err != nil {
+		t.Errorf("expected error, got nil")
+		return
+	}
+
+	if !reflect.DeepEqual(item, false) {
+		t.Errorf("results not match, want %v, have %v", false, item)
+		return
+	}
+}
