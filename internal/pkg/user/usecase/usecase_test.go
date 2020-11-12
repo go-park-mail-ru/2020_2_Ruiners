@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"errors"
-	"github.com/Arkadiyche/http-rest-api/business/crypto"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/bussines/crypto"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/sesession"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"
