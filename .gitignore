@@ -1,1 +1,6 @@
 .idea
+
+uploads
+!uploads/def.png
+
+apiserver
