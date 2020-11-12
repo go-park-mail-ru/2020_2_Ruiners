@@ -6,4 +6,8 @@ build:
 test:
 	go test -cover -race -timeout 30s ./...
 
+.PHONY: cover
+cover:
+	go test -coverprofile=coverage.out -coverpkg=./... -cover ./...
+
 .DEFAULT_GOAL := build
