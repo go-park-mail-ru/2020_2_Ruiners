@@ -41,9 +41,9 @@ func (mr *MockRecorderMockRepository) Create(session interface{}) *gomock.Call {
 func (m *MockRepository) FindById(s string) (*models.Session, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindById", s)
-	ret0, _ := ret[0].(models.Session)
+	ret0, _ := ret[0].(*models.Session)
 	ret1, _ := ret[1].(error)
-	return &ret0, ret1
+	return ret0, ret1
 }
 
 func (mr *MockRecorderMockRepository) FindById(s interface{}) *gomock.Call {

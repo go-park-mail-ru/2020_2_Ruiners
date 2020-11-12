@@ -28,9 +28,9 @@ func (m *MockRepository) EXPECT() *MockRecorderMockRepository {
 func (m *MockRepository) Create(user *models.User) (*models.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", user)
-	ret0, _ := ret[0].(models.User)
+	ret0, _ := ret[0].(*models.User)
 	ret1, _ := ret[1].(error)
-	return &ret0, ret1
+	return ret0, ret1
 }
 
 func (mr *MockRecorderMockRepository) Create(user interface{}) *gomock.Call {
@@ -41,9 +41,9 @@ func (mr *MockRecorderMockRepository) Create(user interface{}) *gomock.Call {
 func (m *MockRepository) FindByLogin(login string) (*models.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindByLogin", login)
-	ret0, _ := ret[0].(models.User)
+	ret0, _ := ret[0].(*models.User)
 	ret1, _ := ret[1].(error)
-	return &ret0, ret1
+	return ret0, ret1
 }
 
 func (mr *MockRecorderMockRepository) FindByLogin(login interface{}) *gomock.Call {
@@ -54,9 +54,9 @@ func (mr *MockRecorderMockRepository) FindByLogin(login interface{}) *gomock.Cal
 func (m *MockRepository) FindById(id int) (*models.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindById", id)
-	ret0, _ := ret[0].(models.User)
+	ret0, _ := ret[0].(*models.User)
 	ret1, _ := ret[1].(error)
-	return &ret0, ret1
+	return ret0, ret1
 }
 
 func (mr *MockRecorderMockRepository) FindById(id interface{}) *gomock.Call {
@@ -73,7 +73,7 @@ func (m *MockRepository) UpdateLogin(oldLogin string, newLogin string) error {
 
 func (mr *MockRecorderMockRepository) UpdateLogin(oldLogin, newLogin interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdatePassword", reflect.TypeOf((*MockRepository)(nil).UpdateLogin), oldLogin, newLogin)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateLogin", reflect.TypeOf((*MockRepository)(nil).UpdateLogin), oldLogin, newLogin)
 }
 
 func (m *MockRepository) UpdatePassword(login string, newPassword string) error {
