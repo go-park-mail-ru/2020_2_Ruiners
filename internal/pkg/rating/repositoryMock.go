@@ -37,7 +37,7 @@ func (mr *MockRecorderMockRepository) AddRating(rating interface{}, filmId inter
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddRating", reflect.TypeOf((*MockRepository)(nil).AddRating), rating, filmId, userId)
 }
 
-func (m *MockRepository) UpdateRating(rating int, filmId int, userId int) error{
+func (m *MockRepository) UpdateRating(rating int, filmId int, userId int) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateRating", rating, filmId, userId)
 	ret0, _ := ret[0].(error)
@@ -49,7 +49,7 @@ func (mr *MockRecorderMockRepository) UpdateRating(rating interface{}, filmId in
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateRating", reflect.TypeOf((*MockRepository)(nil).UpdateRating), rating, filmId, userId)
 }
 
-func (m *MockRepository) CheckRating(filmId int, userId int) (bool, error){
+func (m *MockRepository) CheckRating(filmId int, userId int) (bool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CheckRating", filmId, userId)
 	ret0, _ := ret[0].(bool)
@@ -62,7 +62,7 @@ func (mr *MockRecorderMockRepository) CheckRating(filmId interface{}, userId int
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckRating", reflect.TypeOf((*MockRepository)(nil).CheckRating), filmId, userId)
 }
 
-func (m *MockRepository) AddReview(body string, filmId int, userId int) error{
+func (m *MockRepository) AddReview(body string, filmId int, userId int) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AddReview", body, filmId, userId)
 	ret0, _ := ret[0].(error)
@@ -74,7 +74,7 @@ func (mr *MockRecorderMockRepository) AddReview(body interface{}, filmId interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddReview", reflect.TypeOf((*MockRepository)(nil).AddReview), body, filmId, userId)
 }
 
-func (m *MockRepository) GetReviewsByFilmId(filmId int) (*models.Reviews, error){
+func (m *MockRepository) GetReviewsByFilmId(filmId int) (*models.Reviews, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetReviewsByFilmId", filmId)
 	ret0, _ := ret[0].(*models.Reviews)
@@ -84,11 +84,10 @@ func (m *MockRepository) GetReviewsByFilmId(filmId int) (*models.Reviews, error)
 
 func (mr *MockRecorderMockRepository) GetReviewsByFilmId(filmId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetReviewsByFilmId", reflect.TypeOf((*MockRepository)(nil).GetReviewsByFilmId),filmId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetReviewsByFilmId", reflect.TypeOf((*MockRepository)(nil).GetReviewsByFilmId), filmId)
 }
 
-
-func (m *MockRepository) GetUserById(id int) (string, error){
+func (m *MockRepository) GetUserById(id int) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetUserById", id)
 	ret0, _ := ret[0].(string)
@@ -98,10 +97,10 @@ func (m *MockRepository) GetUserById(id int) (string, error){
 
 func (mr *MockRecorderMockRepository) GetUserById(id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserById", reflect.TypeOf((*MockRepository)(nil).GetUserById),id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserById", reflect.TypeOf((*MockRepository)(nil).GetUserById), id)
 }
 
-func (m *MockRepository) GetRating(filmId int, userId int) (int, error){
+func (m *MockRepository) GetRating(filmId int, userId int) (int, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetRating", filmId, userId)
 	ret0, _ := ret[0].(int)
@@ -111,5 +110,5 @@ func (m *MockRepository) GetRating(filmId int, userId int) (int, error){
 
 func (mr *MockRecorderMockRepository) GetRating(filmId interface{}, userId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRating", reflect.TypeOf((*MockRepository)(nil).GetRating),filmId, userId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRating", reflect.TypeOf((*MockRepository)(nil).GetRating), filmId, userId)
 }

@@ -24,18 +24,18 @@ import (
 )
 
 type APIServer struct {
-	config *Config
-	logger *logrus.Logger
-	router *mux.Router
-	store  *store.Store
+	config    *Config
+	logger    *logrus.Logger
+	router    *mux.Router
+	store     *store.Store
 	sanitazer *bluemonday.Policy
 }
 
 func New(config *Config) *APIServer {
 	return &APIServer{
-		config: config,
-		logger: logrus.New(),
-		router: mux.NewRouter(),
+		config:    config,
+		logger:    logrus.New(),
+		router:    mux.NewRouter(),
 		sanitazer: bluemonday.UGCPolicy(),
 	}
 }
@@ -114,8 +114,8 @@ func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHand
 	UserRep := userRep.NewUserRepository(s.store.Db)
 	UserUC := userUC.NewUserUseCase(UserRep, SessionRep)
 	UserHandler := userHandler.UserHandler{
-		UseCase: UserUC,
-		Logger: s.logger,
+		UseCase:   UserUC,
+		Logger:    s.logger,
 		Sanitazer: s.sanitazer,
 	}
 	//film
@@ -123,14 +123,14 @@ func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHand
 	FilmUC := filmUC.NewFilmUseCase(FilmRep)
 	FilmHandler := filmHandler.FilmHandler{
 		UseCase: FilmUC,
-		Logger: s.logger,
+		Logger:  s.logger,
 	}
 	//rating
 	RatingRep := ratingRep.NewRatingRepository(s.store.Db)
 	RatingUC := ratingUC.NewRatingUseCase(RatingRep, SessionRep)
 	RatingHandler := ratingHandler.RatingHandler{
-		UseCase: RatingUC,
-		Logger: s.logger,
+		UseCase:   RatingUC,
+		Logger:    s.logger,
 		Sanitazer: s.sanitazer,
 	}
 	//person
@@ -138,7 +138,7 @@ func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHand
 	PersonUC := personUC.NewPersonUseCase(PersonRep)
 	PersonHandler := personHandler.PersonHandler{
 		UseCase: PersonUC,
-		Logger: s.logger,
+		Logger:  s.logger,
 	}
 
 	return UserHandler, FilmHandler, RatingHandler, PersonHandler

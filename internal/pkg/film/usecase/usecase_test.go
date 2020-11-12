@@ -9,29 +9,28 @@ import (
 )
 
 var testFilm = models.Film{
-	Id: 1231,
-	Title: "Erikdoter film",
-	Rating: 10,
-	SumVotes: 1000,
+	Id:          1231,
+	Title:       "Erikdoter film",
+	Rating:      10,
+	SumVotes:    1000,
 	Description: "Best film",
-	MainGenre: "Комедия",
+	MainGenre:   "Комедия",
 	YoutubeLink: "youtube",
-	BigImg: "Big",
-	SmallImg: "Small",
-	Year: 2020,
-	Country: "Russia",
+	BigImg:      "Big",
+	SmallImg:    "Small",
+	Year:        2020,
+	Country:     "Russia",
 }
 
 var testFilmCard = models.FilmCard{
-	Id: 1231,
-	Title: "ErikDoter film",
+	Id:        1231,
+	Title:     "ErikDoter film",
 	MainGenre: "Комедия",
-	SmallImg: "Small",
-	Year: 2020,
+	SmallImg:  "Small",
+	Year:      2020,
 }
 
 var testFilmCards = models.FilmCards{}
-
 
 func TestFindById(t *testing.T) {
 	t.Run("FIND", func(t *testing.T) {

@@ -1,9 +1,9 @@
 package sesession
 
 import (
-"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
-"github.com/golang/mock/gomock"
-"reflect"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
+	"github.com/golang/mock/gomock"
+	"reflect"
 )
 
 type MockRepository struct {
@@ -77,7 +77,7 @@ func (mr *MockRecorderMockRepository) UpdateLogin(oldLogin, newLogin interface{}
 
 func (m *MockRepository) GetUserIdBySession(s string) (int, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetUserIdBySession",s)
+	ret := m.ctrl.Call(m, "GetUserIdBySession", s)
 	ret0, _ := ret[0].(int)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1

@@ -35,11 +35,11 @@ var testFilm = models.Film{
 }
 
 var testFilmCard = models.FilmCard{
-	Id: testFilm.Id,
-	Title: testFilm.Title,
+	Id:        testFilm.Id,
+	Title:     testFilm.Title,
 	MainGenre: testFilm.MainGenre,
-	SmallImg: testFilm.SmallImg,
-	Year: testFilm.Year,
+	SmallImg:  testFilm.SmallImg,
+	Year:      testFilm.Year,
 }
 
 func TestFindById(t *testing.T) {

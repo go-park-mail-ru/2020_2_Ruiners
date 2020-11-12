@@ -64,4 +64,3 @@ func (mr *MockRecorderMockUseCase) GetReviews(filmId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetReviews", reflect.TypeOf((*MockUseCase)(nil).GetReviews), filmId)
 }
-

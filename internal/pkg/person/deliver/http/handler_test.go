@@ -13,19 +13,16 @@ import (
 	"testing"
 )
 
-
-
-
 func TestPersonById(t *testing.T) {
 
 	t.Run("FindById-OK", func(t *testing.T) {
 		var testPerson = models.Person{
-			Id: 1,
-			Name: "Erik",
-			Image: "image",
-			BornDate: "12.12.2000",
+			Id:        1,
+			Name:      "Erik",
+			Image:     "image",
+			BornDate:  "12.12.2000",
 			BornPlace: "Moscow",
-			FilmsId: make([]int, 1),
+			FilmsId:   make([]int, 1),
 		}
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
@@ -62,7 +59,7 @@ func TestPersonsByFilm(t *testing.T) {
 
 	t.Run("FindByFilm-OK", func(t *testing.T) {
 		var testFilmPerson = models.FilmPerson{
-			Id: 1,
+			Id:   1,
 			Name: "Erik",
 		}
 		var testFilmPersons = models.FilmPersons{}
@@ -84,7 +81,7 @@ func TestPersonsByFilm(t *testing.T) {
 
 		vars := map[string]string{
 			"film_id": "1",
-			"role": "actor",
+			"role":    "actor",
 		}
 
 		req = mux.SetURLVars(req, vars)
