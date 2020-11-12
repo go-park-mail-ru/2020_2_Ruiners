@@ -12,18 +12,17 @@ import (
 )
 
 var testUser = models.User{
-	Id: 1231,
+	Id:       1231,
 	Username: "Arkadiy",
 	Password: "Arkadiy1",
-	Email: "arkadiy@mail.ru",
-	Image: "def.png",
+	Email:    "arkadiy@mail.ru",
+	Image:    "def.png",
 }
 
 var testSession = models.Session{
-	Id: "wefwuifbwiuhegfdjvsoafjh",
+	Id:       "wefwuifbwiuhegfdjvsoafjh",
 	Username: "Arkadiy",
 }
-
 
 func TestCreate(t *testing.T) {
 
@@ -79,7 +78,7 @@ func TestLogin(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 		login := models.Login{
-			Login: testUser.Username,
+			Login:    testUser.Username,
 			Password: testUser.Password,
 		}
 
@@ -105,7 +104,7 @@ func TestLogin(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 		login := models.Login{
-			Login: testUser.Username,
+			Login:    testUser.Username,
 			Password: testUser.Password,
 		}
 
@@ -115,7 +114,6 @@ func TestLogin(t *testing.T) {
 			EXPECT().
 			FindByLogin(gomock.Eq(testUser.Username)).
 			Return(nil, newErr)
-
 
 		useCase := NewUserUseCase(m0, m1)
 		_, err := useCase.Login(&login, &testSession)
@@ -289,7 +287,6 @@ func TestUpdatePassword(t *testing.T) {
 			EXPECT().
 			FindByLogin(gomock.Eq(testSession.Username)).
 			Return(&testUser, nil)
-
 
 		useCase := NewUserUseCase(m0, m1)
 
