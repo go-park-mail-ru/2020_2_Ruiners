@@ -51,7 +51,7 @@ func (m *MockUseCase) FilmsByGenre(s string) (*models.FilmCards, error) {
 
 func (mr *MockRecorderMockUseCase) FilmsByGenre(s interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FilmsByGenre", reflect.TypeOf((*MockUseCase)(nil).FindById), s)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FilmsByGenre", reflect.TypeOf((*MockUseCase)(nil).FilmsByGenre), s)
 }
 
 func (m *MockUseCase) FilmsByPerson(s string) (*models.FilmCards, error) {
@@ -64,5 +64,5 @@ func (m *MockUseCase) FilmsByPerson(s string) (*models.FilmCards, error) {
 
 func (mr *MockRecorderMockUseCase) FilmsByPerson(s interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FilmsByPerson", reflect.TypeOf((*MockUseCase)(nil).FindById), s)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FilmsByPerson", reflect.TypeOf((*MockUseCase)(nil).FilmsByPerson), s)
 }
