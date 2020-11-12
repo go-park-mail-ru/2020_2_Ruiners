@@ -18,6 +18,7 @@ import (
 	userRep "github.com/Arkadiyche/http-rest-api/internal/pkg/user/repository"
 	userUC "github.com/Arkadiyche/http-rest-api/internal/pkg/user/usecase"
 	"github.com/gorilla/mux"
+	"github.com/microcosm-cc/bluemonday"
 	"github.com/sirupsen/logrus"
 	"net/http"
 )
@@ -27,6 +28,7 @@ type APIServer struct {
 	logger *logrus.Logger
 	router *mux.Router
 	store  *store.Store
+	sanitazer *bluemonday.Policy
 }
 
 func New(config *Config) *APIServer {
@@ -34,6 +36,7 @@ func New(config *Config) *APIServer {
 		config: config,
 		logger: logrus.New(),
 		router: mux.NewRouter(),
+		sanitazer: bluemonday.UGCPolicy(),
 	}
 }
 
@@ -113,6 +116,7 @@ func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHand
 	UserHandler := userHandler.UserHandler{
 		UseCase: UserUC,
 		Logger: s.logger,
+		Sanitazer: s.sanitazer,
 	}
 	//film
 	FilmRep := filmRep.NewFilmRepository(s.store.Db)
@@ -127,6 +131,7 @@ func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHand
 	RatingHandler := ratingHandler.RatingHandler{
 		UseCase: RatingUC,
 		Logger: s.logger,
+		Sanitazer: s.sanitazer,
 	}
 	//person
 	PersonRep := personRep.NewPersonRepository(s.store.Db)

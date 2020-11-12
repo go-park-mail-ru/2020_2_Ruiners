@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/rating"
 	"github.com/gorilla/mux"
+	"github.com/microcosm-cc/bluemonday"
 	"github.com/sirupsen/logrus"
 	"net/http"
 )
@@ -11,6 +12,7 @@ import (
 type RatingHandler struct {
 	UseCase rating.UseCase
 	Logger  *logrus.Logger
+	Sanitazer *bluemonday.Policy
 }
 
 func (rh *RatingHandler) Rate() http.HandlerFunc {
@@ -63,6 +65,7 @@ func (rh *RatingHandler) AddReview() http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
+		l.Body = rh.Sanitazer.Sanitize(l.Body)
 		err = rh.UseCase.AddReview(l.Body, l.FilmId, id.Value)
 		if err != nil {
 			rh.Logger.Error("error with usecase padd review")

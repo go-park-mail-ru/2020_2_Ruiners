@@ -8,6 +8,7 @@ require (
 	github.com/golang/mock v1.4.4
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0
+	github.com/microcosm-cc/bluemonday v1.0.4 // indirect
 	github.com/satori/go.uuid v1.2.0
 	github.com/sirupsen/logrus v1.7.0
 	github.com/steinfletcher/apitest v1.4.16

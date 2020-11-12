@@ -6,6 +6,7 @@ import (
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"
 	"github.com/gorilla/mux"
+	"github.com/microcosm-cc/bluemonday"
 	uuid2 "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
 	"io"
@@ -14,8 +15,9 @@ import (
 )
 
 type UserHandler struct {
-	UseCase user.UseCase
-	Logger  *logrus.Logger
+	UseCase   user.UseCase
+	Logger    *logrus.Logger
+	Sanitazer *bluemonday.Policy
 }
 
 func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
@@ -23,6 +25,7 @@ func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 	u := models.Signup{}
 	uh.Logger.Info("signup")
 	err := json.NewDecoder(r.Body).Decode(&u)
+	u.Login, u.Email, u.Password = uh.Sanitazer.Sanitize(u.Login), uh.Sanitazer.Sanitize(u.Email), uh.Sanitazer.Sanitize(u.Password)
 	if err != nil {
 		uh.Logger.Warn("Error with user signup delivery json")
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -44,6 +47,7 @@ func (uh *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 	uh.Logger.Info("Login")
 	l := models.Login{}
 	err := json.NewDecoder(r.Body).Decode(&l)
+	l.Login, l.Password = uh.Sanitazer.Sanitize(l.Login), uh.Sanitazer.Sanitize(l.Password)
 	if err != nil {
 		uh.Logger.Error("Error with user login delivery json")
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -144,6 +148,7 @@ func (uh *UserHandler) ChangeLogin() http.HandlerFunc {
 		uh.Logger.Info("Change login")
 		l := ChangeLogin{}
 		err := json.NewDecoder(r.Body).Decode(&l)
+		l.Login = uh.Sanitazer.Sanitize(l.Login)
 		if err != nil {
 			uh.Logger.Error("Error with user changelogin delivery json-decode")
 			http.Error(w, err.Error(), http.StatusBadRequest)
@@ -174,6 +179,7 @@ func (uh *UserHandler) ChangePassword() http.HandlerFunc {
 		uh.Logger.Info("Change password")
 		l := ChangePassword{}
 		err := json.NewDecoder(r.Body).Decode(&l)
+		l.Password = uh.Sanitazer.Sanitize(l.Password)
 		if err != nil {
 			uh.Logger.Error("Error with user change password delivery json-decode")
 			http.Error(w, err.Error(), http.StatusBadRequest)
