@@ -9,4 +9,5 @@ type Repository interface {
 	UpdateLogin(oldLogin string, newLogin string) error
 	UpdatePassword(login string, newPassword string) error
 	UpdateAvatar(login string, name string) error
+	CheckExist(login string) (bool, error)
 }

@@ -27,8 +27,11 @@ func NewUserUseCase(userRepository user.Repository, sessionRepository sesession.
 }
 
 func (u *UserUseCase) Signup(input *models.User, session *models.Session) (*models.User, error) {
-	user, err := u.UserRepository.FindByLogin(input.Username)
-	if user != nil {
+	check, err := u.UserRepository.CheckExist(input.Username)
+	if err != nil {
+		return nil, err
+	}
+	if check {
 		return nil, errors.New("user alredy exist")
 	}
 	input.Password, err = crypto.HashPassword(input.Password)
@@ -44,7 +47,7 @@ func (u *UserUseCase) Signup(input *models.User, session *models.Session) (*mode
 	if err2 != nil {
 		return nil, err2
 	}
-	return nil, nil
+	return input, nil
 }
 
 func (u *UserUseCase) Login(input *models.Login, session *models.Session) (*models.User, error) {
@@ -87,8 +90,11 @@ func (u *UserUseCase) Logout(s string) error {
 }
 
 func (u *UserUseCase) ChangeLogin(s string, newLogin string) error {
-	user, _ := u.UserRepository.FindByLogin(newLogin)
-	if user != nil {
+	check, err := u.UserRepository.CheckExist(newLogin)
+	if err != nil {
+		return err
+	}
+	if check {
 		return errors.New("user alredy exist")
 	}
 	session, err := u.SessionRepository.FindById(s)
