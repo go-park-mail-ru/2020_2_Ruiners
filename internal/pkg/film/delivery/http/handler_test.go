@@ -4,20 +4,14 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 	"net/http/httptest"
-
-	//"fmt"
 	"strconv"
 
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/film"
-	//"errors"
-	//"encoding/json"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/golang/mock/gomock"
 	"github.com/sirupsen/logrus"
-	//"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
-	//"time"
 )
 
 var testFilm = models.Film{
@@ -64,16 +58,12 @@ func TestFindById(t *testing.T) {
 			"id": "5",
 		}
 
-		// CHANGE THIS LINE!!!
-		req = mux.SetURLVars(req, vars)
 		if err != nil {
 			t.Fatal(err)
 		}
-		//req.AddCookie(&http.Cookie{
-		//	Name:    "session_id",
-		//	Value:   testSession.Id,
-		//	Expires: time.Now().Add(10 * time.Hour),
-		//})
+
+		req = mux.SetURLVars(req, vars)
+
 		rr := httptest.NewRecorder()
 		handler := http.HandlerFunc(filmHandler.FilmById)
 		handler.ServeHTTP(rr, req)
@@ -106,16 +96,12 @@ func TestFindByGenre(t *testing.T) {
 			"genre": testFilm.MainGenre,
 		}
 
-		// CHANGE THIS LINE!!!
-		req = mux.SetURLVars(req, vars)
 		if err != nil {
 			t.Fatal(err)
 		}
-		//req.AddCookie(&http.Cookie{
-		//	Name:    "session_id",
-		//	Value:   testSession.Id,
-		//	Expires: time.Now().Add(10 * time.Hour),
-		//})
+
+		req = mux.SetURLVars(req, vars)
+
 		rr := httptest.NewRecorder()
 		handler := http.HandlerFunc(filmHandler.FilmsByGenre)
 		handler.ServeHTTP(rr, req)
@@ -148,16 +134,12 @@ func TestFindByPerson(t *testing.T) {
 			"id": "1",
 		}
 
-		// CHANGE THIS LINE!!!
-		req = mux.SetURLVars(req, vars)
 		if err != nil {
 			t.Fatal(err)
 		}
-		//req.AddCookie(&http.Cookie{
-		//	Name:    "session_id",
-		//	Value:   testSession.Id,
-		//	Expires: time.Now().Add(10 * time.Hour),
-		//})
+
+		req = mux.SetURLVars(req, vars)
+
 		rr := httptest.NewRecorder()
 		handler := http.HandlerFunc(filmHandler.FilmsByPerson)
 		handler.ServeHTTP(rr, req)

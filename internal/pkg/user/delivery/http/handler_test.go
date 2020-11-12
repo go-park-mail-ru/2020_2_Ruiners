@@ -2,7 +2,6 @@ package http
 
 import (
 	"errors"
-	//"encoding/json"
 	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"

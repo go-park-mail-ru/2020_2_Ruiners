@@ -44,16 +44,12 @@ func TestGetReviews(t *testing.T) {
 			"film_id": "10",
 		}
 
-		// CHANGE THIS LINE!!!
-		req = mux.SetURLVars(req, vars)
 		if err != nil {
 			t.Fatal(err)
 		}
-		//req.AddCookie(&http.Cookie{
-		//	Name:    "session_id",
-		//	Value:   testSession.Id,
-		//	Expires: time.Now().Add(10 * time.Hour),
-		//})
+
+		req = mux.SetURLVars(req, vars)
+
 		rr := httptest.NewRecorder()
 		handler := http.HandlerFunc(ratingHandler.ShowReviews)
 		handler.ServeHTTP(rr, req)

@@ -2,7 +2,6 @@ package http
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/film"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
@@ -18,7 +17,6 @@ func (fh *FilmHandler) FilmById(w http.ResponseWriter, r *http.Request) {
 	fh.Logger.Info("FilmByID")
 	vars := mux.Vars(r)
 	id := vars["id"]
-	fmt.Println(id)
 	film, err := fh.UseCase.FindById(id)
 	if err != nil {
 		fh.Logger.Error("Error with Film by id usecase")
@@ -31,7 +29,6 @@ func (fh *FilmHandler) FilmById(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	//fmt.Println(res)
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
