@@ -9,16 +9,16 @@ import (
 )
 
 var testPerson = models.Person{
-	Id: 1,
-	Name: "Erik Nabiev",
-	Image: "Erik",
-	BornDate: "12.12.2000",
+	Id:        1,
+	Name:      "Erik Nabiev",
+	Image:     "Erik",
+	BornDate:  "12.12.2000",
 	BornPlace: "Moscow",
-	FilmsId: make([]int, 1),
+	FilmsId:   make([]int, 1),
 }
 
 var testPersonFilm = models.FilmPerson{
-	Id: 1,
+	Id:   1,
 	Name: "Erik Nabiev",
 }
 

@@ -63,5 +63,3 @@ func (mr *MockRecorderMockRepository) FindFilmsIdByPersonId(id interface{}) *gom
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindFilmsIdByPersonId", reflect.TypeOf((*MockRepository)(nil).FindFilmsIdByPersonId), id)
 }
-
-

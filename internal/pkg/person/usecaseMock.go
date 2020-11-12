@@ -49,8 +49,7 @@ func (m *MockUseCase) GetPersonsByFilm(id string, role string) (*models.FilmPers
 	return ret0, ret1
 }
 
-func (mr *MockRecorderMockUseCase) GetPersonsByFilm( id interface{}, role interface{}) *gomock.Call {
+func (mr *MockRecorderMockUseCase) GetPersonsByFilm(id interface{}, role interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPersonsByFilm", reflect.TypeOf((*MockUseCase)(nil).GetPersonsByFilm), id, role)
 }
-

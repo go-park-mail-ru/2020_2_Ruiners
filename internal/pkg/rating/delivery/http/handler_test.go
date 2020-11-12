@@ -21,7 +21,6 @@ var testReview = models.Review{
 	Rate:      1,
 }
 
-
 func TestGetReviews(t *testing.T) {
 	var testReviews = models.Reviews{}
 	testReviews = append(testReviews, testReview)

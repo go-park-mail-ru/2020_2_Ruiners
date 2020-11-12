@@ -10,8 +10,8 @@ import (
 )
 
 type RatingHandler struct {
-	UseCase rating.UseCase
-	Logger  *logrus.Logger
+	UseCase   rating.UseCase
+	Logger    *logrus.Logger
 	Sanitazer *bluemonday.Policy
 }
 

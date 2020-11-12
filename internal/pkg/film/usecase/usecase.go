@@ -27,7 +27,7 @@ func (uc *FilmUseCase) FindById(id string) (*models.Film, error) {
 	if err != nil {
 		return nil, err
 	}
-	film.Rating = math.Round(film.Rating*100)/100
+	film.Rating = math.Round(film.Rating*100) / 100
 	return film, nil
 }
 
