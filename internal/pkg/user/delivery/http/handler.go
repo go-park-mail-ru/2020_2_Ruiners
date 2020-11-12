@@ -74,6 +74,7 @@ func (uh *UserHandler) Me(w http.ResponseWriter, r *http.Request) {
 		w.Write(result)
 		return
 	}
+	fmt.Println(id.Value)
 	user, err1 := uh.UseCase.Me(id.Value)
 	if err1 != nil {
 		user := models.PublicUser{Login: "", Email: ""}
