@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/film"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"math"
@@ -19,6 +20,7 @@ func NewFilmUseCase(filmRepository film.Repository) *FilmUseCase {
 
 func (uc *FilmUseCase) FindById(id string) (*models.Film, error) {
 	idInt, err := strconv.Atoi(id)
+	fmt.Println(idInt)
 	if err != nil {
 		return nil, err
 	}
