@@ -19,6 +19,7 @@ func (fh *FilmHandler) FilmById(w http.ResponseWriter, r *http.Request) {
 	id := vars["id"]
 	film, err := fh.UseCase.FindById(id)
 	if err != nil {
+		fh.Logger.Error("Error with Film by id usecase")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -39,6 +40,7 @@ func (fh *FilmHandler) FilmsByGenre(w http.ResponseWriter, r *http.Request) {
 	genre := vars["genre"]
 	films, err := fh.UseCase.FilmsByGenre(genre)
 	if err != nil {
+		fh.Logger.Error("Error with Film by genre usecase")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -58,6 +60,7 @@ func (fh *FilmHandler) FilmsByPerson(w http.ResponseWriter, r *http.Request) {
 	id := vars["id"]
 	films, err := fh.UseCase.FilmsByPerson(id)
 	if err != nil {
+		fh.Logger.Error("Error with Film by person usecase")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
