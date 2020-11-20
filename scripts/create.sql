@@ -178,7 +178,7 @@ create table playlist_film
         ON DELETE CASCADE,
     FOREIGN KEY (film_id)
         REFERENCES films (id)
-        ON DELETE CASCADE
+        ON DELETE CASCADE, CONSTRAINT pf unique (playlist_id, film_id)
 );
 
 insert into person(id, name, image, born_date, born_place)
