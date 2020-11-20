@@ -6,4 +6,5 @@ type Repository interface {
 	FindByLId(id int) (*models.Film, error)
 	FindFilmsByGenre(genre string) (*models.FilmCards, error)
 	FindFilmsByPerson(id int) (*models.FilmCards, error)
+	FindFilmsByPlaylist(id int) (*models.FilmCards, error)
 }

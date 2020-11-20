@@ -161,6 +161,26 @@ create table person_film
     role varchar(10)
 );
 
+create table playlist
+(
+    id int auto_increment primary key,
+    title varchar(80) character set 'utf8' not null,
+    user_id int not null
+);
+
+create table playlist_film
+(
+    id int auto_increment primary key,
+    playlist_id int not null,
+    film_id int not null,
+    FOREIGN KEY (playlist_id)
+        REFERENCES playlist (id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (film_id)
+        REFERENCES films (id)
+        ON DELETE CASCADE
+);
+
 insert into person(id, name, image, born_date, born_place)
     VALUES(1, 'Леонардо ДиКаприо', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1629390/24d5c3b1-7dea-4dc2-a756-361264a9d007/280x420', '1974, 11 ноября', 'США'),
     (2, 'Джозеф Гордон-Левитт', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/e63e5d24-843f-4266-a6ba-22d2c24ce5ce/280x420', '1981, 17 февраля', 'США'),

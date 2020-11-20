@@ -10,6 +10,9 @@ import (
 	personHandler "github.com/Arkadiyche/http-rest-api/internal/pkg/person/deliver/http"
 	personRep "github.com/Arkadiyche/http-rest-api/internal/pkg/person/repository"
 	personUC "github.com/Arkadiyche/http-rest-api/internal/pkg/person/usecase"
+	http2 "github.com/Arkadiyche/http-rest-api/internal/pkg/playlist/delivery/http"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/playlist/repository"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/playlist/usecase"
 	ratingHandler "github.com/Arkadiyche/http-rest-api/internal/pkg/rating/delivery/http"
 	ratingRep "github.com/Arkadiyche/http-rest-api/internal/pkg/rating/repository"
 	ratingUC "github.com/Arkadiyche/http-rest-api/internal/pkg/rating/usecase"
@@ -68,7 +71,7 @@ func (s *APIServer) configureLogger() error {
 }
 
 func (s *APIServer) configureRouter() {
-	user, film, rating, person := s.InitHandler()
+	user, film, rating, person, playlist := s.InitHandler()
 	//User routes ...
 	s.router.HandleFunc("/hello", s.handleHello())
 	s.router.HandleFunc("/signup", user.Signup)
@@ -88,9 +91,16 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/review/add", rating.AddReview())
 	s.router.HandleFunc("/review/{film_id:[0-9]+}", rating.ShowReviews)
 	//Person routes ...
-
 	s.router.HandleFunc("/person/{id:[0-9]+}", person.PersonById)
 	s.router.HandleFunc("/{role:actor|director}/{film_id:[0-9]+}", person.PersonsByFilm)
+	//Playlist routes ...
+	s.router.HandleFunc("/" , playlist.CreatePlaylist())
+	s.router.HandleFunc("/" , playlist.AddPlaylist())
+	s.router.HandleFunc("/" , playlist.ShowList)
+	s.router.HandleFunc("/" , playlist.ShowPlaylist)
+	//s.router.HandleFunc()
+	//s.router.HandleFunc()
+	//s.router.HandleFunc()
 
 	s.router.Use(middleware.CORSMiddleware(s.config.CORS))
 }
@@ -107,7 +117,7 @@ func (s *APIServer) configureStore() error {
 	return nil
 }
 
-func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHandler, ratingHandler.RatingHandler, personHandler.PersonHandler) {
+func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHandler, ratingHandler.RatingHandler, personHandler.PersonHandler, http2.PlaylistHandler) {
 
 	SessionRep := sessionRep.NewSessionRepository(s.store.Db)
 	//user
@@ -140,8 +150,16 @@ func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHand
 		UseCase: PersonUC,
 		Logger:  s.logger,
 	}
+	//playlist
+	PlaylistRep := repository.NewRPlaylistRepository(s.store.Db)
+	PlaylistUC := usecase.NewPlaylistUseCase(PlaylistRep, FilmRep, SessionRep)
+	PlaylistHandler := http2.PlaylistHandler{
+		UseCase:   PlaylistUC,
+		Logger:    s.logger,
+		Sanitazer: s.sanitazer,
+	}
 
-	return UserHandler, FilmHandler, RatingHandler, PersonHandler
+	return UserHandler, FilmHandler, RatingHandler, PersonHandler, PlaylistHandler
 }
 
 func (s *APIServer) handleHello() http.HandlerFunc {

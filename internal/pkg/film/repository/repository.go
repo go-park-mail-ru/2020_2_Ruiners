@@ -64,3 +64,23 @@ func (r *FilmRepository) FindFilmsByPerson(id int) (*models.FilmCards, error) {
 	}
 	return &filmCards, nil
 }
+
+
+func (r *FilmRepository) FindFilmsByPlaylist(id int) (*models.FilmCards, error) {
+	filmCard := models.FilmCard{}
+	filmCards := models.FilmCards{}
+	filmQuery, err := r.db.Query("SELECT  f.id, f.title, f.mainGenre, f.smallImg, f.year FROM playlist p JOIN playlist_film pf ON(p.id = pf.playlist_id) JOIN films f ON(pf.film_id = f.id) WHERE p.id=?", id)
+
+	if err != nil {
+		return nil, err
+	}
+	defer filmQuery.Close()
+
+	for filmQuery.Next() {
+		if filmQuery.Scan(&filmCard.Id, &filmCard.Title, &filmCard.MainGenre, &filmCard.SmallImg, &filmCard.Year) != nil {
+			return nil, errors.New("db error")
+		}
+		filmCards = append(filmCards, filmCard)
+	}
+	return &filmCards, nil
+}
