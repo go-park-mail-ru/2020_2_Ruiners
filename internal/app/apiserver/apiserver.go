@@ -10,13 +10,16 @@ import (
 	personHandler "github.com/Arkadiyche/http-rest-api/internal/pkg/person/deliver/http"
 	personRep "github.com/Arkadiyche/http-rest-api/internal/pkg/person/repository"
 	personUC "github.com/Arkadiyche/http-rest-api/internal/pkg/person/usecase"
-	http2 "github.com/Arkadiyche/http-rest-api/internal/pkg/playlist/delivery/http"
-	"github.com/Arkadiyche/http-rest-api/internal/pkg/playlist/repository"
-	"github.com/Arkadiyche/http-rest-api/internal/pkg/playlist/usecase"
+	playlistHandler "github.com/Arkadiyche/http-rest-api/internal/pkg/playlist/delivery/http"
+	playlistRep "github.com/Arkadiyche/http-rest-api/internal/pkg/playlist/repository"
+	playlistUC "github.com/Arkadiyche/http-rest-api/internal/pkg/playlist/usecase"
 	ratingHandler "github.com/Arkadiyche/http-rest-api/internal/pkg/rating/delivery/http"
 	ratingRep "github.com/Arkadiyche/http-rest-api/internal/pkg/rating/repository"
 	ratingUC "github.com/Arkadiyche/http-rest-api/internal/pkg/rating/usecase"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/store"
+	subscibeHandler "github.com/Arkadiyche/http-rest-api/internal/pkg/subscribe/deliver/http"
+	subscibeRep "github.com/Arkadiyche/http-rest-api/internal/pkg/subscribe/repository"
+	subscribeUC "github.com/Arkadiyche/http-rest-api/internal/pkg/subscribe/usecase"
 	userHandler "github.com/Arkadiyche/http-rest-api/internal/pkg/user/delivery/http"
 	userRep "github.com/Arkadiyche/http-rest-api/internal/pkg/user/repository"
 	userUC "github.com/Arkadiyche/http-rest-api/internal/pkg/user/usecase"
@@ -71,7 +74,7 @@ func (s *APIServer) configureLogger() error {
 }
 
 func (s *APIServer) configureRouter() {
-	user, film, rating, person, playlist := s.InitHandler()
+	user, film, rating, person, playlist, subscribe := s.InitHandler()
 	//User routes ...
 	s.router.HandleFunc("/hello", s.handleHello())
 	s.router.HandleFunc("/signup", user.Signup)
@@ -100,6 +103,11 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/playlist/show" , playlist.ShowPlaylist)
 	s.router.HandleFunc("/playlist/delete" , playlist.DeletePlaylist())
 	s.router.HandleFunc("/playlist/remove" , playlist.RemovePlaylist())
+	//Subscribe routes ...
+	s.router.HandleFunc("/follow" , subscribe.Subscribe())
+	s.router.HandleFunc("/unfollow" , subscribe.UnSubscribe())
+	s.router.HandleFunc("/authors" , subscribe.ShowAuthors)
+	s.router.HandleFunc("/news" , subscribe.ShowFeed)
 
 	s.router.Use(middleware.CORSMiddleware(s.config.CORS))
 }
@@ -116,7 +124,7 @@ func (s *APIServer) configureStore() error {
 	return nil
 }
 
-func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHandler, ratingHandler.RatingHandler, personHandler.PersonHandler, http2.PlaylistHandler) {
+func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHandler, ratingHandler.RatingHandler, personHandler.PersonHandler, playlistHandler.PlaylistHandler, subscibeHandler.SubscribeHandler) {
 
 	SessionRep := sessionRep.NewSessionRepository(s.store.Db)
 	//user
@@ -150,15 +158,24 @@ func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHand
 		Logger:  s.logger,
 	}
 	//playlist
-	PlaylistRep := repository.NewRPlaylistRepository(s.store.Db)
-	PlaylistUC := usecase.NewPlaylistUseCase(PlaylistRep, FilmRep, SessionRep)
-	PlaylistHandler := http2.PlaylistHandler{
+	PlaylistRep := playlistRep.NewRPlaylistRepository(s.store.Db)
+	PlaylistUC := playlistUC.NewPlaylistUseCase(PlaylistRep, FilmRep, SessionRep)
+	PlaylistHandler := playlistHandler.PlaylistHandler{
 		UseCase:   PlaylistUC,
 		Logger:    s.logger,
 		Sanitazer: s.sanitazer,
 	}
+	//subscribe
+	SubscribeRep := subscibeRep.NewSubscribeRepository(s.store.Db)
+	SubscribeUC := subscribeUC.NewSubscribeUseCase(SubscribeRep, SessionRep)
+	SubscribeHandler := subscibeHandler.SubscribeHandler{
+		UseCase:   SubscribeUC,
+		Logger:    s.logger,
+		Sanitazer: s.sanitazer,
+	}
 
-	return UserHandler, FilmHandler, RatingHandler, PersonHandler, PlaylistHandler
+
+	return UserHandler, FilmHandler, RatingHandler, PersonHandler, PlaylistHandler, SubscribeHandler
 }
 
 func (s *APIServer) handleHello() http.HandlerFunc {

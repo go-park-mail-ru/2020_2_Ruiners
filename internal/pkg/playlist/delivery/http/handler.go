@@ -107,9 +107,7 @@ func (ph *PlaylistHandler) RemovePlaylist() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ph.Logger.Info("Add review")
 		l := RemovePlaylist{}
-		//body, _ := ioutil.ReadAll(r.Body)
 		err := json.NewDecoder(r.Body).Decode(&l)
-		//fmt.Println(string(body))
 		if err != nil {
 			ph.Logger.Error("error with delivery add review json-decode")
 			http.Error(w, err.Error(), http.StatusBadRequest)
