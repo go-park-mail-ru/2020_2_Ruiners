@@ -191,8 +191,6 @@ create table subscribe
     unique(subscriber, author)
 );
 
-insert into subscribe(subscriber, author) VALUE(1, 2);
-SELECT r.body, r.user_id, u.username, r.film_id, f.title, UNIX_TIMESTAMP(r.create_date)  FROM subscribe s JOIN users u ON (s.author = u.id) JOIN review r ON (u.id = r.user_id) JOIN films f ON (r.film_id = f.id) where s.subscriber = 1;
 
 insert into person(id, name, image, born_date, born_place)
     VALUES(1, 'Леонардо ДиКаприо', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1629390/24d5c3b1-7dea-4dc2-a756-361264a9d007/280x420', '1974, 11 ноября', 'США'),

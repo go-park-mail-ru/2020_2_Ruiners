@@ -72,7 +72,7 @@ func (uc *SubscribeUseCase) GetFeed(session string) (*models.Feed, error)  {
 	feed = append(feed, *ratingFeed...)
 	feed = append(feed, *reviewFeed...)
 	sort.SliceStable(feed, func(i, j int) bool {
-		return feed[i].Date < feed[j].Date
+		return feed[i].Date > feed[j].Date
 	})
 	return &feed, nil
 }
