@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"golang.org/x/tools/go/ssa/interp/testdata/src/errors"
 )
@@ -26,11 +27,11 @@ func(p *PlaylistRepository) Create(title string, userId int) error {
 }
 
 func(p *PlaylistRepository) Delete(playlistId int) error {
+	fmt.Println("rep", playlistId)
 	_, err := p.db.Exec("DELETE FROM playlist WHERE id = ?", playlistId)
 	if err != nil {
 		return err
 	}
-	return nil
 	return nil
 }
 
@@ -43,7 +44,7 @@ func(p *PlaylistRepository) Add(filmId int, playlistId int) error {
 }
 
 func(p *PlaylistRepository) Remove(filmId int, playlistId int) error {
-	_, err := p.db.Exec("DELETE FROM playlist_film(playlist_id, film_id) WHERE playlist_id = ? AND film_id = ?)", playlistId, filmId)
+	_, err := p.db.Exec("DELETE FROM playlist_film WHERE playlist_id = ? AND film_id = ?", playlistId, filmId)
 	if err != nil {
 		return err
 	}

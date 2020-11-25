@@ -2,6 +2,7 @@ package http
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/playlist"
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/sirupsen/logrus"
@@ -63,6 +64,7 @@ func (ph *PlaylistHandler) DeletePlaylist() http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
+		fmt.Println("handler", l.PlaylistId)
 		err = ph.UseCase.Delete(l.PlaylistId)
 		if err != nil {
 			ph.Logger.Error("error with usecase padd review")

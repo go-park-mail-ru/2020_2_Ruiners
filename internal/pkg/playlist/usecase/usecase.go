@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/film"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/sesession"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
@@ -42,6 +43,7 @@ func (uc *PlaylistUseCase) Add(filmId int, playlistId int) error {
 }
 
 func (uc *PlaylistUseCase) Delete(playlistId int) error {
+	fmt.Println("use", playlistId)
 	err := uc.PlaylistRepository.Delete(playlistId)
 	if err != nil {
 		return err
