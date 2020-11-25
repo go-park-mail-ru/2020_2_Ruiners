@@ -44,6 +44,35 @@ func (ph *PlaylistHandler) CreatePlaylist() http.HandlerFunc {
 	}
 }
 
+func (ph *PlaylistHandler) DeletePlaylist() http.HandlerFunc {
+	type DeletePlaylist struct {
+		PlaylistId int `json:"playlist_id"`
+	}
+	return func(w http.ResponseWriter, r *http.Request) {
+		ph.Logger.Info("Add review")
+		l := DeletePlaylist{}
+		_, err := r.Cookie("session_id")
+		if err != nil {
+			ph.Logger.Error("No cookie delivery add review")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		err = json.NewDecoder(r.Body).Decode(&l)
+		if err != nil {
+			ph.Logger.Error("error with delivery add review json-decode")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		err = ph.UseCase.Delete(l.PlaylistId)
+		if err != nil {
+			ph.Logger.Error("error with usecase padd review")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
 func (ph *PlaylistHandler) AddPlaylist() http.HandlerFunc {
 	type AddPlaylist struct {
 		PlaylistId int `json:"playlist_id"`
@@ -59,6 +88,32 @@ func (ph *PlaylistHandler) AddPlaylist() http.HandlerFunc {
 			return
 		}
 		err = ph.UseCase.Add(l.FilmId, l.PlaylistId)
+		if err != nil {
+			ph.Logger.Error("error with usecase padd review")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func (ph *PlaylistHandler) RemovePlaylist() http.HandlerFunc {
+	type RemovePlaylist struct {
+		PlaylistId int `json:"playlist_id"`
+		FilmId int `json:"film_id"'`
+	}
+	return func(w http.ResponseWriter, r *http.Request) {
+		ph.Logger.Info("Add review")
+		l := RemovePlaylist{}
+		//body, _ := ioutil.ReadAll(r.Body)
+		err := json.NewDecoder(r.Body).Decode(&l)
+		//fmt.Println(string(body))
+		if err != nil {
+			ph.Logger.Error("error with delivery add review json-decode")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		err = ph.UseCase.Remove(l.FilmId, l.PlaylistId)
 		if err != nil {
 			ph.Logger.Error("error with usecase padd review")
 			http.Error(w, err.Error(), http.StatusBadRequest)

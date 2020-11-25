@@ -121,7 +121,8 @@ create table rating
     id int auto_increment primary key,
     rating int,
     film_id int,
-    user_id int
+    user_id int,
+    create_date DATETIME DEFAULT NOW() ON UPDATE NOW()
 );
 
 CREATE TRIGGER trigger1
@@ -141,7 +142,8 @@ create table review
     id int auto_increment primary key,
     body varchar(255) character set 'utf8' not null,
     film_id int,
-    user_id int
+    user_id int,
+    create_date DATETIME DEFAULT NOW()
 );
 
 create table person

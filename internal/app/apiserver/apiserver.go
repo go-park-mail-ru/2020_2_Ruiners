@@ -98,9 +98,8 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/playlist/add" , playlist.AddPlaylist())
 	s.router.HandleFunc("/playlist/list" , playlist.ShowList)
 	s.router.HandleFunc("/playlist/show" , playlist.ShowPlaylist)
-	//s.router.HandleFunc()
-	//s.router.HandleFunc()
-	//s.router.HandleFunc()
+	s.router.HandleFunc("/playlist/delete" , playlist.DeletePlaylist())
+	s.router.HandleFunc("/playlist/remove" , playlist.RemovePlaylist())
 
 	s.router.Use(middleware.CORSMiddleware(s.config.CORS))
 }
