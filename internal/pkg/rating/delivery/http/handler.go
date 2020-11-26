@@ -119,7 +119,7 @@ func (rh *RatingHandler) GetCurrentUserRating() http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		rate.Rate, err = rh.UseCase.GetCurrentRating(l.FilmId, id.Value)
+		rate.Rate	, err = rh.UseCase.GetCurrentRating(l.FilmId, id.Value)
 		if err != nil {
 			rh.Logger.Error("error with usecase padd review")
 			http.Error(w, err.Error(), http.StatusBadRequest)
