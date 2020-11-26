@@ -95,3 +95,44 @@ func (rh *RatingHandler) ShowReviews(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
+
+func (rh *RatingHandler) GetCurrentUserRating() http.HandlerFunc {
+	type Film struct {
+		FilmId int    `'json:"film_id"'`
+	}
+	type Rate struct {
+		Rate int    `json:"rate"`
+	}
+	return func(w http.ResponseWriter, r *http.Request) {
+		rh.Logger.Info("Add review")
+		l := Film{}
+		rate := Rate{}
+		id, err := r.Cookie("session_id")
+		if err != nil {
+			rh.Logger.Error("No cookie delivery add review")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		err = json.NewDecoder(r.Body).Decode(&l)
+		if err != nil {
+			rh.Logger.Error("error with delivery add review json-decode")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		rate.Rate, err = rh.UseCase.GetCurrentRating(l.FilmId, id.Value)
+		if err != nil {
+			rh.Logger.Error("error with usecase padd review")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		res, err := json.Marshal(&rate)
+		if err != nil {
+			rh.Logger.Error("error with delivery show reviews json-marshal")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+		w.Write(res)
+	}
+}

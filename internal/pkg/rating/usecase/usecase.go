@@ -75,3 +75,15 @@ func (uc *RatingUseCase) GetReviews(filmId string) (*models.Reviews, error) {
 	fmt.Println(rs)
 	return &rs, nil
 }
+
+func (uc *RatingUseCase) GetCurrentRating(filmId int, session string) (int, error) {
+	userId, err := uc.SessionRepository.GetUserIdBySession(session)
+	if err != nil {
+		return 0, err
+	}
+	rate, err := uc.RatingRepository.GetRating(filmId, userId)
+	if err != nil {
+		rate = 0
+	}
+	return rate, nil
+}
