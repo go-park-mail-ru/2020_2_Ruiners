@@ -76,12 +76,16 @@ func (uc *RatingUseCase) GetReviews(filmId string) (*models.Reviews, error) {
 	return &rs, nil
 }
 
-func (uc *RatingUseCase) GetCurrentRating(filmId int, session string) (int, error) {
+func (uc *RatingUseCase) GetCurrentRating(filmId string, session string) (int, error) {
+	id, err := strconv.Atoi(filmId)
+	if err != nil {
+		return 0, err
+	}
 	userId, err := uc.SessionRepository.GetUserIdBySession(session)
 	if err != nil {
 		return 0, err
 	}
-	rate, err := uc.RatingRepository.GetRating(filmId, userId)
+	rate, err := uc.RatingRepository.GetRating(id, userId)
 	if err != nil {
 		rate = 0
 	}

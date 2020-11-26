@@ -94,7 +94,7 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/rate", rating.Rate())
 	s.router.HandleFunc("/review/add", rating.AddReview())
 	s.router.HandleFunc("/review/{film_id:[0-9]+}", rating.ShowReviews)
-	s.router.HandleFunc("/currentRating", rating.GetCurrentUserRating())
+	s.router.HandleFunc("/currentRating/{film_id:[0-9]+}", rating.GetCurrentUserRating())
 	//Person routes ...
 	s.router.HandleFunc("/person/{id:[0-9]+}", person.PersonById)
 	s.router.HandleFunc("/{role:actor|director}/{film_id:[0-9]+}", person.PersonsByFilm)

@@ -97,15 +97,13 @@ func (rh *RatingHandler) ShowReviews(w http.ResponseWriter, r *http.Request) {
 }
 
 func (rh *RatingHandler) GetCurrentUserRating() http.HandlerFunc {
-	type Film struct {
-		FilmId int    `'json:"film_id"'`
-	}
 	type Rate struct {
 		Rate int    `json:"rate"`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		filmId := vars["film_id"]
 		rh.Logger.Info("Add review")
-		l := Film{}
 		rate := Rate{}
 		id, err := r.Cookie("session_id")
 		if err != nil {
@@ -113,13 +111,12 @@ func (rh *RatingHandler) GetCurrentUserRating() http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		err = json.NewDecoder(r.Body).Decode(&l)
 		if err != nil {
 			rh.Logger.Error("error with delivery add review json-decode")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		rate.Rate	, err = rh.UseCase.GetCurrentRating(l.FilmId, id.Value)
+		rate.Rate	, err = rh.UseCase.GetCurrentRating(filmId, id.Value)
 		if err != nil {
 			rh.Logger.Error("error with usecase padd review")
 			http.Error(w, err.Error(), http.StatusBadRequest)
