@@ -89,6 +89,22 @@ func (u *UserUseCase) Logout(s string) error {
 	return nil
 }
 
+func (u *UserUseCase) GetById(ids string) (*models.PublicUser, error) {
+	id, err := strconv.Atoi(ids)
+	if err != nil {
+		return nil, err
+	}
+	pUser := models.PublicUser{}
+	user, err1 := u.UserRepository.FindById(id)
+	if err1 != nil {
+		return nil, err1
+	}
+	pUser.Id = user.Id
+	pUser.Login = user.Username
+	pUser.Email = user.Email
+	return &pUser, nil
+}
+
 func (u *UserUseCase) ChangeLogin(s string, newLogin string) error {
 	check, err := u.UserRepository.CheckExist(newLogin)
 	if err != nil {

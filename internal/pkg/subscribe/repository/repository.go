@@ -92,3 +92,15 @@ func (s *SubscribeRepository) GetReviewFeed(subscriberId int) (*models.Feed, err
 	return &feed, nil
 }
 
+
+func (s *SubscribeRepository) Check(subscriberId int, authorId int) (bool, error) {
+	checkQuery, err := s.db.Query("SELECT id FROM subscribe where subscriber = ? AND author = ?", subscriberId, authorId)
+	if err != nil {
+		return false, err
+	}
+	defer checkQuery.Close()
+	if checkQuery.Next() {
+		return true, nil
+	}
+	return false, nil
+}

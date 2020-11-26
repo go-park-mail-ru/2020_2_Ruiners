@@ -8,4 +8,5 @@ type Repository interface {
 	GetAuthors(subscriberId int) (*models.PublicUsers, error)
 	GetRatingFeed(subscriberId int) (*models.Feed, error)
 	GetReviewFeed(subscriberId int) (*models.Feed, error)
+	Check(subscriberId int, authorId int) (bool, error)
 }

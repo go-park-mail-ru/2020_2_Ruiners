@@ -85,6 +85,7 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/chengepass", user.ChangePassword())
 	s.router.HandleFunc("/changeAvatar", user.ChangeAvatar)
 	s.router.HandleFunc("/user/avatar/{id:[0-9]+}", user.AvatarById)
+	s.router.HandleFunc("/people/{id:[0-9]+}", user.GetById)
 	//Film routes ...
 	s.router.HandleFunc("/film/{id:[0-9]+}", film.FilmById)
 	s.router.HandleFunc("/film/{genre:[A-z]+}", film.FilmsByGenre)
@@ -109,6 +110,7 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/unfollow" , subscribe.UnSubscribe())
 	s.router.HandleFunc("/authors" , subscribe.ShowAuthors)
 	s.router.HandleFunc("/news" , subscribe.ShowFeed)
+	s.router.HandleFunc("/sub/check", subscribe.Check())
 
 	s.router.Use(middleware.CORSMiddleware(s.config.CORS))
 }

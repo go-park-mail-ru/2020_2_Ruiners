@@ -140,6 +140,26 @@ func (uh *UserHandler) Logout(w http.ResponseWriter, r *http.Request) {
 	w.Write(result)
 }
 
+func (uh *UserHandler) GetById(w http.ResponseWriter, r *http.Request){
+	uh.Logger.Info("GetByID")
+	vars := mux.Vars(r)
+	id := vars["id"]
+	user, err := uh.UseCase.GetById(id)
+	if err != nil {
+		uh.Logger.Error("error with usecase get by id")
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	result, err := json.Marshal(&user)
+	if err != nil {
+		uh.Logger.Error("Error with user get by id delivery json-marshal")
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write(result)
+}
+
 func (uh *UserHandler) ChangeLogin() http.HandlerFunc {
 	type ChangeLogin struct {
 		Login string `'json:"login"'`

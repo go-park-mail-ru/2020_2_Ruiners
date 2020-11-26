@@ -77,3 +77,15 @@ func (uc *SubscribeUseCase) GetFeed(session string) (*models.Feed, error)  {
 	return &feed, nil
 }
 
+func (uc *SubscribeUseCase) Check(session string, authorId int) (bool, error) {
+	subscriberId, err := uc.SessionRepository.GetUserIdBySession(session)
+	if err != nil {
+		return false, err
+	}
+	check, err := uc.SubscribeRepository.Check(subscriberId, authorId)
+	if err != nil {
+		return false, err
+	}
+	return check, nil
+}
+

@@ -7,4 +7,5 @@ type UseCase interface {
 	Delete(authorId int, session string) error
 	GetAuthors(session string) (*models.PublicUsers, error)
 	GetFeed(session string) (*models.Feed, error)
+	Check(session string, authorId int) (bool, error)
 }
