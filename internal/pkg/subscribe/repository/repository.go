@@ -27,7 +27,7 @@ func (s *SubscribeRepository) AddSubscribe(subscriberId int, authorId int) error
 }
 
 func (s *SubscribeRepository) DeleteSubscribe(subscriberId int, authorId int) error {
-	_, err := s.db.Exec("DELETE FROM subscibe WHERE subscriber = ? AND author = ?", subscriberId, authorId)
+	_, err := s.db.Exec("DELETE FROM subscribe WHERE subscriber = ? AND author = ?", subscriberId, authorId)
 	if err != nil {
 		return err
 	}
