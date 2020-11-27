@@ -110,7 +110,7 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/unfollow" , subscribe.UnSubscribe())
 	s.router.HandleFunc("/authors" , subscribe.ShowAuthors)
 	s.router.HandleFunc("/news" , subscribe.ShowFeed)
-	s.router.HandleFunc("/sub/check", subscribe.Check())
+	s.router.HandleFunc("/sub/check/{user_id:[0-9]+}", subscribe.Check())
 
 	s.router.Use(middleware.CORSMiddleware(s.config.CORS))
 }

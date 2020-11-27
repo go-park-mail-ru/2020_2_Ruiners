@@ -3,9 +3,11 @@ package http
 import (
 	"encoding/json"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/subscribe"
+	"github.com/gorilla/mux"
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/sirupsen/logrus"
 	"net/http"
+	"strconv"
 )
 
 type SubscribeHandler struct {
@@ -128,21 +130,17 @@ func (sh *SubscribeHandler) Check() http.HandlerFunc {
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		sh.Logger.Info("Add review")
-		l := User{}
 		id, err := r.Cookie("session_id")
 		if err != nil {
 			sh.Logger.Error("No cookie delivery add review")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		err = json.NewDecoder(r.Body).Decode(&l)
-		if err != nil {
-			sh.Logger.Error("error with delivery add review json-decode")
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
+		vars := mux.Vars(r)
+		user_id := vars["user_id"]
+		userId, _ := strconv.Atoi(user_id)
 		sub := Subscribe{}
-		sub.Check, err = sh.UseCase.Check(id.Value ,l.UserId)
+		sub.Check, err = sh.UseCase.Check(id.Value, userId)
 		if err != nil {
 			sh.Logger.Error("error with usecase padd review")
 			http.Error(w, err.Error(), http.StatusBadRequest)
