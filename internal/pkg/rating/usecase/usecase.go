@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"fmt"
-	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/sesession"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/session"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/rating"
 	"strconv"
@@ -10,10 +10,10 @@ import (
 
 type RatingUseCase struct {
 	RatingRepository  rating.Repository
-	SessionRepository sesession.Repository
+	SessionRepository session.Repository
 }
 
-func NewRatingUseCase(ratingRepository rating.Repository, sessionRepository sesession.Repository) *RatingUseCase {
+func NewRatingUseCase(ratingRepository rating.Repository, sessionRepository session.Repository) *RatingUseCase {
 	return &RatingUseCase{
 		RatingRepository:  ratingRepository,
 		SessionRepository: sessionRepository,

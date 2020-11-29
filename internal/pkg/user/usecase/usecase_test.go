@@ -3,7 +3,7 @@ package usecase
 import (
 	"errors"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/bussines/crypto"
-	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/sesession"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/session"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"
 	"github.com/golang/mock/gomock"
@@ -31,7 +31,7 @@ func TestCreate(t *testing.T) {
 		defer ctrl.Finish()
 
 		m0 := user.NewMockRepository(ctrl)
-		m1 := sesession.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
 		m0.
 			EXPECT().
 			CheckExist(gomock.Eq(testUser.Username)).
@@ -59,7 +59,7 @@ func TestCreate(t *testing.T) {
 		defer ctrl.Finish()
 
 		m0 := user.NewMockRepository(ctrl)
-		m1 := sesession.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
 		m0.
 			EXPECT().
 			CheckExist(gomock.Eq(testUser.Username)).
@@ -83,7 +83,7 @@ func TestLogin(t *testing.T) {
 		}
 
 		m0 := user.NewMockRepository(ctrl)
-		m1 := sesession.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
 		testUser.Password, _ = crypto.HashPassword(testUser.Password)
 		m0.
 			EXPECT().
@@ -109,7 +109,7 @@ func TestLogin(t *testing.T) {
 		}
 
 		m0 := user.NewMockRepository(ctrl)
-		m1 := sesession.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
 		m0.
 			EXPECT().
 			FindByLogin(gomock.Eq(testUser.Username)).
@@ -129,7 +129,7 @@ func TestLogin(t *testing.T) {
 		}
 
 		m0 := user.NewMockRepository(ctrl)
-		m1 := sesession.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
 		testUser.Password, _ = crypto.HashPassword(testUser.Password)
 		m0.
 			EXPECT().
@@ -149,7 +149,7 @@ func TestMe(t *testing.T) {
 		defer ctrl.Finish()
 
 		m0 := user.NewMockRepository(ctrl)
-		m1 := sesession.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
 
 		m1.
 			EXPECT().
@@ -175,7 +175,7 @@ func TestLogout(t *testing.T) {
 		defer ctrl.Finish()
 
 		m0 := user.NewMockRepository(ctrl)
-		m1 := sesession.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
 
 		m1.
 			EXPECT().
@@ -196,7 +196,7 @@ func TestUpdateLogin(t *testing.T) {
 		defer ctrl.Finish()
 
 		m0 := user.NewMockRepository(ctrl)
-		m1 := sesession.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
 		m0.
 			EXPECT().
 			CheckExist(gomock.Eq(newLogin)).
@@ -227,7 +227,7 @@ func TestUpdateLogin(t *testing.T) {
 		defer ctrl.Finish()
 
 		m0 := user.NewMockRepository(ctrl)
-		m1 := sesession.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
 		m0.
 			EXPECT().
 			CheckExist(gomock.Eq(newLogin)).
@@ -249,7 +249,7 @@ func TestUpdatePassword(t *testing.T) {
 		testUser.Password, _ = crypto.HashPassword(testUser.Password)
 
 		m0 := user.NewMockRepository(ctrl)
-		m1 := sesession.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
 		m1.
 			EXPECT().
 			FindById(gomock.Eq(testSession.Id)).
@@ -277,7 +277,7 @@ func TestUpdatePassword(t *testing.T) {
 		testUser.Password, _ = crypto.HashPassword(testUser.Password)
 
 		m0 := user.NewMockRepository(ctrl)
-		m1 := sesession.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
 		m1.
 			EXPECT().
 			FindById(gomock.Eq(testSession.Id)).

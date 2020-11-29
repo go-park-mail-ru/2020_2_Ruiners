@@ -14,6 +14,7 @@ require (
 	github.com/steinfletcher/apitest v1.4.16
 	github.com/stretchr/testify v1.6.1
 	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897
-	golang.org/x/tools v0.0.0-20190425150028-36563e24a262
+	golang.org/x/tools v0.0.0-20190524140312-2c0ae7006135
+	google.golang.org/grpc v1.33.2
 	gopkg.in/DATA-DOG/go-sqlmock.v1 v1.3.0
 )

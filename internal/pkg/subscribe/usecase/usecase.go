@@ -1,7 +1,7 @@
 package usecase
 
 import (
-	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/sesession"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/session"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/subscribe"
 	"sort"
@@ -9,10 +9,10 @@ import (
 
 type SubscribeUseCase struct {
 	SubscribeRepository subscribe.Repository
-	SessionRepository sesession.Repository
+	SessionRepository   session.Repository
 }
 
-func NewSubscribeUseCase(subscribeRepository subscribe.Repository, sessionRepository sesession.Repository) *SubscribeUseCase {
+func NewSubscribeUseCase(subscribeRepository subscribe.Repository, sessionRepository session.Repository) *SubscribeUseCase {
 	return &SubscribeUseCase{
 		SubscribeRepository: subscribeRepository,
 		SessionRepository: sessionRepository,
