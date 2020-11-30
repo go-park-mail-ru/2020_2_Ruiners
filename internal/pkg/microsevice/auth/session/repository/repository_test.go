@@ -163,7 +163,7 @@ func forUpdate(t *testing.T, mock sqlmock.Sqlmock, f func(string, string) error)
 
 	// good query
 	mock.
-		ExpectExec(`UPDATE session`).
+		ExpectExec(`UPDATE auth`).
 		WithArgs(srt2, str1).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
@@ -179,7 +179,7 @@ func forUpdate(t *testing.T, mock sqlmock.Sqlmock, f func(string, string) error)
 
 	// query error
 	mock.
-		ExpectExec(`UPDATE session`).
+		ExpectExec(`UPDATE auth`).
 		WithArgs(srt2, str1).
 		WillReturnError(fmt.Errorf("db_error"))
 
@@ -220,7 +220,7 @@ func TestCreate(t *testing.T) {
 
 	// good query
 	mock.
-		ExpectExec(`INSERT INTO session`).
+		ExpectExec(`INSERT INTO auth`).
 		WithArgs(session.Id, session.Username).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
@@ -236,7 +236,7 @@ func TestCreate(t *testing.T) {
 
 	// query error
 	mock.
-		ExpectExec(`INSERT INTO session`).
+		ExpectExec(`INSERT INTO auth`).
 		WithArgs(session.Id, session.Username).
 		WillReturnError(fmt.Errorf("db_error"))
 
@@ -266,7 +266,7 @@ func TestDelete(t *testing.T) {
 
 	// good query
 	mock.
-		ExpectExec(`DELETE FROM session`).
+		ExpectExec(`DELETE FROM auth`).
 		WithArgs(id).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
@@ -282,7 +282,7 @@ func TestDelete(t *testing.T) {
 
 	// query error
 	mock.
-		ExpectExec(`DELETE FROM session`).
+		ExpectExec(`DELETE FROM auth`).
 		WithArgs(id).
 		WillReturnError(fmt.Errorf("db_error"))
 

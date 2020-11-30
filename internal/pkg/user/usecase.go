@@ -7,8 +7,8 @@ import (
 )
 
 type UseCase interface {
-	Signup(input *models.User, session *models.Session) (*models.User, error)
-	Login(input *models.Login, session *models.Session) (*models.User, error)
+	Signup(login, email, password string) (string, error)
+	Login(login, password string) (string, error)
 	Me(s string) (*models.User, error)
 	GetById(id string) (*models.PublicUser, error)
 	Logout(s string) error

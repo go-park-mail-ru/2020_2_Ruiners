@@ -7,7 +7,6 @@ import (
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"
 	"github.com/gorilla/mux"
 	"github.com/microcosm-cc/bluemonday"
-	uuid2 "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
 	"io"
 	"net/http"
@@ -31,15 +30,13 @@ func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	session := models.Session{Id: uuid2.NewV4().String(), Username: u.Login}
-	user := models.User{Username: u.Login, Password: u.Password, Email: u.Email}
-	_, err1 := uh.UseCase.Signup(&user, &session)
+	sessionId, err1 := uh.UseCase.Signup(u.Login, u.Email, u.Password)
 	if err1 != nil {
 		uh.Logger.Error("error with usecase signup")
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	CreateSession(w, session.Id)
+	CreateSession(w, sessionId)
 	w.WriteHeader(http.StatusOK)
 }
 
@@ -53,14 +50,13 @@ func (uh *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	session := models.Session{Id: uuid2.NewV4().String(), Username: l.Login}
-	_, err1 := uh.UseCase.Login(&l, &session)
+	sessionId, err1 := uh.UseCase.Login(l.Login, l.Password)
 	if err1 != nil {
 		uh.Logger.Error("error with usecase login")
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	CreateSession(w, session.Id)
+	CreateSession(w, sessionId)
 	w.WriteHeader(http.StatusOK)
 }
 

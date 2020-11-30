@@ -5,7 +5,7 @@ import (
 	filmHandler "github.com/Arkadiyche/http-rest-api/internal/pkg/film/delivery/http"
 	filmRep "github.com/Arkadiyche/http-rest-api/internal/pkg/film/repository"
 	filmUC "github.com/Arkadiyche/http-rest-api/internal/pkg/film/usecase"
-	sessionRep "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/sesession/repository"
+	sessionRep "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/session/repository"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/middleware"
 	personHandler "github.com/Arkadiyche/http-rest-api/internal/pkg/person/deliver/http"
 	personRep "github.com/Arkadiyche/http-rest-api/internal/pkg/person/repository"

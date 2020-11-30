@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/bussines/crypto"
-	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/sesession"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/session"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"
 	uuid2 "github.com/satori/go.uuid"
@@ -16,57 +16,70 @@ import (
 
 type UserUseCase struct {
 	UserRepository    user.Repository
-	SessionRepository sesession.Repository
+	SessionRepository session.Repository
 }
 
-func NewUserUseCase(userRepository user.Repository, sessionRepository sesession.Repository) *UserUseCase {
+func NewUserUseCase(userRepository user.Repository, sessionRepository session.Repository) *UserUseCase {
 	return &UserUseCase{
 		UserRepository:    userRepository,
 		SessionRepository: sessionRepository,
 	}
 }
 
-func (u *UserUseCase) Signup(input *models.User, session *models.Session) (*models.User, error) {
-	check, err := u.UserRepository.CheckExist(input.Username)
+func (u *UserUseCase) Signup(username, email, password string) (string , error) {
+	check, err := u.UserRepository.CheckExist(username)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	if check {
-		return nil, errors.New("user alredy exist")
+		return "", errors.New("user alredy exist")
 	}
-	input.Password, err = crypto.HashPassword(input.Password)
+	password, err = crypto.HashPassword(password)
 	if err != nil {
-		return nil, errors.New("bad hash")
+		return "", errors.New("bad hash")
 	}
-	fmt.Println(input.Password)
-	_, err1 := u.UserRepository.Create(input)
+	user := models.User{Username: username, Password: password, Email: email}
+	_, err1 := u.UserRepository.Create(&user)
 	if err1 != nil {
-		return nil, err1
+		return "", err1
 	}
-	_, err2 := u.SessionRepository.Create(session)
+	sessionId := uuid2.NewV4().String()
+	session := models.Session{Id: sessionId, Username: username}
+	_, err2 := u.SessionRepository.Create(&session)
 	if err2 != nil {
-		return nil, err2
+		return "", err2
 	}
-	return input, nil
+
+	return sessionId, nil
 }
 
-func (u *UserUseCase) Login(input *models.Login, session *models.Session) (*models.User, error) {
-	user, err := u.UserRepository.FindByLogin(input.Login)
+func (u *UserUseCase) Login(login, password string) (string, error) {
+	user, err := u.UserRepository.FindByLogin(login)
 	if user == nil {
-		return nil, errors.New("user not found")
+		return "", errors.New("user not found")
 	}
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	check, err := crypto.CheckPassword(input.Password, user.Password)
+	check, err := crypto.CheckPassword(password, user.Password)
 	if !check {
-		return nil, errors.New("wrong password")
+		return "", errors.New("wrong password")
 	}
-	_, err1 := u.SessionRepository.Create(session)
+	sessionId := uuid2.NewV4().String()
+	session := models.Session{Id: sessionId, Username: login}
+	_, err1 := u.SessionRepository.Create(&session)
 	if err1 != nil {
-		return nil, err1
+		return "", err1
 	}
-	return user, nil
+	return sessionId, nil
+}
+
+func (u *UserUseCase) Logout(s string) error {
+	err := u.SessionRepository.Delete(s)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UserUseCase) Me(s string) (*models.User, error) {
@@ -79,14 +92,6 @@ func (u *UserUseCase) Me(s string) (*models.User, error) {
 		return nil, err1
 	}
 	return user, nil
-}
-
-func (u *UserUseCase) Logout(s string) error {
-	err := u.SessionRepository.Delete(s)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func (u *UserUseCase) GetById(ids string) (*models.PublicUser, error) {

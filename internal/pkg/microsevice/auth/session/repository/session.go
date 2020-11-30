@@ -3,7 +3,6 @@ package repository
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 )
 
@@ -18,7 +17,7 @@ func NewSessionRepository(db *sql.DB) *SessionRepository {
 }
 
 func (r *SessionRepository) Create(session *models.Session) (*models.Session, error) {
-	fmt.Println(session)
+	//fmt.Println(session)
 	_, err := r.db.Exec("INSERT INTO session (id, username) VALUES(?, ?)", session.Id, session.Username)
 	if err != nil {
 		return nil, err

@@ -3,18 +3,18 @@ package usecase
 import (
 	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/film"
-	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/sesession"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/session"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/playlist"
 )
 
 type PlaylistUseCase struct {
 	PlaylistRepository playlist.Repository
-	FilmRepository film.Repository
-	SessionRepository sesession.Repository
+	FilmRepository     film.Repository
+	SessionRepository  session.Repository
 }
 
-func NewPlaylistUseCase(playlistRepository playlist.Repository, filmRepository film.Repository, sessionRepository sesession.Repository) *PlaylistUseCase {
+func NewPlaylistUseCase(playlistRepository playlist.Repository, filmRepository film.Repository, sessionRepository session.Repository) *PlaylistUseCase {
 	return &PlaylistUseCase{
 		PlaylistRepository: playlistRepository,
 		FilmRepository: filmRepository,

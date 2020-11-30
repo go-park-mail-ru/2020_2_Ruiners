@@ -1,4 +1,4 @@
-package sesession
+package session
 
 import (
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
