@@ -1,10 +1,12 @@
 package server
 
 import (
+	"context"
 	"fmt"
-	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"
-	"google.golang.org/grpc"
-	"net"
+	pb "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/proto"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/user"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type AuthServer struct {
@@ -15,19 +17,36 @@ func NewAuthServer(UserUC user.UseCase) *AuthServer {
 	return &AuthServer{UseCase: UserUC}
 }
 
-func (s *Server) ListenAndServe() error {
-	listener, err := net.Listen("tcp", s.port)
+func (a *AuthServer) Signup(ctx context.Context, usr *pb.AuthUserSignup) (*pb.AuthSessionId, error) {
+	fmt.Println("BBBBBBBBBBBBBBBBBBBBBb")
+	sessionId, err := a.UseCase.Signup(usr.Login, usr.Email, usr.Password)
 	if err != nil {
-		return err
+		fmt.Println(err, "SUKA")
+		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	gServer := grpc.NewServer()
-	//api.RegisterAuthServer(gServer, s.auth)
-	fmt.Println(s)
-	err = gServer.Serve(listener)
+	return &pb.AuthSessionId{
+		SessionId: sessionId,
+	}, nil
+}
+
+func (a *AuthServer) Login(ctx context.Context, usr *pb.AuthUserLogin) (*pb.AuthSessionId, error) {
+	sessionId, err := a.UseCase.Login(usr.Login, usr.Password)
 	if err != nil {
-		return err
+		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	return nil
+	return &pb.AuthSessionId{
+		SessionId: sessionId,
+	}, nil
+}
+
+
+func (a *AuthServer) Logout(ctx context.Context, sid *pb.AuthSessionId) (*pb.AuthEmpty, error) {
+	err := a.UseCase.Logout(sid.SessionId)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &pb.AuthEmpty{}, nil
 }

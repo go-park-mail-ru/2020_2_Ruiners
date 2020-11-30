@@ -5,6 +5,7 @@ import (
 	filmHandler "github.com/Arkadiyche/http-rest-api/internal/pkg/film/delivery/http"
 	filmRep "github.com/Arkadiyche/http-rest-api/internal/pkg/film/repository"
 	filmUC "github.com/Arkadiyche/http-rest-api/internal/pkg/film/usecase"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/client"
 	sessionRep "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/session/repository"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/middleware"
 	personHandler "github.com/Arkadiyche/http-rest-api/internal/pkg/person/deliver/http"
@@ -26,6 +27,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/sirupsen/logrus"
+	"log"
 	"net/http"
 )
 
@@ -129,11 +131,16 @@ func (s *APIServer) configureStore() error {
 
 func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHandler, ratingHandler.RatingHandler, personHandler.PersonHandler, playlistHandler.PlaylistHandler, subscibeHandler.SubscribeHandler) {
 
+	rpcAuth, err := client.NewAuthClient("localhost", ":8001")
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 	SessionRep := sessionRep.NewSessionRepository(s.store.Db)
 	//user
 	UserRep := userRep.NewUserRepository(s.store.Db)
 	UserUC := userUC.NewUserUseCase(UserRep, SessionRep)
 	UserHandler := userHandler.UserHandler{
+		RpcAuth: rpcAuth,
 		UseCase:   UserUC,
 		Logger:    s.logger,
 		Sanitazer: s.sanitazer,

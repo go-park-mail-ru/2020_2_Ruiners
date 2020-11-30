@@ -1,6 +1,6 @@
-package session
+package client
 
-type Repository interface {
+type ISessionClient interface {
 	Create(sessionId, login string) error
 	FindById(s string) (sessionId, login string, error error)
 	Delete(s string) error

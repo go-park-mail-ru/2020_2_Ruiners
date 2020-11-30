@@ -3,6 +3,7 @@ package http
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/client"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"
 	"github.com/gorilla/mux"
@@ -14,6 +15,7 @@ import (
 )
 
 type UserHandler struct {
+	RpcAuth   client.IAuthClient
 	UseCase   user.UseCase
 	Logger    *logrus.Logger
 	Sanitazer *bluemonday.Policy
@@ -30,7 +32,7 @@ func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	sessionId, err1 := uh.UseCase.Signup(u.Login, u.Email, u.Password)
+	sessionId, err1 := uh.RpcAuth.Signup(u.Login, u.Email, u.Password)
 	if err1 != nil {
 		uh.Logger.Error("error with usecase signup")
 		w.WriteHeader(http.StatusBadRequest)
@@ -50,7 +52,7 @@ func (uh *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	sessionId, err1 := uh.UseCase.Login(l.Login, l.Password)
+	sessionId, err1 := uh.RpcAuth.Login(l.Login, l.Password)
 	if err1 != nil {
 		uh.Logger.Error("error with usecase login")
 		w.WriteHeader(http.StatusBadRequest)
@@ -120,7 +122,7 @@ func (uh *UserHandler) Logout(w http.ResponseWriter, r *http.Request) {
 	}
 	session.Expires = time.Now().AddDate(0, 0, -1)
 	http.SetCookie(w, session)
-	err1 := uh.UseCase.Logout(session.Value)
+	err1 := uh.RpcAuth.Logout(session.Value)
 	if err1 != nil {
 		uh.Logger.Error("error with usecase logout")
 		http.Error(w, err1.Error(), http.StatusBadRequest)
