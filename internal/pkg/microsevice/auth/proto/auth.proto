@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package proto;
+
+message AuthUserSignup {
+  string login = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message AuthUserLogin {
+  string login = 1;
+  string password = 2;
+}
+
+message AuthSessionId {
+  string sessionId = 1;
+}
+
+message AuthEmpty {
+}
+
+service Auth {
+  rpc Signup(AuthUserSignup) returns (AuthSessionId) {}
+  rpc Login(AuthUserLogin) returns (AuthSessionId) {}
+  rpc Logout(AuthSessionId) returns (AuthEmpty) {}
+}

@@ -45,7 +45,7 @@ func (u *UserUseCase) Signup(username, email, password string) (string , error) 
 	}
 	sessionId := uuid2.NewV4().String()
 	session := models.Session{Id: sessionId, Username: username}
-	_, err2 := u.SessionRepository.Create(&session)
+	err2 := u.SessionRepository.Create(session.Id, session.Username)
 	if err2 != nil {
 		return "", err2
 	}
@@ -67,7 +67,7 @@ func (u *UserUseCase) Login(login, password string) (string, error) {
 	}
 	sessionId := uuid2.NewV4().String()
 	session := models.Session{Id: sessionId, Username: login}
-	_, err1 := u.SessionRepository.Create(&session)
+	err1 := u.SessionRepository.Create(session.Id, session.Username)
 	if err1 != nil {
 		return "", err1
 	}
@@ -83,11 +83,11 @@ func (u *UserUseCase) Logout(s string) error {
 }
 
 func (u *UserUseCase) Me(s string) (*models.User, error) {
-	session, err := u.SessionRepository.FindById(s)
+	_, login, err := u.SessionRepository.FindById(s)
 	if err != nil {
 		return nil, err
 	}
-	user, err1 := u.UserRepository.FindByLogin(session.Username)
+	user, err1 := u.UserRepository.FindByLogin(login)
 	if err1 != nil {
 		return nil, err1
 	}
@@ -118,15 +118,15 @@ func (u *UserUseCase) ChangeLogin(s string, newLogin string) error {
 	if check {
 		return errors.New("user alredy exist")
 	}
-	session, err := u.SessionRepository.FindById(s)
+	_, login, err  := u.SessionRepository.FindById(s)
 	if err != nil {
 		return err
 	}
-	err1 := u.UserRepository.UpdateLogin(session.Username, newLogin)
+	err1 := u.UserRepository.UpdateLogin(login, newLogin)
 	if err1 != nil {
 		return err1
 	}
-	err = u.SessionRepository.UpdateLogin(session.Username, newLogin)
+	err = u.SessionRepository.UpdateLogin(login, newLogin)
 	if err != nil {
 		return err
 	}
@@ -134,11 +134,11 @@ func (u *UserUseCase) ChangeLogin(s string, newLogin string) error {
 }
 
 func (u *UserUseCase) ChangePassword(s string, oldPassword string, newPassword string) error {
-	session, err := u.SessionRepository.FindById(s)
+	_, login, err  := u.SessionRepository.FindById(s)
 	if err != nil {
 		return err
 	}
-	user, err1 := u.UserRepository.FindByLogin(session.Username)
+	user, err1 := u.UserRepository.FindByLogin(login)
 	if err1 != nil {
 		return err1
 	}
@@ -153,7 +153,7 @@ func (u *UserUseCase) ChangePassword(s string, oldPassword string, newPassword s
 	if err != nil {
 		return err
 	}
-	err = u.UserRepository.UpdatePassword(session.Username, newPassword)
+	err = u.UserRepository.UpdatePassword(login, newPassword)
 	if err != nil {
 		return err
 	}
@@ -172,15 +172,15 @@ func (u *UserUseCase) ChangeAvatar(s string, file multipart.File) error {
 		fmt.Println("aa")
 		return err
 	}
-	session, err := u.SessionRepository.FindById(s)
+	_, login, err  := u.SessionRepository.FindById(s)
 	if err != nil {
 		return err
 	}
-	_, err1 := u.UserRepository.FindByLogin(session.Username)
+	_, err1 := u.UserRepository.FindByLogin(login)
 	if err1 != nil {
 		return err1
 	}
-	err = u.UserRepository.UpdateAvatar(session.Username, str)
+	err = u.UserRepository.UpdateAvatar(login, str)
 	if err != nil {
 		return err
 	}

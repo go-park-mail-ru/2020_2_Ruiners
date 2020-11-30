@@ -16,25 +16,25 @@ func NewSessionRepository(db *sql.DB) *SessionRepository {
 	}
 }
 
-func (r *SessionRepository) Create(session *models.Session) (*models.Session, error) {
+func (r *SessionRepository) Create(sessionId, login string) error {
 	//fmt.Println(session)
-	_, err := r.db.Exec("INSERT INTO session (id, username) VALUES(?, ?)", session.Id, session.Username)
+	_, err := r.db.Exec("INSERT INTO session (id, username) VALUES(?, ?)", sessionId, login)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return nil, nil
+	return nil
 }
 
-func (r *SessionRepository) FindById(s string) (*models.Session, error) {
+func (r *SessionRepository) FindById(s string) (sessionId, login string, error error) {
 	session := models.Session{}
 	err := r.db.QueryRow("SELECT id, username FROM session WHERE id = ? ORDER BY id ASC LIMIT 1", s).
 		Scan(&session.Id, &session.Username)
 
 	if err != nil {
-		return nil, errors.New("session not found")
+		return "", "", errors.New("session not found")
 	}
 
-	return &session, nil
+	return session.Id, session.Username, nil
 }
 
 func (r *SessionRepository) GetUserIdBySession(s string) (int, error) {
