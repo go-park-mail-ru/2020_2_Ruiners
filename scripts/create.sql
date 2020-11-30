@@ -53,7 +53,7 @@ VALUES
         'Путешествие в дивный новый мир Джеймса Кэмерона',
         'Фантастика',
         'https://www.youtube.com/embed/4HFlPcX2HFo',
-        'https://wallpaper-house.com/data/out/5/wallpaper2you_77895.jpg',
+        'http://www.hqwallpapers.ru/wallpapers/movies/afisha-avatar-774x435.jpg',
         'https://st.kp.yandex.net/im/poster/1/0/8/kinopoisk.ru-Avatar-1089521.jpg',
         2009,
         'США'
@@ -100,7 +100,7 @@ VALUES
          'Фантастика',
          'https://www.youtube.com/embed/taQW31SVPCk',
          'https://i.pinimg.com/originals/d3/d2/db/d3d2dbf0cc05af5c6cf236e7e82f6ef8.jpg',
-         'http://kinodrive.org/uploads/posts/2020-03/1585010486_38.jpg',
+         'https://st.kp.yandex.net/im/poster/3/0/4/kinopoisk.ru-Blade-Runner-2049-3047529.jpg',
           2017,
          'США'
     ),
