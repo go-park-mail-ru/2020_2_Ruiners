@@ -1,7 +1,7 @@
 package usecase
 
 import (
-	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/session"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/session/client"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/subscribe"
 	"sort"
@@ -9,18 +9,18 @@ import (
 
 type SubscribeUseCase struct {
 	SubscribeRepository subscribe.Repository
-	SessionRepository   session.Repository
+	RpcSession client.ISessionClient
 }
 
-func NewSubscribeUseCase(subscribeRepository subscribe.Repository, sessionRepository session.Repository) *SubscribeUseCase {
+func NewSubscribeUseCase(subscribeRepository subscribe.Repository, rpcSession client.ISessionClient) *SubscribeUseCase {
 	return &SubscribeUseCase{
 		SubscribeRepository: subscribeRepository,
-		SessionRepository: sessionRepository,
+		RpcSession: rpcSession,
 	}
 }
 
 func (uc *SubscribeUseCase) Create(authorId int, session string) error {
-	userId, err := uc.SessionRepository.GetUserIdBySession(session)
+	userId, err := uc.RpcSession.GetUserIdBySession(session)
 	if err != nil {
 		return err
 	}
@@ -32,7 +32,7 @@ func (uc *SubscribeUseCase) Create(authorId int, session string) error {
 }
 
 func (uc *SubscribeUseCase) Delete(authorId int, session string) error {
-	userId, err := uc.SessionRepository.GetUserIdBySession(session)
+	userId, err := uc.RpcSession.GetUserIdBySession(session)
 	if err != nil {
 		return err
 	}
@@ -44,7 +44,7 @@ func (uc *SubscribeUseCase) Delete(authorId int, session string) error {
 }
 
 func (uc *SubscribeUseCase) GetAuthors(session string) (*models.PublicUsers, error)  {
-	userId, err := uc.SessionRepository.GetUserIdBySession(session)
+	userId, err := uc.RpcSession.GetUserIdBySession(session)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (uc *SubscribeUseCase) GetAuthors(session string) (*models.PublicUsers, err
 
 func (uc *SubscribeUseCase) GetFeed(session string) (*models.Feed, error)  {
 	feed := models.Feed{}
-	userId, err := uc.SessionRepository.GetUserIdBySession(session)
+	userId, err := uc.RpcSession.GetUserIdBySession(session)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +78,7 @@ func (uc *SubscribeUseCase) GetFeed(session string) (*models.Feed, error)  {
 }
 
 func (uc *SubscribeUseCase) Check(session string, authorId int) (bool, error) {
-	subscriberId, err := uc.SessionRepository.GetUserIdBySession(session)
+	subscriberId, err := uc.RpcSession.GetUserIdBySession(session)
 	if err != nil {
 		return false, err
 	}

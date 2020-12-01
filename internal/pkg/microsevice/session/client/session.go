@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 	pb "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/session/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
@@ -39,6 +40,7 @@ func (s *SessionClient) Create(sessionId, login string) (err error) {
 }
 
 func (s *SessionClient) FindById(session string) (sessionId, login string, err error) {
+	fmt.Println("find")
 	se := &pb.SessionId{
 		SessionId: session,
 	}

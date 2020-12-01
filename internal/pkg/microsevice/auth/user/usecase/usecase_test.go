@@ -3,7 +3,7 @@ package usecase
 import (
 	"errors"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/bussines/crypto"
-	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/session"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/session/session"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"
 	"github.com/golang/mock/gomock"

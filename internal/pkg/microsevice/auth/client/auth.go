@@ -15,6 +15,7 @@ type AuthClient struct {
 }
 
 func NewAuthClient(host, port string) (*AuthClient, error) {
+	fmt.Println("new client")
 	opts := []grpc.DialOption{
 		grpc.WithInsecure(),
 	}

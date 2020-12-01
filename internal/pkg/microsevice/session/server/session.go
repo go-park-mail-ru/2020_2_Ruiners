@@ -2,8 +2,8 @@ package server
 
 import (
 	"context"
-	sessionRep "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/session/repository"
 	pb "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/session/proto"
+	sessionRep "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/session/session/repository"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

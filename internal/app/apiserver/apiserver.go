@@ -5,8 +5,9 @@ import (
 	filmHandler "github.com/Arkadiyche/http-rest-api/internal/pkg/film/delivery/http"
 	filmRep "github.com/Arkadiyche/http-rest-api/internal/pkg/film/repository"
 	filmUC "github.com/Arkadiyche/http-rest-api/internal/pkg/film/usecase"
-	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/client"
-	sessionRep "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/session/repository"
+	client "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/client"
+	client3 "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/rate/client"
+	client2 "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/session/client"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/middleware"
 	personHandler "github.com/Arkadiyche/http-rest-api/internal/pkg/person/deliver/http"
 	personRep "github.com/Arkadiyche/http-rest-api/internal/pkg/person/repository"
@@ -26,6 +27,7 @@ import (
 	userUC "github.com/Arkadiyche/http-rest-api/internal/pkg/user/usecase"
 	"github.com/gorilla/mux"
 	"github.com/microcosm-cc/bluemonday"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/sirupsen/logrus"
 	"log"
 	"net/http"
@@ -114,6 +116,8 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/news" , subscribe.ShowFeed)
 	s.router.HandleFunc("/sub/check/{user_id:[0-9]+}", subscribe.Check())
 
+	s.router.Handle("/metrics", promhttp.Handler())
+
 	s.router.Use(middleware.CORSMiddleware(s.config.CORS))
 }
 
@@ -135,10 +139,19 @@ func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHand
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	SessionRep := sessionRep.NewSessionRepository(s.store.Db)
+	rpcSession, err := client2.NewSessionClient("localhost", ":8002")
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	rpcRate, err := client3.NewRateClient("localhost", ":8003")
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	//SessionRep := sessionRep.NewSessionRepository(s.store.Db)
 	//user
 	UserRep := userRep.NewUserRepository(s.store.Db)
-	UserUC := userUC.NewUserUseCase(UserRep, SessionRep)
+	UserUC := userUC.NewUserUseCase(UserRep, rpcSession)
 	UserHandler := userHandler.UserHandler{
 		RpcAuth: rpcAuth,
 		UseCase:   UserUC,
@@ -154,8 +167,9 @@ func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHand
 	}
 	//rating
 	RatingRep := ratingRep.NewRatingRepository(s.store.Db)
-	RatingUC := ratingUC.NewRatingUseCase(RatingRep, SessionRep)
+	RatingUC := ratingUC.NewRatingUseCase(RatingRep, rpcSession)
 	RatingHandler := ratingHandler.RatingHandler{
+		RpcRate:   rpcRate,
 		UseCase:   RatingUC,
 		Logger:    s.logger,
 		Sanitazer: s.sanitazer,
@@ -169,7 +183,7 @@ func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHand
 	}
 	//playlist
 	PlaylistRep := playlistRep.NewRPlaylistRepository(s.store.Db)
-	PlaylistUC := playlistUC.NewPlaylistUseCase(PlaylistRep, FilmRep, SessionRep)
+	PlaylistUC := playlistUC.NewPlaylistUseCase(PlaylistRep, FilmRep, rpcSession)
 	PlaylistHandler := playlistHandler.PlaylistHandler{
 		UseCase:   PlaylistUC,
 		Logger:    s.logger,
@@ -177,7 +191,7 @@ func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHand
 	}
 	//subscribe
 	SubscribeRep := subscibeRep.NewSubscribeRepository(s.store.Db)
-	SubscribeUC := subscribeUC.NewSubscribeUseCase(SubscribeRep, SessionRep)
+	SubscribeUC := subscribeUC.NewSubscribeUseCase(SubscribeRep, rpcSession)
 	SubscribeHandler := subscibeHandler.SubscribeHandler{
 		UseCase:   SubscribeUC,
 		Logger:    s.logger,

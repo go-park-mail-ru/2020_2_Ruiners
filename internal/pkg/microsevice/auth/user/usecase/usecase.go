@@ -3,9 +3,9 @@ package usecase
 import (
 	"errors"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/bussines/crypto"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/user"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/session/client"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
-	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"
 	uuid2 "github.com/satori/go.uuid"
 )
 

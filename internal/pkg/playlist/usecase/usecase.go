@@ -3,7 +3,7 @@ package usecase
 import (
 	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/film"
-	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/session"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/session/client"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/playlist"
 )
@@ -11,19 +11,19 @@ import (
 type PlaylistUseCase struct {
 	PlaylistRepository playlist.Repository
 	FilmRepository     film.Repository
-	SessionRepository  session.Repository
+	RpcSession client.ISessionClient
 }
 
-func NewPlaylistUseCase(playlistRepository playlist.Repository, filmRepository film.Repository, sessionRepository session.Repository) *PlaylistUseCase {
+func NewPlaylistUseCase(playlistRepository playlist.Repository, filmRepository film.Repository, rpcSession client.ISessionClient) *PlaylistUseCase {
 	return &PlaylistUseCase{
 		PlaylistRepository: playlistRepository,
 		FilmRepository: filmRepository,
-		SessionRepository: sessionRepository,
+		RpcSession: rpcSession,
 	}
 }
 
 func (uc *PlaylistUseCase) Create(title string, session string) error {
-	userId, err := uc.SessionRepository.GetUserIdBySession(session)
+	userId, err := uc.RpcSession.GetUserIdBySession(session)
 	if err != nil {
 		return err
 	}
@@ -60,7 +60,7 @@ func (uc *PlaylistUseCase) Remove(filmId int, playlistId int) error {
 }
 
 func (uc *PlaylistUseCase) GetList(session string) (*models.Playlists, error) {
-	userId, err := uc.SessionRepository.GetUserIdBySession(session)
+	userId, err := uc.RpcSession.GetUserIdBySession(session)
 	playlist, err := uc.PlaylistRepository.GetList(userId)
 	if err != nil {
 		return nil, err
@@ -70,7 +70,7 @@ func (uc *PlaylistUseCase) GetList(session string) (*models.Playlists, error) {
 
 func (uc *PlaylistUseCase) GetPlaylist(session string) (*models.Playlists, error) {
 	res := models.Playlists{}
-	userId, err := uc.SessionRepository.GetUserIdBySession(session)
+	userId, err := uc.RpcSession.GetUserIdBySession(session)
 	playlist, err := uc.PlaylistRepository.GetList(userId)
 	if err != nil {
 		return nil, err

@@ -2,8 +2,8 @@ package server
 
 import (
 	"database/sql"
-	SessionRep "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/session/repository"
 	pb "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/session/proto"
+	SessionRep "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/session/session/repository"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/store"
 	"google.golang.org/grpc"
 	"net"

@@ -38,6 +38,7 @@ func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	u.Password = ""
 	CreateSession(w, sessionId)
 	w.WriteHeader(http.StatusOK)
 }
@@ -58,6 +59,7 @@ func (uh *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	l.Password=""
 	CreateSession(w, sessionId)
 	w.WriteHeader(http.StatusOK)
 }
