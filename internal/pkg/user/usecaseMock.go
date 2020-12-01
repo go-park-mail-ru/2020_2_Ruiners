@@ -53,6 +53,20 @@ func (mr *MockRecorderMockUseCase) Login(input, session interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Login", reflect.TypeOf((*MockUseCase)(nil).Login), input, session)
 }*/
 
+func (m *MockUseCase) GetById(s string) (*models.PublicUser, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetById", s)
+	ret0, _ := ret[0].(*models.PublicUser)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+func (mr *MockRecorderMockUseCase) GetById(s interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetById", reflect.TypeOf((*MockUseCase)(nil).GetById), s)
+}
+
+
 func (m *MockUseCase) Me(s string) (*models.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Me", s)
