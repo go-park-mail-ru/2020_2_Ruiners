@@ -31,7 +31,7 @@ func TestFindById(t *testing.T) {
 		WithArgs(session_id).
 		WillReturnRows(rows)
 
-	item, err := repo.FindById(session_id)
+	sid, logi, err := repo.FindById(session_id)
 	if err != nil {
 		t.Errorf("unexpected err: %s", err)
 		return
@@ -40,8 +40,12 @@ func TestFindById(t *testing.T) {
 		t.Errorf("there were unfulfilled expectations: %s", err)
 		return
 	}
-	if !reflect.DeepEqual(item.Id, session_id) {
-		t.Errorf("results not match, want %v, have %v", session_id, item.Id)
+	if !reflect.DeepEqual(sid, session_id) {
+		t.Errorf("results not match, want %v, have %v", session_id, sid)
+		return
+	}
+	if !reflect.DeepEqual(logi, "Admin") {
+		t.Errorf("results not match, want %v, have %v", "Admin", logi)
 		return
 	}
 
@@ -51,7 +55,7 @@ func TestFindById(t *testing.T) {
 		WithArgs(session_id).
 		WillReturnError(fmt.Errorf("db_error"))
 
-	_, err = repo.FindById(session_id)
+	_, _, err = repo.FindById(session_id)
 
 	if err == nil {
 		t.Errorf("expected error, got nil")
@@ -72,7 +76,7 @@ func TestFindById(t *testing.T) {
 		WithArgs(session_id).
 		WillReturnRows(rows)
 
-	_, err = repo.FindById(session_id)
+	_, _, err = repo.FindById(session_id)
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("there were unfulfilled expectations: %s", err)
 		return
@@ -146,7 +150,7 @@ func TestGetUserIdBySession(t *testing.T) {
 		WithArgs(session_id).
 		WillReturnRows(rows)
 
-	_, err = repo.FindById(session_id)
+	_, _, err = repo.FindById(session_id)
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("there were unfulfilled expectations: %s", err)
 		return
@@ -163,7 +167,7 @@ func forUpdate(t *testing.T, mock sqlmock.Sqlmock, f func(string, string) error)
 
 	// good query
 	mock.
-		ExpectExec(`UPDATE auth`).
+		ExpectExec(`UPDATE session`).
 		WithArgs(srt2, str1).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
@@ -179,7 +183,7 @@ func forUpdate(t *testing.T, mock sqlmock.Sqlmock, f func(string, string) error)
 
 	// query error
 	mock.
-		ExpectExec(`UPDATE auth`).
+		ExpectExec(`UPDATE session`).
 		WithArgs(srt2, str1).
 		WillReturnError(fmt.Errorf("db_error"))
 
@@ -220,11 +224,11 @@ func TestCreate(t *testing.T) {
 
 	// good query
 	mock.
-		ExpectExec(`INSERT INTO auth`).
+		ExpectExec(`INSERT INTO session`).
 		WithArgs(session.Id, session.Username).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
-	_, err = repo.Create(&session)
+	err = repo.Create(session.Id, session.Username)
 	if err != nil {
 		t.Errorf("unexpected err: %s", err)
 		return
@@ -236,11 +240,11 @@ func TestCreate(t *testing.T) {
 
 	// query error
 	mock.
-		ExpectExec(`INSERT INTO auth`).
+		ExpectExec(`INSERT INTO session`).
 		WithArgs(session.Id, session.Username).
 		WillReturnError(fmt.Errorf("db_error"))
 
-	_, err = repo.Create(&session)
+	err = repo.Create(session.Id, session.Username)
 
 	if err == nil {
 		t.Errorf("expected error, got nil")
@@ -266,7 +270,7 @@ func TestDelete(t *testing.T) {
 
 	// good query
 	mock.
-		ExpectExec(`DELETE FROM auth`).
+		ExpectExec(`DELETE FROM session`).
 		WithArgs(id).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
@@ -282,7 +286,7 @@ func TestDelete(t *testing.T) {
 
 	// query error
 	mock.
-		ExpectExec(`DELETE FROM auth`).
+		ExpectExec(`DELETE FROM session`).
 		WithArgs(id).
 		WillReturnError(fmt.Errorf("db_error"))
 

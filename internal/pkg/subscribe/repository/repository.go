@@ -19,7 +19,7 @@ func NewSubscribeRepository(db *sql.DB) *SubscribeRepository {
 
 
 func (s *SubscribeRepository) AddSubscribe(subscriberId int, authorId int) error {
-	_, err := s.db.Exec("insert into subscribe(subscriber, author) VALUE(?, ?)", subscriberId, authorId)
+	_, err := s.db.Exec("INSERT INTO subscribe(subscriber, author) VALUE(?, ?)", subscriberId, authorId)
 	if err != nil {
 		return err
 	}
