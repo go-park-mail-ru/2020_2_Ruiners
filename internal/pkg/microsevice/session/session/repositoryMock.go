@@ -1,7 +1,6 @@
 package session
 
 import (
-	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/golang/mock/gomock"
 	"reflect"
 )
@@ -25,25 +24,25 @@ func (m *MockRepository) EXPECT() *MockRecorderMockRepository {
 	return m.recorder
 }
 
-func (m *MockRepository) Create(session *models.Session) (*models.Session, error) {
+func (m *MockRepository) Create(sessionId, login string)  error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create", session)
-	ret0, _ := ret[0].(models.Session)
-	ret1, _ := ret[1].(error)
-	return &ret0, ret1
+	ret := m.ctrl.Call(m, "Create", sessionId, login)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
-func (mr *MockRecorderMockRepository) Create(session interface{}) *gomock.Call {
+func (mr *MockRecorderMockRepository) Create(sessionId interface{}, login interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockRepository)(nil).Create), session)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockRepository)(nil).Create), sessionId, login)
 }
 
-func (m *MockRepository) FindById(s string) (*models.Session, error) {
+func (m *MockRepository) FindById(s string) (sessionId, login string, err error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindById", s)
-	ret0, _ := ret[0].(*models.Session)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(string)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 func (mr *MockRecorderMockRepository) FindById(s interface{}) *gomock.Call {
