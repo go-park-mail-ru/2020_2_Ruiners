@@ -27,7 +27,7 @@ func (m *MockUseCase) EXPECT() *MockRecorderMockUseCase {
 	return m.recorder
 }
 
-func (m *MockUseCase) Signup(input *models.User, session *models.Session) (*models.User, error) {
+/*func (m *MockUseCase) Signup(input *models.User, session *models.Session) (*models.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Signup", input, session)
 	ret0, _ := ret[0].(*models.User)
@@ -38,9 +38,9 @@ func (m *MockUseCase) Signup(input *models.User, session *models.Session) (*mode
 func (mr *MockRecorderMockUseCase) Signup(input, session interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Signup", reflect.TypeOf((*MockUseCase)(nil).Signup), input, session)
-}
+}*/
 
-func (m *MockUseCase) Login(input *models.Login, session *models.Session) (*models.User, error) {
+/*func (m *MockUseCase) Login(input *models.Login, session *models.Session) (*models.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Login", input, session)
 	ret0, _ := ret[0].(*models.User)
@@ -51,7 +51,7 @@ func (m *MockUseCase) Login(input *models.Login, session *models.Session) (*mode
 func (mr *MockRecorderMockUseCase) Login(input, session interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Login", reflect.TypeOf((*MockUseCase)(nil).Login), input, session)
-}
+}*/
 
 func (m *MockUseCase) Me(s string) (*models.User, error) {
 	m.ctrl.T.Helper()
@@ -66,7 +66,7 @@ func (mr *MockRecorderMockUseCase) Me(s interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Me", reflect.TypeOf((*MockUseCase)(nil).Me), s)
 }
 
-func (m *MockUseCase) Logout(s string) error {
+/*func (m *MockUseCase) Logout(s string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Logout", s)
 	ret0, _ := ret[0].(error)
@@ -76,7 +76,7 @@ func (m *MockUseCase) Logout(s string) error {
 func (mr *MockRecorderMockUseCase) Logout(s interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Logout", reflect.TypeOf((*MockUseCase)(nil).Logout), s)
-}
+}*/
 
 func (m *MockUseCase) ChangeLogin(s string, newLogin string) error {
 	m.ctrl.T.Helper()

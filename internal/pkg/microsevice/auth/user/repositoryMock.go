@@ -64,42 +64,6 @@ func (mr *MockRecorderMockRepository) FindById(id interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindById", reflect.TypeOf((*MockRepository)(nil).FindById), id)
 }
 
-func (m *MockRepository) UpdateLogin(oldLogin string, newLogin string) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateLogin", oldLogin, newLogin)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-func (mr *MockRecorderMockRepository) UpdateLogin(oldLogin, newLogin interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateLogin", reflect.TypeOf((*MockRepository)(nil).UpdateLogin), oldLogin, newLogin)
-}
-
-func (m *MockRepository) UpdatePassword(login string, newPassword string) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdatePassword", login, newPassword)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-func (mr *MockRecorderMockRepository) UpdatePassword(login, newPassword interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdatePassword", reflect.TypeOf((*MockRepository)(nil).UpdatePassword), login, newPassword)
-}
-
-func (m *MockRepository) UpdateAvatar(login string, name string) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateAvatar", login, name)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-func (mr *MockRecorderMockRepository) UpdateAvatar(login, name interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdatePassword", reflect.TypeOf((*MockRepository)(nil).UpdateAvatar), login, name)
-}
-
 func (m *MockRepository) CheckExist(login string) (bool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CheckExist", login)
