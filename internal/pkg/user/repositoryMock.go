@@ -25,7 +25,6 @@ func (m *MockRepository) EXPECT() *MockRecorderMockRepository {
 	return m.recorder
 }
 
-
 func (m *MockRepository) FindByLogin(login string) (*models.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindByLogin", login)
@@ -100,3 +99,5 @@ func (mr *MockRecorderMockRepository) CheckExist(login interface{}) *gomock.Call
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckExist", reflect.TypeOf((*MockRepository)(nil).CheckExist), login)
 }
+
+

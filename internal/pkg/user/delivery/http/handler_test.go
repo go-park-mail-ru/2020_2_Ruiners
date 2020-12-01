@@ -3,8 +3,9 @@ package http
 import (
 	"errors"
 	"fmt"
+	user2 "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/user"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
-	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"
+	user1 "github.com/Arkadiyche/http-rest-api/internal/pkg/user"
 	"github.com/golang/mock/gomock"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
@@ -33,13 +34,16 @@ func TestMe(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		m := user.NewMockUseCase(ctrl)
+
+		m := user1.NewMockUseCase(ctrl)
+		m1 := user2.NewMockUseCase(ctrl)
 
 		m.
 			EXPECT().
 			Me(gomock.Eq(testSession.Id)).
 			Return(&testUser, nil)
 		userHandler := UserHandler{
+			RpcAuth: m1,
 			UseCase: m,
 			Logger:  logrus.New(),
 		}
@@ -64,13 +68,15 @@ func TestLogout(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		m := user.NewMockUseCase(ctrl)
+		m := user1.NewMockUseCase(ctrl)
+		m1 := user2.NewMockUseCase(ctrl)
 
-		m.
+		m1.
 			EXPECT().
 			Logout(gomock.Eq(testSession.Id)).
 			Return(nil)
 		userHandler := UserHandler{
+			RpcAuth: m1,
 			UseCase: m,
 			Logger:  logrus.New(),
 		}
@@ -93,14 +99,16 @@ func TestLogout(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-		m := user.NewMockUseCase(ctrl)
+		m := user1.NewMockUseCase(ctrl)
+		m1 := user2.NewMockUseCase(ctrl)
 
-		m.
+		m1.
 			EXPECT().
 			Logout(gomock.Eq(testSession.Id)).
 			Return(errors.New("fail"))
 
 		userHandler := UserHandler{
+			RpcAuth: m1,
 			UseCase: m,
 			Logger:  logrus.New(),
 		}
