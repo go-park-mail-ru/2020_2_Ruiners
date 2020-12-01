@@ -159,58 +159,6 @@ func TestFindById(t *testing.T) {
 	}
 }
 
-func forUpdate(t *testing.T, mock sqlmock.Sqlmock, f func(string, string) error) {
-	srt2 := "newLogPasOrName"
-	str1 := "login"
-
-	// good query
-	mock.
-		ExpectExec(`UPDATE users`).
-		WithArgs(srt2, str1).
-		WillReturnResult(sqlmock.NewResult(1, 1))
-
-	err := f(str1, srt2)
-	if err != nil {
-		t.Errorf("unexpected err: %s", err)
-		return
-	}
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("there were unfulfilled expectations: %s", err)
-		return
-	}
-
-	// query error
-	mock.
-		ExpectExec(`UPDATE users`).
-		WithArgs(srt2, str1).
-		WillReturnError(fmt.Errorf("db_error"))
-
-	err = f(str1, srt2)
-
-	if err == nil {
-		t.Errorf("expected error, got nil")
-		return
-	}
-
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("there were unfulfilled expectations: %s", err)
-		return
-	}
-}
-
-func TestUpdate(t *testing.T) {
-	db, mock, err := sqlmock.New()
-	if err != nil {
-		t.Fatalf("cant create mock: %s", err)
-	}
-	defer db.Close()
-
-	repo := NewUserRepository(db)
-	forUpdate(t, mock, repo.UpdateLogin)
-	forUpdate(t, mock, repo.UpdatePassword)
-	forUpdate(t, mock, repo.UpdateAvatar)
-}
-
 func TestCreate(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	if err != nil {

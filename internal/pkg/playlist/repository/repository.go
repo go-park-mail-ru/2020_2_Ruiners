@@ -23,7 +23,6 @@ func(p *PlaylistRepository) Create(title string, userId int) error {
 		return err
 	}
 	return nil
-	return nil
 }
 
 func(p *PlaylistRepository) Delete(playlistId int) error {
