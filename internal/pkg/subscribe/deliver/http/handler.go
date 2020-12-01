@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/subscribe"
 	"github.com/gorilla/mux"
+	"github.com/mailru/easyjson"
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/sirupsen/logrus"
 	"net/http"
@@ -87,7 +88,7 @@ func (sh *SubscribeHandler) ShowFeed(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	res, err := json.Marshal(&feed)
+	res, err := easyjson.Marshal(feed)
 	if err != nil {
 		sh.Logger.Error("error with delivery show reviews json-marshal")
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -110,7 +111,7 @@ func (sh *SubscribeHandler) ShowAuthors(w http.ResponseWriter, r *http.Request) 
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	res, err := json.Marshal(&authors)
+	res, err := easyjson.Marshal(authors)
 	if err != nil {
 		sh.Logger.Error("error with delivery show reviews json-marshal")
 		http.Error(w, err.Error(), http.StatusBadRequest)

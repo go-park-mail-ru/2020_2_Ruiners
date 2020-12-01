@@ -12,6 +12,8 @@ type Subscribe struct {
 	Date int64 `json:"date"`
 }
 
+//easyjson:json
 type PublicUsers []PublicUser
 
+//easyjson:json
 type Feed []Subscribe

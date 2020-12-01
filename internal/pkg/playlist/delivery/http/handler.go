@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/playlist"
+	"github.com/mailru/easyjson"
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/sirupsen/logrus"
 	"net/http"
@@ -136,7 +137,7 @@ func (ph *PlaylistHandler) ShowList(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	res, err := json.Marshal(&playlist)
+	res, err := easyjson.Marshal(playlist)
 	if err != nil {
 		ph.Logger.Error("error with delivery show reviews json-marshal")
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -159,7 +160,7 @@ func (ph *PlaylistHandler) ShowPlaylist(w http.ResponseWriter, r *http.Request) 
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	res, err := json.Marshal(&playlist)
+	res, err := easyjson.Marshal(playlist)
 	if err != nil {
 		ph.Logger.Error("error with delivery show reviews json-marshal")
 		http.Error(w, err.Error(), http.StatusBadRequest)

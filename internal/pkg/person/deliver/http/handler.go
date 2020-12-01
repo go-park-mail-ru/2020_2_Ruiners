@@ -1,9 +1,10 @@
 package http
 
 import (
-	"encoding/json"
+	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/person"
 	"github.com/gorilla/mux"
+	"github.com/mailru/easyjson"
 	"github.com/sirupsen/logrus"
 	"net/http"
 )
@@ -23,7 +24,7 @@ func (ph *PersonHandler) PersonById(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	res, err := json.Marshal(&person)
+	res, err := easyjson.Marshal(person)
 	if err != nil {
 		ph.Logger.Error("error with delivery person by id json-marshal")
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -44,7 +45,8 @@ func (ph *PersonHandler) PersonsByFilm(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	res, err := json.Marshal(&persons)
+	res, err := easyjson.Marshal(persons)
+	fmt.Println(string(res))
 	if err != nil {
 		ph.Logger.Error("error with delivery person by film json-marshal")
 		http.Error(w, err.Error(), http.StatusBadRequest)

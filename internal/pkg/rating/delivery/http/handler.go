@@ -49,8 +49,8 @@ func (rh *RatingHandler) Rate() http.HandlerFunc {
 
 func (rh *RatingHandler) AddReview() http.HandlerFunc {
 	type AddReview struct {
-		FilmId int    `'json:"film_id"'`
-		Body   string `'json:"body"'`
+		FilmId int    `json:"film_id"`
+		Body   string `json:"body"`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		rh.Logger.Info("Add review")
@@ -118,7 +118,7 @@ func (rh *RatingHandler) GetCurrentUserRating() http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		rate.Rate	, err = rh.UseCase.GetCurrentRating(filmId, id.Value)
+		rate.Rate, err = rh.UseCase.GetCurrentRating(filmId, id.Value)
 		if err != nil {
 			rh.Logger.Error("error with usecase padd review")
 			http.Error(w, err.Error(), http.StatusBadRequest)
