@@ -38,3 +38,16 @@ func (mr *MockRecorderMockUseCase) GetReviews(filmId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetReviews", reflect.TypeOf((*MockUseCase)(nil).GetReviews), filmId)
 }
+
+func (m *MockUseCase) GetCurrentRating(filmId string, session string) (int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetCurrentRating", filmId, session)
+	ret0, _ := ret[0].(int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+func (mr *MockRecorderMockUseCase) GetCurrentRating(filmId interface{}, session interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCurrentRating", reflect.TypeOf((*MockUseCase)(nil).GetCurrentRating), filmId, session)
+}
