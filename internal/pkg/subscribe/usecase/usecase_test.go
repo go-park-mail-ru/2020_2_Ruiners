@@ -241,4 +241,112 @@ func TestGetFeed(t *testing.T) {
 		assert.Equal(t, *feed, testFeed)
 	})
 
+	t.Run("session error", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m0 := subscribe.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
+		m1.
+			EXPECT().
+			GetUserIdBySession(gomock.Eq(testSession.Id)).
+			Return(2, errors.New("error session"))
+		usecase := NewSubscribeUseCase(m0, m1)
+		_, err := usecase.GetFeed(testSession.Id)
+		assert.EqualError(t, err, "error session")
+	})
+
+	t.Run("error rating", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m0 := subscribe.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
+		m1.
+			EXPECT().
+			GetUserIdBySession(gomock.Eq(testSession.Id)).
+			Return(2, nil)
+
+		m0.
+			EXPECT().GetRatingFeed(gomock.Eq(2)).Return( &testFeedRating, errors.New("error rating"))
+		usecase := NewSubscribeUseCase(m0, m1)
+		_, err := usecase.GetFeed(testSession.Id)
+		assert.EqualError(t, err, "error rating")
+	})
+
+	t.Run("error review", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m0 := subscribe.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
+		m1.
+			EXPECT().
+			GetUserIdBySession(gomock.Eq(testSession.Id)).
+			Return(2, nil)
+
+		m0.
+			EXPECT().GetRatingFeed(gomock.Eq(2)).Return( &testFeedRating, nil)
+		m0.EXPECT().GetReviewFeed(gomock.Eq(2)).Return(&testFeedReview, errors.New("error review"))
+		usecase := NewSubscribeUseCase(m0, m1)
+		_, err := usecase.GetFeed(testSession.Id)
+		assert.EqualError(t, err, "error review")
+	})
+}
+
+func TestCheck(t *testing.T) {
+	t.Run("SUCCESS", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m0 := subscribe.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
+		m1.
+			EXPECT().
+			GetUserIdBySession(gomock.Eq(testSession.Id)).
+			Return(2, nil)
+
+		m0.
+			EXPECT().Check(gomock.Eq(2), gomock.Eq(1)).Return( true, nil)
+
+		usecase := NewSubscribeUseCase(m0, m1)
+		bol, err := usecase.Check(testSession.Id, 1)
+		assert.NoError(t, err)
+		assert.Equal(t, true, bol)
+	})
+
+	t.Run("error session", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m0 := subscribe.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
+		m1.
+			EXPECT().
+			GetUserIdBySession(gomock.Eq(testSession.Id)).
+			Return(2, errors.New("error"))
+
+		usecase := NewSubscribeUseCase(m0, m1)
+		_, err := usecase.Check(testSession.Id, 1)
+		assert.EqualError(t, err, "error")
+	})
+
+	t.Run("error bool", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m0 := subscribe.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
+		m1.
+			EXPECT().
+			GetUserIdBySession(gomock.Eq(testSession.Id)).
+			Return(2, nil)
+
+		m0.
+			EXPECT().Check(gomock.Eq(2), gomock.Eq(1)).Return( true, errors.New("error"))
+
+		usecase := NewSubscribeUseCase(m0, m1)
+		_, err := usecase.Check(testSession.Id, 1)
+		assert.EqualError(t, err, "error")
+	})
 }
