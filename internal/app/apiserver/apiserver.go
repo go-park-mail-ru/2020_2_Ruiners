@@ -27,6 +27,7 @@ import (
 	userUC "github.com/Arkadiyche/http-rest-api/internal/pkg/user/usecase"
 	"github.com/gorilla/mux"
 	"github.com/microcosm-cc/bluemonday"
+	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/sirupsen/logrus"
 	"log"
@@ -79,6 +80,7 @@ func (s *APIServer) configureLogger() error {
 
 func (s *APIServer) configureRouter() {
 	user, film, rating, person, playlist, subscribe := s.InitHandler()
+	prometheus.MustRegister(middleware.HttpDuration, middleware.HttpHits)
 	//User routes ...
 	s.router.HandleFunc("/hello", s.handleHello())
 	s.router.HandleFunc("/signup", user.Signup)
@@ -117,6 +119,8 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/sub/check/{user_id:[0-9]+}", subscribe.Check())
 
 	s.router.Handle("/metrics", promhttp.Handler())
+
+	s.router.Use(middleware.PrometheusMiddleware)
 
 	s.router.Use(middleware.CORSMiddleware(s.config.CORS))
 }
