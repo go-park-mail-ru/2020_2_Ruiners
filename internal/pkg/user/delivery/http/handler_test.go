@@ -59,7 +59,7 @@ func TestMe(t *testing.T) {
 		rr := httptest.NewRecorder()
 		handler := http.HandlerFunc(userHandler.Me)
 		handler.ServeHTTP(rr, req)
-		assert.Equal(t, rr.Body.String(), fmt.Sprint("{\"id\":", strconv.Itoa(testUser.Id), ",\"Login\":\"", testUser.Username, "\",\"Email\":\"", testUser.Email, "\"}"))
+		assert.Equal(t, rr.Body.String(), fmt.Sprint("{\"id\":", strconv.Itoa(testUser.Id), ",\"login\":\"", testUser.Username, "\",\"email\":\"", testUser.Email, "\"}"))
 	})
 }
 
@@ -92,7 +92,7 @@ func TestLogout(t *testing.T) {
 		rr := httptest.NewRecorder()
 		handler := http.HandlerFunc(userHandler.Logout)
 		handler.ServeHTTP(rr, req)
-		assert.Equal(t, rr.Body.String(), "{\"id\":0,\"Login\":\"\",\"Email\":\"\"}")
+		assert.Equal(t, rr.Body.String(), "{\"id\":0,\"login\":\"\",\"email\":\"\"}")
 	})
 
 	t.Run("Logout-Fail", func(t *testing.T) {

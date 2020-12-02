@@ -53,6 +53,6 @@ func TestGetReviews(t *testing.T) {
 		rr := httptest.NewRecorder()
 		handler := http.HandlerFunc(ratingHandler.ShowReviews)
 		handler.ServeHTTP(rr, req)
-		assert.Equal(t, rr.Body.String(), "[{\"Id\":5,\"UserLogin\":\"arkadiy\",\"TextBody\":\"aaaa\",\"UserId\":1,\"FilmId\":10,\"Rate\":1}]")
+		assert.Equal(t, rr.Body.String(), "[{\"id\":5,\"user_login\":\"arkadiy\",\"text_body\":\"aaaa\",\"user_id\":1,\"film_id\":10,\"rate\":1}]")
 	})
 }
