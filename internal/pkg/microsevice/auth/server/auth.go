@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"fmt"
 	pb "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/proto"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/user"
 	"google.golang.org/grpc/codes"
@@ -18,10 +17,8 @@ func NewAuthServer(UserUC user.UseCase) *AuthServer {
 }
 
 func (a *AuthServer) Signup(ctx context.Context, usr *pb.AuthUserSignup) (*pb.AuthSessionId, error) {
-	fmt.Println("BBBBBBBBBBBBBBBBBBBBBb")
 	sessionId, err := a.UseCase.Signup(usr.Login, usr.Email, usr.Password)
 	if err != nil {
-		fmt.Println(err, "SUKA")
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 

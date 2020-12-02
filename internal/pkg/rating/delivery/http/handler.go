@@ -19,8 +19,8 @@ type RatingHandler struct {
 
 func (rh *RatingHandler) Rate() http.HandlerFunc {
 	type Rate struct {
-		FilmId int `'json:"filmId"'`
-		Rating int `'json:"rating"'`
+		FilmId int `json:"film_id"`
+		Rating int `json:"rating"`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		rh.Logger.Info("Rate")
