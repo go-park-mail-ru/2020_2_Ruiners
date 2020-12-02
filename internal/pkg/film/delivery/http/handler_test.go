@@ -4,20 +4,14 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 	"net/http/httptest"
-
-	//"fmt"
 	"strconv"
 
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/film"
-	//"errors"
-	//"encoding/json"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/golang/mock/gomock"
 	"github.com/sirupsen/logrus"
-	//"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
-	//"time"
 )
 
 var testFilm = models.Film{
@@ -64,20 +58,16 @@ func TestFindById(t *testing.T) {
 			"id": "5",
 		}
 
-		// CHANGE THIS LINE!!!
-		req = mux.SetURLVars(req, vars)
 		if err != nil {
 			t.Fatal(err)
 		}
-		//req.AddCookie(&http.Cookie{
-		//	Name:    "session_id",
-		//	Value:   testSession.Id,
-		//	Expires: time.Now().Add(10 * time.Hour),
-		//})
+
+		req = mux.SetURLVars(req, vars)
+
 		rr := httptest.NewRecorder()
 		handler := http.HandlerFunc(filmHandler.FilmById)
 		handler.ServeHTTP(rr, req)
-		assert.Equal(t, rr.Body.String(), "{\"id\":5,\"title\":\"string\",\"Rating\":7,\"SumVotes\":5,\"Description\":\"string\",\"MainGenre\":\"string\",\"YoutubeLink\":\"string\",\"BigImg\":\"string\",\"SmallImg\":\"string\",\"year\":2007,\"country\":\"string\"}")
+		assert.Equal(t, rr.Body.String(), "{\"id\":5,\"title\":\"string\",\"rating\":7,\"sum_votes\":5,\"description\":\"string\",\"main_genre\":\"string\",\"youtube_link\":\"string\",\"big_img\":\"string\",\"small_img\":\"string\",\"year\":2007,\"country\":\"string\"}")
 	})
 }
 
@@ -106,20 +96,16 @@ func TestFindByGenre(t *testing.T) {
 			"genre": testFilm.MainGenre,
 		}
 
-		// CHANGE THIS LINE!!!
-		req = mux.SetURLVars(req, vars)
 		if err != nil {
 			t.Fatal(err)
 		}
-		//req.AddCookie(&http.Cookie{
-		//	Name:    "session_id",
-		//	Value:   testSession.Id,
-		//	Expires: time.Now().Add(10 * time.Hour),
-		//})
+
+		req = mux.SetURLVars(req, vars)
+
 		rr := httptest.NewRecorder()
 		handler := http.HandlerFunc(filmHandler.FilmsByGenre)
 		handler.ServeHTTP(rr, req)
-		assert.Equal(t, rr.Body.String(), "[{\"id\":5,\"title\":\"string\",\"MainGenre\":\"string\",\"SmallImg\":\"string\",\"year\":2007}]")
+		assert.Equal(t, rr.Body.String(), "[{\"id\":5,\"title\":\"string\",\"main_genre\":\"string\",\"small_img\":\"string\",\"year\":2007}]")
 	})
 }
 
@@ -148,19 +134,15 @@ func TestFindByPerson(t *testing.T) {
 			"id": "1",
 		}
 
-		// CHANGE THIS LINE!!!
-		req = mux.SetURLVars(req, vars)
 		if err != nil {
 			t.Fatal(err)
 		}
-		//req.AddCookie(&http.Cookie{
-		//	Name:    "session_id",
-		//	Value:   testSession.Id,
-		//	Expires: time.Now().Add(10 * time.Hour),
-		//})
+
+		req = mux.SetURLVars(req, vars)
+
 		rr := httptest.NewRecorder()
 		handler := http.HandlerFunc(filmHandler.FilmsByPerson)
 		handler.ServeHTTP(rr, req)
-		assert.Equal(t, rr.Body.String(), "[{\"id\":5,\"title\":\"string\",\"MainGenre\":\"string\",\"SmallImg\":\"string\",\"year\":2007}]")
+		assert.Equal(t, rr.Body.String(), "[{\"id\":5,\"title\":\"string\",\"main_genre\":\"string\",\"small_img\":\"string\",\"year\":2007}]")
 	})
 }

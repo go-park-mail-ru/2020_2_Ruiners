@@ -3,11 +3,12 @@ package http
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/auth/client"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/user"
 	"github.com/gorilla/mux"
+	"github.com/mailru/easyjson"
 	"github.com/microcosm-cc/bluemonday"
-	uuid2 "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
 	"io"
 	"net/http"
@@ -15,6 +16,7 @@ import (
 )
 
 type UserHandler struct {
+	RpcAuth   client.IAuthClient
 	UseCase   user.UseCase
 	Logger    *logrus.Logger
 	Sanitazer *bluemonday.Policy
@@ -22,45 +24,44 @@ type UserHandler struct {
 
 func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r.Method)
-	u := models.Signup{}
+	u := new(models.Signup)
 	uh.Logger.Info("signup")
-	err := json.NewDecoder(r.Body).Decode(&u)
+	err := easyjson.UnmarshalFromReader(r.Body, u)
 	u.Login, u.Email, u.Password = uh.Sanitazer.Sanitize(u.Login), uh.Sanitazer.Sanitize(u.Email), uh.Sanitazer.Sanitize(u.Password)
 	if err != nil {
 		uh.Logger.Warn("Error with user signup delivery json")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	session := models.Session{Id: uuid2.NewV4().String(), Username: u.Login}
-	user := models.User{Username: u.Login, Password: u.Password, Email: u.Email}
-	_, err1 := uh.UseCase.Signup(&user, &session)
+	sessionId, err1 := uh.RpcAuth.Signup(u.Login, u.Email, u.Password)
 	if err1 != nil {
 		uh.Logger.Error("error with usecase signup")
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	CreateSession(w, session.Id)
+	u.Password = ""
+	CreateSession(w, sessionId)
 	w.WriteHeader(http.StatusOK)
 }
 
 func (uh *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 	uh.Logger.Info("Login")
-	l := models.Login{}
-	err := json.NewDecoder(r.Body).Decode(&l)
+	l := new(models.Login)
+	err := easyjson.UnmarshalFromReader(r.Body, l)
 	l.Login, l.Password = uh.Sanitazer.Sanitize(l.Login), uh.Sanitazer.Sanitize(l.Password)
 	if err != nil {
 		uh.Logger.Error("Error with user login delivery json")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	session := models.Session{Id: uuid2.NewV4().String(), Username: l.Login}
-	_, err1 := uh.UseCase.Login(&l, &session)
+	sessionId, err1 := uh.RpcAuth.Login(l.Login, l.Password)
 	if err1 != nil {
 		uh.Logger.Error("error with usecase login")
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	CreateSession(w, session.Id)
+	l.Password = ""
+	CreateSession(w, sessionId)
 	w.WriteHeader(http.StatusOK)
 }
 
@@ -70,7 +71,7 @@ func (uh *UserHandler) Me(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		uh.Logger.Warn("Error with user Me delivery get cookie")
 		user := models.PublicUser{Login: "", Email: ""}
-		result, err := json.Marshal(&user)
+		result, err := easyjson.Marshal(user)
 		if err != nil {
 			uh.Logger.Error("Error with user me delivery json")
 			http.Error(w, err.Error(), http.StatusBadRequest)
@@ -80,12 +81,11 @@ func (uh *UserHandler) Me(w http.ResponseWriter, r *http.Request) {
 		w.Write(result)
 		return
 	}
-	fmt.Println(id.Value)
 	user, err1 := uh.UseCase.Me(id.Value)
 	if err1 != nil {
 		uh.Logger.Error("error with usecase me")
 		user := models.PublicUser{Login: "", Email: ""}
-		result, err := json.Marshal(&user)
+		result, err := easyjson.Marshal(user)
 		if err != nil {
 			uh.Logger.Error("Error with user Me delivery json-Marshal")
 			http.Error(w, err1.Error(), http.StatusBadRequest)
@@ -96,7 +96,7 @@ func (uh *UserHandler) Me(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	public := models.PublicUser{Id: user.Id, Login: user.Username, Email: user.Email}
-	result, err := json.Marshal(&public)
+	result, err := easyjson.Marshal(public)
 	if err != nil {
 		uh.Logger.Error("Error with user Me delivery json - marshal")
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -112,7 +112,7 @@ func (uh *UserHandler) Logout(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		uh.Logger.Warn("No cookie")
 		user := models.PublicUser{Login: "", Email: ""}
-		result, err := json.Marshal(&user)
+		result, err := easyjson.Marshal(user)
 		if err != nil {
 			uh.Logger.Error("Error with user logout delivery json")
 			http.Error(w, err.Error(), http.StatusBadRequest)
@@ -124,7 +124,7 @@ func (uh *UserHandler) Logout(w http.ResponseWriter, r *http.Request) {
 	}
 	session.Expires = time.Now().AddDate(0, 0, -1)
 	http.SetCookie(w, session)
-	err1 := uh.UseCase.Logout(session.Value)
+	err1 := uh.RpcAuth.Logout(session.Value)
 	if err1 != nil {
 		uh.Logger.Error("error with usecase logout")
 		http.Error(w, err1.Error(), http.StatusBadRequest)
@@ -140,9 +140,29 @@ func (uh *UserHandler) Logout(w http.ResponseWriter, r *http.Request) {
 	w.Write(result)
 }
 
+func (uh *UserHandler) GetById(w http.ResponseWriter, r *http.Request) {
+	uh.Logger.Info("GetByID")
+	vars := mux.Vars(r)
+	id := vars["id"]
+	user, err := uh.UseCase.GetById(id)
+	if err != nil {
+		uh.Logger.Error("error with usecase get by id")
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	result, err := easyjson.Marshal(user)
+	if err != nil {
+		uh.Logger.Error("Error with user get by id delivery json-marshal")
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write(result)
+}
+
 func (uh *UserHandler) ChangeLogin() http.HandlerFunc {
 	type ChangeLogin struct {
-		Login string `'json:"login"'`
+		Login string `json:"login"`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		uh.Logger.Info("Change login")
@@ -172,8 +192,8 @@ func (uh *UserHandler) ChangeLogin() http.HandlerFunc {
 
 func (uh *UserHandler) ChangePassword() http.HandlerFunc {
 	type ChangePassword struct {
-		PasswordOld string `'json:"password_old"'`
-		Password    string `'json:"password"'`
+		PasswordOld string `json:"password_old"`
+		Password    string `json:"password"`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		uh.Logger.Info("Change password")

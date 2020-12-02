@@ -25,19 +25,6 @@ func (m *MockRepository) EXPECT() *MockRecorderMockRepository {
 	return m.recorder
 }
 
-func (m *MockRepository) Create(user *models.User) (*models.User, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create", user)
-	ret0, _ := ret[0].(*models.User)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-func (mr *MockRecorderMockRepository) Create(user interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockRepository)(nil).Create), user)
-}
-
 func (m *MockRepository) FindByLogin(login string) (*models.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindByLogin", login)

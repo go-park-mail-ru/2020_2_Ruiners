@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package proto;
+
+message Rating {
+  int64 rating = 1;
+  int64 filmId = 2;
+  string session = 3;
+}
+
+message Review {
+  string body = 1;
+  int64 filmId = 2;
+  string session = 3;
+}
+
+message RateEmpty {
+}
+
+service Rate {
+  rpc Rate(Rating) returns (RateEmpty) {}
+  rpc AddReview(Review) returns (RateEmpty) {}
+}

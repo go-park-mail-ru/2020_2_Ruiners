@@ -53,7 +53,7 @@ VALUES
         'Путешествие в дивный новый мир Джеймса Кэмерона',
         'Фантастика',
         'https://www.youtube.com/embed/4HFlPcX2HFo',
-        'https://wallpaper-house.com/data/out/5/wallpaper2you_77895.jpg',
+        'http://www.hqwallpapers.ru/wallpapers/movies/afisha-avatar-774x435.jpg',
         'https://st.kp.yandex.net/im/poster/1/0/8/kinopoisk.ru-Avatar-1089521.jpg',
         2009,
         'США'
@@ -100,7 +100,7 @@ VALUES
          'Фантастика',
          'https://www.youtube.com/embed/taQW31SVPCk',
          'https://i.pinimg.com/originals/d3/d2/db/d3d2dbf0cc05af5c6cf236e7e82f6ef8.jpg',
-         'http://kinodrive.org/uploads/posts/2020-03/1585010486_38.jpg',
+         'https://st.kp.yandex.net/im/poster/3/0/4/kinopoisk.ru-Blade-Runner-2049-3047529.jpg',
           2017,
          'США'
     ),
@@ -121,7 +121,8 @@ create table rating
     id int auto_increment primary key,
     rating int,
     film_id int,
-    user_id int
+    user_id int,
+    create_date DATETIME DEFAULT NOW() ON UPDATE NOW()
 );
 
 CREATE TRIGGER trigger1
@@ -141,7 +142,8 @@ create table review
     id int auto_increment primary key,
     body varchar(255) character set 'utf8' not null,
     film_id int,
-    user_id int
+    user_id int,
+    create_date DATETIME DEFAULT NOW()
 );
 
 create table person
@@ -160,6 +162,35 @@ create table person_film
     person_id int,
     role varchar(10)
 );
+
+create table playlist
+(
+    id int auto_increment primary key,
+    title varchar(80) character set 'utf8' not null,
+    user_id int not null
+);
+
+create table playlist_film
+(
+    id int auto_increment primary key,
+    playlist_id int not null,
+    film_id int not null,
+    FOREIGN KEY (playlist_id)
+        REFERENCES playlist (id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (film_id)
+        REFERENCES films (id)
+        ON DELETE CASCADE, CONSTRAINT pf unique (playlist_id, film_id)
+);
+
+create table subscribe
+(
+    id int auto_increment primary key,
+    subscriber int not null,
+    author int not null,
+    unique(subscriber, author)
+);
+
 
 insert into person(id, name, image, born_date, born_place)
     VALUES(1, 'Леонардо ДиКаприо', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1629390/24d5c3b1-7dea-4dc2-a756-361264a9d007/280x420', '1974, 11 ноября', 'США'),

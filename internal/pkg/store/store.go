@@ -11,7 +11,6 @@ type Store struct {
 }
 
 func New(config *Config) *Store {
-	//fmt.Println(config.DatabaseURL)
 	return &Store{
 		config: config,
 	}

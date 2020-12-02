@@ -2,6 +2,7 @@ package http
 
 import (
 	"encoding/json"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/rate/client"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/rating"
 	"github.com/gorilla/mux"
 	"github.com/microcosm-cc/bluemonday"
@@ -10,6 +11,7 @@ import (
 )
 
 type RatingHandler struct {
+	RpcRate   client.IRateClient
 	UseCase   rating.UseCase
 	Logger    *logrus.Logger
 	Sanitazer *bluemonday.Policy
@@ -35,7 +37,7 @@ func (rh *RatingHandler) Rate() http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		err = rh.UseCase.Rate(l.Rating, l.FilmId, id.Value)
+		err = rh.RpcRate.Rate(l.Rating, l.FilmId, id.Value)
 		if err != nil {
 			rh.Logger.Error("error with usecase rate")
 			http.Error(w, err.Error(), http.StatusBadRequest)
@@ -47,8 +49,8 @@ func (rh *RatingHandler) Rate() http.HandlerFunc {
 
 func (rh *RatingHandler) AddReview() http.HandlerFunc {
 	type AddReview struct {
-		FilmId int    `'json:"film_id"'`
-		Body   string `'json:"body"'`
+		FilmId int    `json:"film_id"`
+		Body   string `json:"body"`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		rh.Logger.Info("Add review")
@@ -66,7 +68,7 @@ func (rh *RatingHandler) AddReview() http.HandlerFunc {
 			return
 		}
 		l.Body = rh.Sanitazer.Sanitize(l.Body)
-		err = rh.UseCase.AddReview(l.Body, l.FilmId, id.Value)
+		err = rh.RpcRate.AddReview(l.Body, l.FilmId, id.Value)
 		if err != nil {
 			rh.Logger.Error("error with usecase padd review")
 			http.Error(w, err.Error(), http.StatusBadRequest)
@@ -94,4 +96,42 @@ func (rh *RatingHandler) ShowReviews(w http.ResponseWriter, r *http.Request) {
 	}
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
+}
+
+func (rh *RatingHandler) GetCurrentUserRating() http.HandlerFunc {
+	type Rate struct {
+		Rate int `json:"rate"`
+	}
+	return func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		filmId := vars["film_id"]
+		rh.Logger.Info("Add review")
+		rate := Rate{}
+		id, err := r.Cookie("session_id")
+		if err != nil {
+			rh.Logger.Error("No cookie delivery add review")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		if err != nil {
+			rh.Logger.Error("error with delivery add review json-decode")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		rate.Rate, err = rh.UseCase.GetCurrentRating(filmId, id.Value)
+		if err != nil {
+			rh.Logger.Error("error with usecase padd review")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		res, err := json.Marshal(&rate)
+		if err != nil {
+			rh.Logger.Error("error with delivery show reviews json-marshal")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+		w.Write(res)
+	}
 }

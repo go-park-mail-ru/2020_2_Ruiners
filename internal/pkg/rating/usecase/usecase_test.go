@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"errors"
-	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/sesession"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/session/session"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/rating"
 	"github.com/golang/mock/gomock"
@@ -13,54 +13,6 @@ import (
 var testSession = models.Session{
 	Id:       "wefwuifbwiuhegfdjvsoafjh",
 	Username: "Arkadiy",
-}
-
-func TestRate(t *testing.T) {
-	t.Run("RATE UPDATE", func(t *testing.T) {
-		ctrl := gomock.NewController(t)
-		defer ctrl.Finish()
-
-		m1 := sesession.NewMockRepository(ctrl)
-		m1.EXPECT().GetUserIdBySession(gomock.Eq(testSession.Id)).Return(1, nil)
-		m0 := rating.NewMockRepository(ctrl)
-		m0.
-			EXPECT().CheckRating(gomock.Eq(1), gomock.Eq(1)).Return(true, nil)
-		m0.EXPECT().UpdateRating(gomock.Eq(1), gomock.Eq(1), gomock.Eq(1)).Return(nil)
-		usecase := NewRatingUseCase(m0, m1)
-		err := usecase.Rate(1, 1, testSession.Id)
-		assert.NoError(t, err)
-	})
-
-	t.Run("RATE ADD", func(t *testing.T) {
-		ctrl := gomock.NewController(t)
-		defer ctrl.Finish()
-
-		m1 := sesession.NewMockRepository(ctrl)
-		m1.EXPECT().GetUserIdBySession(gomock.Eq(testSession.Id)).Return(1, nil)
-		m0 := rating.NewMockRepository(ctrl)
-		m0.
-			EXPECT().CheckRating(gomock.Eq(1), gomock.Eq(1)).Return(false, nil)
-		m0.EXPECT().AddRating(gomock.Eq(1), gomock.Eq(1), gomock.Eq(1)).Return(nil)
-		usecase := NewRatingUseCase(m0, m1)
-		err := usecase.Rate(1, 1, testSession.Id)
-		assert.NoError(t, err)
-	})
-}
-
-func TestAddReview(t *testing.T) {
-	t.Run("ADD REVIEW", func(t *testing.T) {
-		ctrl := gomock.NewController(t)
-		defer ctrl.Finish()
-
-		m1 := sesession.NewMockRepository(ctrl)
-		m1.EXPECT().GetUserIdBySession(gomock.Eq(testSession.Id)).Return(1, nil)
-		m0 := rating.NewMockRepository(ctrl)
-		m0.
-			EXPECT().AddReview(gomock.Eq("ERIK"), gomock.Eq(1), gomock.Eq(1)).Return(nil)
-		usecase := NewRatingUseCase(m0, m1)
-		err := usecase.AddReview("ERIK", 1, testSession.Id)
-		assert.NoError(t, err)
-	})
 }
 
 func TestGetReviews(t *testing.T) {
@@ -84,7 +36,7 @@ func TestGetReviews(t *testing.T) {
 			EXPECT().GetReviewsByFilmId(gomock.Eq(1)).Return(&testReviews, nil)
 		m0.EXPECT().GetUserById(gomock.Eq(1)).Return(testReview.UserLogin, nil)
 		m0.EXPECT().GetRating(gomock.Eq(1), gomock.Eq(1)).Return(testReview.Rate, nil)
-		m1 := sesession.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
 		usecase := NewRatingUseCase(m0, m1)
 		reviews, err := usecase.GetReviews("1")
 		assert.NoError(t, err)
@@ -109,7 +61,7 @@ func TestGetReviews(t *testing.T) {
 		m0 := rating.NewMockRepository(ctrl)
 		m0.
 			EXPECT().GetReviewsByFilmId(gomock.Eq(1)).Return(&testReviews, errors.New("no reviews"))
-		m1 := sesession.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
 		usecase := NewRatingUseCase(m0, m1)
 		_, err := usecase.GetReviews("1")
 		assert.EqualError(t, err, "no reviews")
@@ -145,7 +97,7 @@ func TestGetReviews(t *testing.T) {
 			EXPECT().GetReviewsByFilmId(gomock.Eq(1)).Return(&testReviews, nil)
 		m0.EXPECT().GetUserById(gomock.Eq(1)).Return(testReview.UserLogin, errors.New("deleted"))
 		m0.EXPECT().GetRating(gomock.Eq(1), gomock.Eq(1)).Return(testReview.Rate, nil)
-		m1 := sesession.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
 		usecase := NewRatingUseCase(m0, m1)
 		reviews, err := usecase.GetReviews("1")
 		assert.NoError(t, err)
@@ -194,7 +146,7 @@ func TestGetReviews(t *testing.T) {
 			EXPECT().GetReviewsByFilmId(gomock.Eq(1)).Return(&testReviews, nil)
 		m0.EXPECT().GetUserById(gomock.Eq(1)).Return(testReview.UserLogin, nil)
 		m0.EXPECT().GetRating(gomock.Eq(1), gomock.Eq(1)).Return(testReview.Rate, errors.New("0"))
-		m1 := sesession.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
 		usecase := NewRatingUseCase(m0, m1)
 		reviews, err := usecase.GetReviews("1")
 		assert.NoError(t, err)

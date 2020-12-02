@@ -1,11 +1,8 @@
 package film
 
 import (
-	//"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/golang/mock/gomock"
-	//"mime/multipart"
-	//"os"/
 	"reflect"
 )
 

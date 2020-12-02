@@ -44,19 +44,15 @@ func TestGetReviews(t *testing.T) {
 			"film_id": "10",
 		}
 
-		// CHANGE THIS LINE!!!
-		req = mux.SetURLVars(req, vars)
 		if err != nil {
 			t.Fatal(err)
 		}
-		//req.AddCookie(&http.Cookie{
-		//	Name:    "session_id",
-		//	Value:   testSession.Id,
-		//	Expires: time.Now().Add(10 * time.Hour),
-		//})
+
+		req = mux.SetURLVars(req, vars)
+
 		rr := httptest.NewRecorder()
 		handler := http.HandlerFunc(ratingHandler.ShowReviews)
 		handler.ServeHTTP(rr, req)
-		assert.Equal(t, rr.Body.String(), "[{\"Id\":5,\"UserLogin\":\"arkadiy\",\"TextBody\":\"aaaa\",\"UserId\":1,\"FilmId\":10,\"Rate\":1}]")
+		assert.Equal(t, rr.Body.String(), "[{\"id\":5,\"user_login\":\"arkadiy\",\"text_body\":\"aaaa\",\"user_id\":1,\"film_id\":10,\"rate\":1}]")
 	})
 }

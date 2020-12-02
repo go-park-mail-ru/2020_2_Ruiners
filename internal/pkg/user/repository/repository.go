@@ -16,14 +16,6 @@ func NewUserRepository(db *sql.DB) *UserRepository {
 	}
 }
 
-func (r *UserRepository) Create(u *models.User) (*models.User, error) {
-	_, err := r.db.Exec("INSERT INTO users (username, password, email) VALUES(?, ?, ?)", u.Username, u.Password, u.Email)
-	if err != nil {
-		return nil, err
-	}
-	return nil, nil
-}
-
 func (r *UserRepository) FindByLogin(login string) (*models.User, error) {
 	user := models.User{}
 	err := r.db.QueryRow("SELECT id, username, password, email, image  FROM users WHERE username = ? ORDER BY id ASC LIMIT 1", login).

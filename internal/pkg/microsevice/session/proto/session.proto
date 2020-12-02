@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package proto;
+
+message Session {
+  string sessionId = 1;
+  string login = 2;
+}
+
+message UpdateLoginn {
+  string old = 1;
+  string new = 2;
+}
+
+message SessionId {
+  string sessionId = 1;
+}
+
+message UserId {
+  int64 userId = 1;
+}
+
+message Empty {
+}
+
+service Sessions {
+  rpc Create(Session) returns (Empty) {}
+  rpc FindById(SessionId) returns (Session) {}
+  rpc Delete(SessionId) returns (Empty) {}
+  rpc UpdateLogin(UpdateLoginn) returns (Empty) {}
+  rpc GetUserIdBySession(SessionId) returns (UserId) {}
+}

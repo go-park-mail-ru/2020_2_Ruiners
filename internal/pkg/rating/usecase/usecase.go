@@ -2,51 +2,23 @@ package usecase
 
 import (
 	"fmt"
-	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/sesession"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/session/client"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/session/session"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/rating"
 	"strconv"
 )
 
 type RatingUseCase struct {
-	RatingRepository  rating.Repository
-	SessionRepository sesession.Repository
+	RatingRepository rating.Repository
+	RpcSession       client.ISessionClient
 }
 
-func NewRatingUseCase(ratingRepository rating.Repository, sessionRepository sesession.Repository) *RatingUseCase {
+func NewRatingUseCase(ratingRepository rating.Repository, rpcSession session.Repository) *RatingUseCase {
 	return &RatingUseCase{
-		RatingRepository:  ratingRepository,
-		SessionRepository: sessionRepository,
+		RatingRepository: ratingRepository,
+		RpcSession:       rpcSession,
 	}
-}
-
-func (uc *RatingUseCase) Rate(rating int, filmId int, session string) error {
-	userId, err := uc.SessionRepository.GetUserIdBySession(session)
-	if err != nil {
-		return err
-	}
-	check, err := uc.RatingRepository.CheckRating(filmId, userId)
-	if err != nil {
-		return err
-	}
-	if !check {
-		uc.RatingRepository.AddRating(rating, filmId, userId)
-	} else {
-		uc.RatingRepository.UpdateRating(rating, filmId, userId)
-	}
-	return nil
-}
-
-func (uc *RatingUseCase) AddReview(body string, filmId int, session string) error {
-	userId, err := uc.SessionRepository.GetUserIdBySession(session)
-	if err != nil {
-		return err
-	}
-	err = uc.RatingRepository.AddReview(body, filmId, userId)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func (uc *RatingUseCase) GetReviews(filmId string) (*models.Reviews, error) {
@@ -74,4 +46,20 @@ func (uc *RatingUseCase) GetReviews(filmId string) (*models.Reviews, error) {
 	}
 	fmt.Println(rs)
 	return &rs, nil
+}
+
+func (uc *RatingUseCase) GetCurrentRating(filmId string, session string) (int, error) {
+	id, err := strconv.Atoi(filmId)
+	if err != nil {
+		return 0, err
+	}
+	userId, err := uc.RpcSession.GetUserIdBySession(session)
+	if err != nil {
+		return 0, err
+	}
+	rate, err := uc.RatingRepository.GetRating(id, userId)
+	if err != nil {
+		rate = 0
+	}
+	return rate, nil
 }

@@ -4,3 +4,6 @@ uploads
 !uploads/def.png
 coverage.out
 apiserver
+internal/pkg/microsevice/auth/cmd/cmd
+internal/pkg/microsevice/session/cmd/cmd
+internal/pkg/microsevice/rate/cmd/cmd
