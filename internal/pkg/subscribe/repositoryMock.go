@@ -37,8 +37,7 @@ func (mr *MockRecorderMockRepository) AddSubscribe(subscriberId interface{}, aut
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddSubscribe", reflect.TypeOf((*MockRepository)(nil).AddSubscribe), subscriberId, authorId)
 }
 
-
-func (m *MockRepository) DeleteSubscribe(subscriberId int, authorId int) error  {
+func (m *MockRepository) DeleteSubscribe(subscriberId int, authorId int) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteSubscribe", subscriberId, authorId)
 	ret0, _ := ret[0].(error)
@@ -50,7 +49,7 @@ func (mr *MockRecorderMockRepository) DeleteSubscribe(subscriberId interface{}, 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteSubscribe", reflect.TypeOf((*MockRepository)(nil).DeleteSubscribe), subscriberId, authorId)
 }
 
-func (m *MockRepository) GetAuthors(subscriberId int) (*models.PublicUsers, error)  {
+func (m *MockRepository) GetAuthors(subscriberId int) (*models.PublicUsers, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAuthors", subscriberId)
 	ret0, _ := ret[0].(*models.PublicUsers)
@@ -63,7 +62,7 @@ func (mr *MockRecorderMockRepository) GetAuthors(subscriberId interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAuthors", reflect.TypeOf((*MockRepository)(nil).GetAuthors), subscriberId)
 }
 
-func (m *MockRepository) GetRatingFeed(subscriberId int) (*models.Feed, error)  {
+func (m *MockRepository) GetRatingFeed(subscriberId int) (*models.Feed, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetRatingFeed", subscriberId)
 	ret0, _ := ret[0].(*models.Feed)
@@ -76,7 +75,7 @@ func (mr *MockRecorderMockRepository) GetRatingFeed(subscriberId interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRatingFeed", reflect.TypeOf((*MockRepository)(nil).GetRatingFeed), subscriberId)
 }
 
-func (m *MockRepository) GetReviewFeed(subscriberId int) (*models.Feed, error)  {
+func (m *MockRepository) GetReviewFeed(subscriberId int) (*models.Feed, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetReviewFeed", subscriberId)
 	ret0, _ := ret[0].(*models.Feed)
@@ -89,7 +88,7 @@ func (mr *MockRecorderMockRepository) GetReviewFeed(subscriberId interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetReviewFeed", reflect.TypeOf((*MockRepository)(nil).GetReviewFeed), subscriberId)
 }
 
-func (m *MockRepository) Check(subscriberId int, authorId int) (bool, error)  {
+func (m *MockRepository) Check(subscriberId int, authorId int) (bool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Check", subscriberId, authorId)
 	ret0, _ := ret[0].(bool)
@@ -101,5 +100,3 @@ func (mr *MockRecorderMockRepository) Check(subscriberId interface{}, authorId i
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Check", reflect.TypeOf((*MockRepository)(nil).Check), subscriberId, authorId)
 }
-
-

@@ -65,7 +65,6 @@ func (r *FilmRepository) FindFilmsByPerson(id int) (*models.FilmCards, error) {
 	return &filmCards, nil
 }
 
-
 func (r *FilmRepository) FindFilmsByPlaylist(id int) (*models.FilmCards, error) {
 	filmCard := models.FilmCard{}
 	filmCards := models.FilmCards{}

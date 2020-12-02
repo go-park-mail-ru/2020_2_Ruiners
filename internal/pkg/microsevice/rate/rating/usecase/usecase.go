@@ -7,14 +7,14 @@ import (
 )
 
 type RatingUseCase struct {
-	RatingRepository  rating.Repository
-	RpcSession client.ISessionClient
+	RatingRepository rating.Repository
+	RpcSession       client.ISessionClient
 }
 
 func NewRatingUseCase(ratingRepository rating.Repository, rpcSession session.Repository) *RatingUseCase {
 	return &RatingUseCase{
-		RatingRepository:  ratingRepository,
-		RpcSession: rpcSession,
+		RatingRepository: ratingRepository,
+		RpcSession:       rpcSession,
 	}
 }
 

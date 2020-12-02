@@ -3,8 +3,8 @@ package server
 import (
 	"database/sql"
 	pb "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/rate/proto"
-	RatingRep"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/rate/rating/repository"
-	RatingUC"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/rate/rating/usecase"
+	RatingRep "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/rate/rating/repository"
+	RatingUC "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/rate/rating/usecase"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/session/client"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/store"
 	"google.golang.org/grpc"
@@ -54,6 +54,3 @@ func (s *Server) ListenAndServe() error {
 
 	return nil
 }
-
-
-

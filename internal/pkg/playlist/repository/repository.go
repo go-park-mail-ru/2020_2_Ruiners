@@ -17,7 +17,7 @@ func NewRPlaylistRepository(db *sql.DB) *PlaylistRepository {
 	}
 }
 
-func(p *PlaylistRepository) Create(title string, userId int) error {
+func (p *PlaylistRepository) Create(title string, userId int) error {
 	_, err := p.db.Exec("INSERT INTO playlist(title, user_id) VALUE(? , ?)", title, userId)
 	if err != nil {
 		return err
@@ -25,7 +25,7 @@ func(p *PlaylistRepository) Create(title string, userId int) error {
 	return nil
 }
 
-func(p *PlaylistRepository) Delete(playlistId int) error {
+func (p *PlaylistRepository) Delete(playlistId int) error {
 	fmt.Println("rep", playlistId)
 	_, err := p.db.Exec("DELETE FROM playlist WHERE id = ?", playlistId)
 	if err != nil {
@@ -34,7 +34,7 @@ func(p *PlaylistRepository) Delete(playlistId int) error {
 	return nil
 }
 
-func(p *PlaylistRepository) Add(filmId int, playlistId int) error {
+func (p *PlaylistRepository) Add(filmId int, playlistId int) error {
 	_, err := p.db.Exec("INSERT INTO playlist_film(playlist_id, film_id) VALUE(? , ?)", playlistId, filmId)
 	if err != nil {
 		return err
@@ -42,7 +42,7 @@ func(p *PlaylistRepository) Add(filmId int, playlistId int) error {
 	return nil
 }
 
-func(p *PlaylistRepository) Remove(filmId int, playlistId int) error {
+func (p *PlaylistRepository) Remove(filmId int, playlistId int) error {
 	_, err := p.db.Exec("DELETE FROM playlist_film WHERE playlist_id = ? AND film_id = ?", playlistId, filmId)
 	if err != nil {
 		return err
@@ -50,7 +50,7 @@ func(p *PlaylistRepository) Remove(filmId int, playlistId int) error {
 	return nil
 }
 
-func(p *PlaylistRepository) GetList(userId int) (*models.Playlists, error) {
+func (p *PlaylistRepository) GetList(userId int) (*models.Playlists, error) {
 	playlist := models.Playlist{}
 	playlists := models.Playlists{}
 	playlistQuery, err := p.db.Query("SELECT id, title, user_id FROM playlist WHERE user_id = ?", userId)

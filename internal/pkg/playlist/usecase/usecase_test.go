@@ -13,17 +13,17 @@ import (
 )
 
 var testFilms = models.FilmCards{models.FilmCard{
-	Id: 1,
-	Title: "titanic",
+	Id:        1,
+	Title:     "titanic",
 	MainGenre: "fantasy",
-	SmallImg: "img",
-	Year: 2010,
+	SmallImg:  "img",
+	Year:      2010,
 }}
 
 var testPlaylist = models.Playlist{
-	Id: 1,
-	Title: "playlist",
-	Films: &testFilms,
+	Id:     1,
+	Title:  "playlist",
+	Films:  &testFilms,
 	UserId: 1,
 }
 
@@ -73,7 +73,6 @@ func TestGetPlayList(t *testing.T) {
 		m0.
 			EXPECT().GetList(gomock.Eq(1)).Return(nil, errors.New("playlist error"))
 
-
 		usecase := NewPlaylistUseCase(m0, m2, m1)
 		playlists, err := usecase.GetPlaylist(testSession.Id)
 		fmt.Println(playlists)
@@ -119,7 +118,6 @@ func TestGetList(t *testing.T) {
 		m0.
 			EXPECT().GetList(gomock.Eq(1)).Return(&testPlaylists, nil)
 
-
 		usecase := NewPlaylistUseCase(m0, m2, m1)
 		playlists, err := usecase.GetList(testSession.Id)
 		assert.NoError(t, err)
@@ -141,7 +139,6 @@ func TestGetList(t *testing.T) {
 		m0.
 			EXPECT().GetList(gomock.Eq(1)).Return(nil, errors.New("playlist error"))
 
-
 		usecase := NewPlaylistUseCase(m0, m2, m1)
 		_, err := usecase.GetList(testSession.Id)
 		assert.EqualError(t, err, "playlist error")
@@ -159,7 +156,6 @@ func TestRemove(t *testing.T) {
 		m0.
 			EXPECT().Remove(gomock.Eq(1), gomock.Eq(1)).Return(nil)
 
-
 		usecase := NewPlaylistUseCase(m0, m2, m1)
 		err := usecase.Remove(1, 1)
 		assert.NoError(t, err)
@@ -174,7 +170,6 @@ func TestRemove(t *testing.T) {
 		m2 := film.NewMockRepository(ctrl)
 		m0.
 			EXPECT().Remove(gomock.Eq(1), gomock.Eq(1)).Return(errors.New("error"))
-
 
 		usecase := NewPlaylistUseCase(m0, m2, m1)
 		err := usecase.Remove(1, 1)
@@ -193,7 +188,6 @@ func TestDelete(t *testing.T) {
 		m0.
 			EXPECT().Delete(gomock.Eq(1)).Return(nil)
 
-
 		usecase := NewPlaylistUseCase(m0, m2, m1)
 		err := usecase.Delete(1)
 		assert.NoError(t, err)
@@ -208,7 +202,6 @@ func TestDelete(t *testing.T) {
 		m2 := film.NewMockRepository(ctrl)
 		m0.
 			EXPECT().Delete(gomock.Eq(1)).Return(errors.New("error"))
-
 
 		usecase := NewPlaylistUseCase(m0, m2, m1)
 		err := usecase.Delete(1)
@@ -227,7 +220,6 @@ func TestAdd(t *testing.T) {
 		m0.
 			EXPECT().Add(gomock.Eq(1), gomock.Eq(1)).Return(nil)
 
-
 		usecase := NewPlaylistUseCase(m0, m2, m1)
 		err := usecase.Add(1, 1)
 		assert.NoError(t, err)
@@ -242,7 +234,6 @@ func TestAdd(t *testing.T) {
 		m2 := film.NewMockRepository(ctrl)
 		m0.
 			EXPECT().Add(gomock.Eq(1), gomock.Eq(1)).Return(errors.New("error"))
-
 
 		usecase := NewPlaylistUseCase(m0, m2, m1)
 		err := usecase.Add(1, 1)
@@ -266,7 +257,6 @@ func TestCreate(t *testing.T) {
 		m0.
 			EXPECT().Create(gomock.Eq(testPlaylist.Title), gomock.Eq(1)).Return(nil)
 
-
 		usecase := NewPlaylistUseCase(m0, m2, m1)
 		err := usecase.Create(testPlaylist.Title, testSession.Id)
 		assert.NoError(t, err)
@@ -283,7 +273,6 @@ func TestCreate(t *testing.T) {
 			EXPECT().
 			GetUserIdBySession(gomock.Eq(testSession.Id)).
 			Return(1, errors.New("error session"))
-
 
 		usecase := NewPlaylistUseCase(m0, m2, m1)
 		err := usecase.Create(testPlaylist.Title, testSession.Id)
@@ -304,7 +293,6 @@ func TestCreate(t *testing.T) {
 
 		m0.
 			EXPECT().Create(gomock.Eq(testPlaylist.Title), gomock.Eq(1)).Return(errors.New("error create"))
-
 
 		usecase := NewPlaylistUseCase(m0, m2, m1)
 		err := usecase.Create(testPlaylist.Title, testSession.Id)

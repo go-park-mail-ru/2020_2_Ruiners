@@ -24,7 +24,7 @@ func (m *MockRepository) EXPECT() *MockRecorderMockRepository {
 	return m.recorder
 }
 
-func (m *MockRepository) Create(sessionId, login string)  error {
+func (m *MockRepository) Create(sessionId, login string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", sessionId, login)
 	ret0, _ := ret[0].(error)

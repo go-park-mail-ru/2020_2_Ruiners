@@ -103,17 +103,17 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/person/{id:[0-9]+}", person.PersonById)
 	s.router.HandleFunc("/{role:actor|director}/{film_id:[0-9]+}", person.PersonsByFilm)
 	//Playlist routes ...
-	s.router.HandleFunc("/playlist/create" , playlist.CreatePlaylist())
-	s.router.HandleFunc("/playlist/add" , playlist.AddPlaylist())
-	s.router.HandleFunc("/playlist/list" , playlist.ShowList)
-	s.router.HandleFunc("/playlist/show" , playlist.ShowPlaylist)
-	s.router.HandleFunc("/playlist/delete" , playlist.DeletePlaylist())
-	s.router.HandleFunc("/playlist/remove" , playlist.RemovePlaylist())
+	s.router.HandleFunc("/playlist/create", playlist.CreatePlaylist())
+	s.router.HandleFunc("/playlist/add", playlist.AddPlaylist())
+	s.router.HandleFunc("/playlist/list", playlist.ShowList)
+	s.router.HandleFunc("/playlist/show", playlist.ShowPlaylist)
+	s.router.HandleFunc("/playlist/delete", playlist.DeletePlaylist())
+	s.router.HandleFunc("/playlist/remove", playlist.RemovePlaylist())
 	//Subscribe routes ...
-	s.router.HandleFunc("/follow" , subscribe.Subscribe())
-	s.router.HandleFunc("/unfollow" , subscribe.UnSubscribe())
-	s.router.HandleFunc("/authors" , subscribe.ShowAuthors)
-	s.router.HandleFunc("/news" , subscribe.ShowFeed)
+	s.router.HandleFunc("/follow", subscribe.Subscribe())
+	s.router.HandleFunc("/unfollow", subscribe.UnSubscribe())
+	s.router.HandleFunc("/authors", subscribe.ShowAuthors)
+	s.router.HandleFunc("/news", subscribe.ShowFeed)
 	s.router.HandleFunc("/sub/check/{user_id:[0-9]+}", subscribe.Check())
 
 	s.router.Handle("/metrics", promhttp.Handler())
@@ -153,7 +153,7 @@ func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHand
 	UserRep := userRep.NewUserRepository(s.store.Db)
 	UserUC := userUC.NewUserUseCase(UserRep, rpcSession)
 	UserHandler := userHandler.UserHandler{
-		RpcAuth: rpcAuth,
+		RpcAuth:   rpcAuth,
 		UseCase:   UserUC,
 		Logger:    s.logger,
 		Sanitazer: s.sanitazer,
@@ -197,7 +197,6 @@ func (s *APIServer) InitHandler() (userHandler.UserHandler, filmHandler.FilmHand
 		Logger:    s.logger,
 		Sanitazer: s.sanitazer,
 	}
-
 
 	return UserHandler, FilmHandler, RatingHandler, PersonHandler, PlaylistHandler, SubscribeHandler
 }

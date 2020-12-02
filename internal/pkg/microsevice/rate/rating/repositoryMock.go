@@ -72,4 +72,3 @@ func (mr *MockRecorderMockRepository) AddReview(body interface{}, filmId interfa
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddReview", reflect.TypeOf((*MockRepository)(nil).AddReview), body, filmId, userId)
 }
-

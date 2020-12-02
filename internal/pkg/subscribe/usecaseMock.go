@@ -34,9 +34,8 @@ func (m *MockUseCase) Create(authorId int, session string) error {
 
 func (mr *MockRecorderMockUseCase) Create(authorId, session interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockUseCase)(nil).Create), authorId,session)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockUseCase)(nil).Create), authorId, session)
 }
-
 
 func (m *MockUseCase) Delete(authorId int, session string) error {
 	m.ctrl.T.Helper()

@@ -33,7 +33,7 @@ func (s *SessionServer) FindById(ctx context.Context, sessionId *pb.SessionId) (
 
 	return &pb.Session{
 		SessionId: sId,
-		Login: sLogin}, nil
+		Login:     sLogin}, nil
 }
 
 func (s *SessionServer) Delete(ctx context.Context, sessionId *pb.SessionId) (*pb.Empty, error) {

@@ -41,7 +41,6 @@ func (a *AuthServer) Login(ctx context.Context, usr *pb.AuthUserLogin) (*pb.Auth
 	}, nil
 }
 
-
 func (a *AuthServer) Logout(ctx context.Context, sid *pb.AuthSessionId) (*pb.AuthEmpty, error) {
 	err := a.UseCase.Logout(sid.SessionId)
 	if err != nil {

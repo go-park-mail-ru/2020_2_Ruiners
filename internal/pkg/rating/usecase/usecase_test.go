@@ -15,7 +15,6 @@ var testSession = models.Session{
 	Username: "Arkadiy",
 }
 
-
 func TestGetReviews(t *testing.T) {
 	t.Run("GET OK", func(t *testing.T) {
 		var testReview = models.Review{

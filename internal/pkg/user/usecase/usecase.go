@@ -18,14 +18,14 @@ import (
 )
 
 type UserUseCase struct {
-	UserRepository    user.Repository
-	RpcSession client.ISessionClient
+	UserRepository user.Repository
+	RpcSession     client.ISessionClient
 }
 
 func NewUserUseCase(userRepository user.Repository, rpcSession client.ISessionClient) *UserUseCase {
 	return &UserUseCase{
-		UserRepository:    userRepository,
-		RpcSession: rpcSession,
+		UserRepository: userRepository,
+		RpcSession:     rpcSession,
 	}
 }
 
@@ -66,7 +66,7 @@ func (u *UserUseCase) ChangeLogin(s string, newLogin string) error {
 	if check {
 		return errors.New("user alredy exist")
 	}
-	_, login, err  := u.RpcSession.FindById(s)
+	_, login, err := u.RpcSession.FindById(s)
 	if err != nil {
 		return err
 	}
@@ -82,7 +82,7 @@ func (u *UserUseCase) ChangeLogin(s string, newLogin string) error {
 }
 
 func (u *UserUseCase) ChangePassword(s string, oldPassword string, newPassword string) error {
-	_, login, err  := u.RpcSession.FindById(s)
+	_, login, err := u.RpcSession.FindById(s)
 	if err != nil {
 		return err
 	}
@@ -120,7 +120,7 @@ func (u *UserUseCase) ChangeAvatar(s string, file multipart.File) error {
 		fmt.Println("aa")
 		return err
 	}
-	_, login, err  := u.RpcSession.FindById(s)
+	_, login, err := u.RpcSession.FindById(s)
 	if err != nil {
 		return err
 	}

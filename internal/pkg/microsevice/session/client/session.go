@@ -29,7 +29,7 @@ func NewSessionClient(host, port string) (*SessionClient, error) {
 func (s *SessionClient) Create(sessionId, login string) (err error) {
 	usr := &pb.Session{
 		SessionId: sessionId,
-		Login:    login,
+		Login:     login,
 	}
 	_, err = s.client.Create(context.Background(), usr)
 	if err != nil {
@@ -93,11 +93,8 @@ func (s *SessionClient) GetUserIdBySession(session string) (int, error) {
 	return int(UserId.UserId), err
 }
 
-
 func (s *SessionClient) Close() {
 	if err := s.gConn.Close(); err != nil {
 		log.Fatal("error while closing grpc connection")
 	}
 }
-
-

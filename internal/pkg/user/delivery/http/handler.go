@@ -60,7 +60,7 @@ func (uh *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	l.Password=""
+	l.Password = ""
 	CreateSession(w, sessionId)
 	w.WriteHeader(http.StatusOK)
 }
@@ -140,7 +140,7 @@ func (uh *UserHandler) Logout(w http.ResponseWriter, r *http.Request) {
 	w.Write(result)
 }
 
-func (uh *UserHandler) GetById(w http.ResponseWriter, r *http.Request){
+func (uh *UserHandler) GetById(w http.ResponseWriter, r *http.Request) {
 	uh.Logger.Info("GetByID")
 	vars := mux.Vars(r)
 	id := vars["id"]

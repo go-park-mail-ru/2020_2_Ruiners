@@ -16,7 +16,7 @@ var testSession = models.Session{
 }
 
 var testUser = models.PublicUser{
-	Id: 1,
+	Id:    1,
 	Login: "Erik",
 	Email: "er@mail.ru",
 }
@@ -64,7 +64,7 @@ func TestCreate(t *testing.T) {
 			Return(2, nil)
 
 		m0.
-			EXPECT().AddSubscribe(gomock.Eq(2), gomock.Eq(1)).Return( nil)
+			EXPECT().AddSubscribe(gomock.Eq(2), gomock.Eq(1)).Return(nil)
 
 		usecase := NewSubscribeUseCase(m0, m1)
 		err := usecase.Create(1, testSession.Id)
@@ -98,7 +98,7 @@ func TestCreate(t *testing.T) {
 			Return(2, nil)
 
 		m0.
-			EXPECT().AddSubscribe(gomock.Eq(2), gomock.Eq(1)).Return( errors.New("error subscribe"))
+			EXPECT().AddSubscribe(gomock.Eq(2), gomock.Eq(1)).Return(errors.New("error subscribe"))
 
 		usecase := NewSubscribeUseCase(m0, m1)
 		err := usecase.Create(1, testSession.Id)
@@ -119,7 +119,7 @@ func TestDelete(t *testing.T) {
 			Return(2, nil)
 
 		m0.
-			EXPECT().DeleteSubscribe(gomock.Eq(2), gomock.Eq(1)).Return( nil)
+			EXPECT().DeleteSubscribe(gomock.Eq(2), gomock.Eq(1)).Return(nil)
 
 		usecase := NewSubscribeUseCase(m0, m1)
 		err := usecase.Delete(1, testSession.Id)
@@ -154,14 +154,13 @@ func TestDelete(t *testing.T) {
 			Return(2, nil)
 
 		m0.
-			EXPECT().DeleteSubscribe(gomock.Eq(2), gomock.Eq(1)).Return( errors.New("error delete"))
+			EXPECT().DeleteSubscribe(gomock.Eq(2), gomock.Eq(1)).Return(errors.New("error delete"))
 
 		usecase := NewSubscribeUseCase(m0, m1)
 		err := usecase.Delete(1, testSession.Id)
 		assert.EqualError(t, err, "error delete")
 	})
 }
-
 
 func TestGetAuthors(t *testing.T) {
 	t.Run("SUCCESS", func(t *testing.T) {
@@ -176,7 +175,7 @@ func TestGetAuthors(t *testing.T) {
 			Return(2, nil)
 
 		m0.
-			EXPECT().GetAuthors(gomock.Eq(2)).Return( &testUsers, nil)
+			EXPECT().GetAuthors(gomock.Eq(2)).Return(&testUsers, nil)
 
 		usecase := NewSubscribeUseCase(m0, m1)
 		users, err := usecase.GetAuthors(testSession.Id)
@@ -212,7 +211,7 @@ func TestGetAuthors(t *testing.T) {
 			Return(2, nil)
 
 		m0.
-			EXPECT().GetAuthors(gomock.Eq(2)).Return( &testUsers, errors.New("error"))
+			EXPECT().GetAuthors(gomock.Eq(2)).Return(&testUsers, errors.New("error"))
 
 		usecase := NewSubscribeUseCase(m0, m1)
 		_, err := usecase.GetAuthors(testSession.Id)
@@ -233,7 +232,7 @@ func TestGetFeed(t *testing.T) {
 			Return(2, nil)
 
 		m0.
-			EXPECT().GetRatingFeed(gomock.Eq(2)).Return( &testFeedRating, nil)
+			EXPECT().GetRatingFeed(gomock.Eq(2)).Return(&testFeedRating, nil)
 		m0.EXPECT().GetReviewFeed(gomock.Eq(2)).Return(&testFeedReview, nil)
 		usecase := NewSubscribeUseCase(m0, m1)
 		feed, err := usecase.GetFeed(testSession.Id)
@@ -268,7 +267,7 @@ func TestGetFeed(t *testing.T) {
 			Return(2, nil)
 
 		m0.
-			EXPECT().GetRatingFeed(gomock.Eq(2)).Return( &testFeedRating, errors.New("error rating"))
+			EXPECT().GetRatingFeed(gomock.Eq(2)).Return(&testFeedRating, errors.New("error rating"))
 		usecase := NewSubscribeUseCase(m0, m1)
 		_, err := usecase.GetFeed(testSession.Id)
 		assert.EqualError(t, err, "error rating")
@@ -286,7 +285,7 @@ func TestGetFeed(t *testing.T) {
 			Return(2, nil)
 
 		m0.
-			EXPECT().GetRatingFeed(gomock.Eq(2)).Return( &testFeedRating, nil)
+			EXPECT().GetRatingFeed(gomock.Eq(2)).Return(&testFeedRating, nil)
 		m0.EXPECT().GetReviewFeed(gomock.Eq(2)).Return(&testFeedReview, errors.New("error review"))
 		usecase := NewSubscribeUseCase(m0, m1)
 		_, err := usecase.GetFeed(testSession.Id)
@@ -307,7 +306,7 @@ func TestCheck(t *testing.T) {
 			Return(2, nil)
 
 		m0.
-			EXPECT().Check(gomock.Eq(2), gomock.Eq(1)).Return( true, nil)
+			EXPECT().Check(gomock.Eq(2), gomock.Eq(1)).Return(true, nil)
 
 		usecase := NewSubscribeUseCase(m0, m1)
 		bol, err := usecase.Check(testSession.Id, 1)
@@ -343,7 +342,7 @@ func TestCheck(t *testing.T) {
 			Return(2, nil)
 
 		m0.
-			EXPECT().Check(gomock.Eq(2), gomock.Eq(1)).Return( true, errors.New("error"))
+			EXPECT().Check(gomock.Eq(2), gomock.Eq(1)).Return(true, errors.New("error"))
 
 		usecase := NewSubscribeUseCase(m0, m1)
 		_, err := usecase.Check(testSession.Id, 1)

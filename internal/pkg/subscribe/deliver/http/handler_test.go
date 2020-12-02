@@ -14,7 +14,7 @@ import (
 )
 
 var testUser = models.PublicUser{
-	Id: 1,
+	Id:    1,
 	Login: "Erik",
 	Email: "er@mail.ru",
 }

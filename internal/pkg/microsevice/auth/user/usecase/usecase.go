@@ -10,18 +10,18 @@ import (
 )
 
 type UserUseCase struct {
-	UserRepository    user.Repository
-	RpcSession client.ISessionClient
+	UserRepository user.Repository
+	RpcSession     client.ISessionClient
 }
 
 func NewUserUseCase(userRepository user.Repository, rpcSession client.ISessionClient) *UserUseCase {
 	return &UserUseCase{
-		UserRepository:    userRepository,
-		RpcSession: rpcSession,
+		UserRepository: userRepository,
+		RpcSession:     rpcSession,
 	}
 }
 
-func (u *UserUseCase) Signup(username, email, password string) (string , error) {
+func (u *UserUseCase) Signup(username, email, password string) (string, error) {
 	check, err := u.UserRepository.CheckExist(username)
 	if err != nil {
 		return "", err

@@ -27,8 +27,8 @@ func NewRateClient(host, port string) (*RateClient, error) {
 
 func (r *RateClient) Rate(rating int, filmId int, session string) error {
 	ra := &pb.Rating{
-		Rating: int64(rating),
-		FilmId: int64(filmId),
+		Rating:  int64(rating),
+		FilmId:  int64(filmId),
 		Session: session,
 	}
 	_, err := r.client.Rate(context.Background(), ra)
@@ -54,11 +54,8 @@ func (r *RateClient) AddReview(body string, filmId int, session string) error {
 	return nil
 }
 
-
 func (r *RateClient) Close() {
 	if err := r.gConn.Close(); err != nil {
 		log.Fatal("error while closing grpc connection")
 	}
 }
-
-

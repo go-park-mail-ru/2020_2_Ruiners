@@ -18,8 +18,6 @@ func init() {
 	flag.StringVar(&configPath, "config-path", "configs/auth.toml", "path to config file")
 }
 
-
-
 func main() {
 	flag.Parse()
 

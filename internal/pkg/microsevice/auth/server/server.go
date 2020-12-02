@@ -54,5 +54,3 @@ func (s *Server) ListenAndServe() error {
 
 	return nil
 }
-
-

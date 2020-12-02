@@ -99,5 +99,3 @@ func (mr *MockRecorderMockRepository) CheckExist(login interface{}) *gomock.Call
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckExist", reflect.TypeOf((*MockRepository)(nil).CheckExist), login)
 }
-
-

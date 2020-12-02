@@ -100,7 +100,7 @@ func (rh *RatingHandler) ShowReviews(w http.ResponseWriter, r *http.Request) {
 
 func (rh *RatingHandler) GetCurrentUserRating() http.HandlerFunc {
 	type Rate struct {
-		Rate int    `json:"rate"`
+		Rate int `json:"rate"`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)

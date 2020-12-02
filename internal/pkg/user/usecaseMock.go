@@ -66,7 +66,6 @@ func (mr *MockRecorderMockUseCase) GetById(s interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetById", reflect.TypeOf((*MockUseCase)(nil).GetById), s)
 }
 
-
 func (m *MockUseCase) Me(s string) (*models.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Me", s)

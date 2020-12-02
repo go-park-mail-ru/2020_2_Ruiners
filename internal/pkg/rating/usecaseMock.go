@@ -25,7 +25,6 @@ func (m *MockUseCase) EXPECT() *MockRecorderMockUseCase {
 	return m.recorder
 }
 
-
 func (m *MockUseCase) GetReviews(filmId string) (*models.Reviews, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetReviews", filmId)

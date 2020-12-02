@@ -34,7 +34,6 @@ func TestMe(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 
-
 		m := user1.NewMockUseCase(ctrl)
 		m1 := user2.NewMockUseCase(ctrl)
 

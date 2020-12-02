@@ -17,7 +17,6 @@ func NewSubscribeRepository(db *sql.DB) *SubscribeRepository {
 	}
 }
 
-
 func (s *SubscribeRepository) AddSubscribe(subscriberId int, authorId int) error {
 	_, err := s.db.Exec("INSERT INTO subscribe(subscriber, author) VALUE(?, ?)", subscriberId, authorId)
 	if err != nil {
@@ -91,7 +90,6 @@ func (s *SubscribeRepository) GetReviewFeed(subscriberId int) (*models.Feed, err
 	}
 	return &feed, nil
 }
-
 
 func (s *SubscribeRepository) Check(subscriberId int, authorId int) (bool, error) {
 	checkQuery, err := s.db.Query("SELECT id FROM subscribe where subscriber = ? AND author = ?", subscriberId, authorId)

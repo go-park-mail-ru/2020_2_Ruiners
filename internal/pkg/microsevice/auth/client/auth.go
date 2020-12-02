@@ -72,4 +72,3 @@ func (a *AuthClient) Close() {
 		log.Fatal("error while closing grpc connection")
 	}
 }
-

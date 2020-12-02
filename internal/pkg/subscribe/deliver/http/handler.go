@@ -121,7 +121,6 @@ func (sh *SubscribeHandler) ShowAuthors(w http.ResponseWriter, r *http.Request) 
 	w.Write(res)
 }
 
-
 func (sh *SubscribeHandler) Check() http.HandlerFunc {
 	type User struct {
 		UserId int `json:"user_id"`

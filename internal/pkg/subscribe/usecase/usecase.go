@@ -9,13 +9,13 @@ import (
 
 type SubscribeUseCase struct {
 	SubscribeRepository subscribe.Repository
-	RpcSession client.ISessionClient
+	RpcSession          client.ISessionClient
 }
 
 func NewSubscribeUseCase(subscribeRepository subscribe.Repository, rpcSession client.ISessionClient) *SubscribeUseCase {
 	return &SubscribeUseCase{
 		SubscribeRepository: subscribeRepository,
-		RpcSession: rpcSession,
+		RpcSession:          rpcSession,
 	}
 }
 
@@ -43,7 +43,7 @@ func (uc *SubscribeUseCase) Delete(authorId int, session string) error {
 	return nil
 }
 
-func (uc *SubscribeUseCase) GetAuthors(session string) (*models.PublicUsers, error)  {
+func (uc *SubscribeUseCase) GetAuthors(session string) (*models.PublicUsers, error) {
 	userId, err := uc.RpcSession.GetUserIdBySession(session)
 	if err != nil {
 		return nil, err
@@ -55,7 +55,7 @@ func (uc *SubscribeUseCase) GetAuthors(session string) (*models.PublicUsers, err
 	return authors, nil
 }
 
-func (uc *SubscribeUseCase) GetFeed(session string) (*models.Feed, error)  {
+func (uc *SubscribeUseCase) GetFeed(session string) (*models.Feed, error) {
 	feed := models.Feed{}
 	userId, err := uc.RpcSession.GetUserIdBySession(session)
 	if err != nil {
@@ -88,4 +88,3 @@ func (uc *SubscribeUseCase) Check(session string, authorId int) (bool, error) {
 	}
 	return check, nil
 }
-

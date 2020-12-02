@@ -10,7 +10,7 @@ import (
 )
 
 type Server struct {
-	port string
+	port    string
 	session *SessionServer
 }
 
@@ -25,7 +25,7 @@ func NewServer(port string, db *store.Store) *Server {
 	db.Db = sdb
 	SessionsRep := SessionRep.NewSessionRepository(db.Db)
 	return &Server{
-		port: port,
+		port:    port,
 		session: NewSessionServer(*SessionsRep),
 	}
 }

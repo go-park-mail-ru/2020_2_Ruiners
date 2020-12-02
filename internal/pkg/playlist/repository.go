@@ -9,4 +9,3 @@ type Repository interface {
 	Remove(filmId int, playlistId int) error
 	GetList(userId int) (*models.Playlists, error)
 }
-

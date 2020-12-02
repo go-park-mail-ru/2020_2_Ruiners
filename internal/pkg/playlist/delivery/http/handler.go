@@ -18,7 +18,7 @@ type PlaylistHandler struct {
 
 func (ph *PlaylistHandler) CreatePlaylist() http.HandlerFunc {
 	type CreatePlaylist struct {
-		Title   string `json:"title"`
+		Title string `json:"title"`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		ph.Logger.Info("Add review")
@@ -79,7 +79,7 @@ func (ph *PlaylistHandler) DeletePlaylist() http.HandlerFunc {
 func (ph *PlaylistHandler) AddPlaylist() http.HandlerFunc {
 	type AddPlaylist struct {
 		PlaylistId int `json:"playlist_id"`
-		FilmId int `json:"film_id"'`
+		FilmId     int `json:"film_id"'`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		ph.Logger.Info("Add review")
@@ -103,7 +103,7 @@ func (ph *PlaylistHandler) AddPlaylist() http.HandlerFunc {
 func (ph *PlaylistHandler) RemovePlaylist() http.HandlerFunc {
 	type RemovePlaylist struct {
 		PlaylistId int `json:"playlist_id"`
-		FilmId int `json:"film_id"'`
+		FilmId     int `json:"film_id"'`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		ph.Logger.Info("Add review")

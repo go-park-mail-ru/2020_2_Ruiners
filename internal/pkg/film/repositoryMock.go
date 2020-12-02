@@ -64,7 +64,6 @@ func (mr *MockRecorderMockRepository) FindFilmsByPerson(id interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindFilmsByPerson", reflect.TypeOf((*MockRepository)(nil).FindFilmsByPerson), id)
 }
 
-
 func (m *MockRepository) FindFilmsByPlaylist(id int) (*models.FilmCards, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindFilmsByPlaylist", id)

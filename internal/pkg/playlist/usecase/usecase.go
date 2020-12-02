@@ -11,14 +11,14 @@ import (
 type PlaylistUseCase struct {
 	PlaylistRepository playlist.Repository
 	FilmRepository     film.Repository
-	RpcSession client.ISessionClient
+	RpcSession         client.ISessionClient
 }
 
 func NewPlaylistUseCase(playlistRepository playlist.Repository, filmRepository film.Repository, rpcSession client.ISessionClient) *PlaylistUseCase {
 	return &PlaylistUseCase{
 		PlaylistRepository: playlistRepository,
-		FilmRepository: filmRepository,
-		RpcSession: rpcSession,
+		FilmRepository:     filmRepository,
+		RpcSession:         rpcSession,
 	}
 }
 
@@ -85,5 +85,3 @@ func (uc *PlaylistUseCase) GetPlaylist(session string) (*models.Playlists, error
 	}
 	return &res, nil
 }
-
-
