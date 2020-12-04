@@ -265,6 +265,7 @@ func CreateSession(w http.ResponseWriter, sessionId string) {
 		Name:    "session_id",
 		Value:   sessionId,
 		Expires: time.Now().Add(10 * time.Hour),
+		HttpOnly: true,
 	}
 	http.SetCookie(w, &cookie)
 }
