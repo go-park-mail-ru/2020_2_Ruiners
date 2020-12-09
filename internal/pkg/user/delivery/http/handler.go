@@ -266,8 +266,8 @@ func CreateSession(w http.ResponseWriter, sessionId string) {
 		Value:   sessionId,
 		Expires: time.Now().Add(10 * time.Hour),
 		HttpOnly: true,
-		Domain: "kino-park.online",
-		Path: "/",
+		Path:     "/",
+		SameSite: http.SameSiteStrictMode,
 	}
 	http.SetCookie(w, &cookie)
 }
