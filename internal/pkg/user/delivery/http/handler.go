@@ -275,6 +275,7 @@ func CreateCSRF(w http.ResponseWriter, CSRFToken string) {
 		Name:    "csrf_token",
 		Value:   CSRFToken,
 		Expires: time.Now().Add(15 * time.Minute),
+		Domain: "kino-park.online",
 	}
 	http.SetCookie(w, &cookie)
 }
