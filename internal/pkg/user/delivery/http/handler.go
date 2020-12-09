@@ -266,7 +266,8 @@ func CreateSession(w http.ResponseWriter, sessionId string) {
 		Value:   sessionId,
 		Expires: time.Now().Add(10 * time.Hour),
 		HttpOnly: true,
-		Domain: "kino-park.online:80",
+		Domain: "kino-park.online",
+		Path: "/",
 	}
 	http.SetCookie(w, &cookie)
 }
@@ -276,7 +277,6 @@ func CreateCSRF(w http.ResponseWriter, CSRFToken string) {
 		Name:    "csrf_token",
 		Value:   CSRFToken,
 		Expires: time.Now().Add(15 * time.Minute),
-		Domain: "localhost:3000",
 	}
 	http.SetCookie(w, &cookie)
 }

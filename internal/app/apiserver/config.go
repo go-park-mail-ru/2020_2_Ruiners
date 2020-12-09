@@ -18,7 +18,7 @@ func NewConfig() *Config {
 		LogLevel: "debug",
 		Store:    store.NewConfig(),
 		CORS: models.CORSConfig{
-			AllowedOrigins: []string{"http://localhost", "http://95.163.208.72:3000", "http://localhost:3000", "http://kino-park.online"},
+			AllowedOrigins: []string{"http://localhost", "http://95.163.208.72:3000", "http://localhost:3000", "http://kino-park.online", "http://127.0.0.1"},
 			AllowedHeaders: []string{"If-Modified-Since", "Cache-Control", "Content-Type", "Range"},
 			AllowedMethods: []string{"GET", "POST", "OPTIONS", "PUT", "PATCH", "DELETE"},
 			ExposedHeaders: []string{"Content-Length", "Content-Range"},
