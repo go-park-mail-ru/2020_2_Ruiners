@@ -83,3 +83,49 @@ func (r *FilmRepository) FindFilmsByPlaylist(id int) (*models.FilmCards, error) 
 	}
 	return &filmCards, nil
 }
+
+func (r *FilmRepository) SimilarFilms(id int) (*models.FilmCards, error) {
+	filmCard := models.FilmCard{}
+	filmCards := models.FilmCards{}
+	filmQuery, err := r.db.Query("SELECT  f1.id, f1.title, f1.mainGenre, f1.smallImg, f1.year from films f1 join (select f.* from films f where f.id=?) f2 WHERE f1.mainGenre = f2.mainGenre AND f1.id != f2.id", id)
+
+	if err != nil {
+		return nil, err
+	}
+	defer filmQuery.Close()
+
+	for filmQuery.Next() {
+		if filmQuery.Scan(&filmCard.Id, &filmCard.Title, &filmCard.MainGenre, &filmCard.SmallImg, &filmCard.Year) != nil {
+			return nil, errors.New("db error")
+		}
+		filmCards = append(filmCards, filmCard)
+	}
+	filmQuery1, err := r.db.Query("SELECT  f1.id, f1.title, f1.mainGenre, f1.smallImg, f1.year from films f1 join (select f.* from films f where f.id=?) f2 WHERE ABS(f1.rating-f2.rating)<1 AND f1.id != f2.id", id)
+
+	if err != nil {
+		return nil, err
+	}
+	defer filmQuery1.Close()
+
+	for filmQuery1.Next() {
+		if filmQuery1.Scan(&filmCard.Id, &filmCard.Title, &filmCard.MainGenre, &filmCard.SmallImg, &filmCard.Year) != nil {
+			return nil, errors.New("db error")
+		}
+		filmCards = append(filmCards, filmCard)
+	}
+
+	filmQuery2, err := r.db.Query("SELECT  f1.id, f1.title, f1.mainGenre, f1.smallImg, f1.year from films f1 join person_film pf on (f1.id = pf.film_id) JOIN (select f.id, p.person_id from films f join person_film p on (f.id=p.film_id)where f.id=?) f2 on (pf.person_id=f2.person_id) WHERE f1.id != f2.id", id)
+
+	if err != nil {
+		return nil, err
+	}
+	defer filmQuery2.Close()
+
+	for filmQuery2.Next() {
+		if filmQuery2.Scan(&filmCard.Id, &filmCard.Title, &filmCard.MainGenre, &filmCard.SmallImg, &filmCard.Year) != nil {
+			return nil, errors.New("db error")
+		}
+		filmCards = append(filmCards, filmCard)
+	}
+	return &filmCards, nil
+}

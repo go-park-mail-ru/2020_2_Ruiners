@@ -95,6 +95,7 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/api/film/{id:[0-9]+}", film.FilmById)
 	s.router.HandleFunc("/api/film/{genre:[A-z]+}", film.FilmsByGenre)
 	s.router.HandleFunc("/api/person_film/{id:[0-9]+}", film.FilmsByPerson)
+	s.router.HandleFunc("/api/similar/{id:[0-9]+}", film.SimilarFilms)
 	//Rate routes ...
 	s.router.HandleFunc("/api/rate", rating.Rate())
 	s.router.HandleFunc("/api/review/add", rating.AddReview())

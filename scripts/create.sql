@@ -230,3 +230,14 @@ insert into person_film(film_id, person_id, role)
     (8, 16, 'actor'),
     (8, 17, 'actor'),
     (8, 18, 'actor');
+
+
+select f1.* from films f1 join (select f.* from films f where f.id=1) f2 WHERE f1.mainGenre = f2.mainGenre AND f1.id != f2.id
+select f1.* from films f1 join (select f.* from films f where f.id=1) f2 WHERE ABS(f1.rating-f2.rating)<1 AND f1.id != f2.id
+select f1.id, pf.film_id from films f1 join(select f.* from films f where f.id=3) f2 JOIN person_film pf on (f1.id = pf.film_id) WHERE pf.film_id = f2.id AND f1.id != f2.id;
+select f1.id, pf.film_id from films f1 join person_film pf on (f1.id = pf.film_id) JOIN (select f.* from films f where f.id=3) f2 on (pf.film_id=f2.id) WHERE f1.id != f2.id
+
+
+
+select f1.id from films f1 join person_film pf on (f1.id = pf.film_id) JOIN (select f.id, p.person_id from films f join person_film p on (f.id=p.film_id)where f.id=1) f2 on (pf.person_id=f2.person_id) WHERE f1.id != f2.id
+select f.id, p.person_id from films f join person_film p on (f.id=p.film_id)where f.id=3;
