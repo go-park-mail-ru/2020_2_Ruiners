@@ -1079,7 +1079,7 @@ func easyjsonD2b7633eDecodeGithubComArkadiycheHttpRestApiInternalPkgModels12(in 
 		in.Delim('[')
 		if *out == nil {
 			if !in.IsDelim(']') {
-				*out = make(FilmPersons, 0, 2)
+				*out = make(FilmPersons, 0, 1)
 			} else {
 				*out = FilmPersons{}
 			}
@@ -1159,6 +1159,8 @@ func easyjsonD2b7633eDecodeGithubComArkadiycheHttpRestApiInternalPkgModels13(in 
 			out.Id = int(in.Int())
 		case "name":
 			out.Name = string(in.String())
+		case "image":
+			out.Image = string(in.String())
 		default:
 			in.SkipRecursive()
 		}
@@ -1182,6 +1184,11 @@ func easyjsonD2b7633eEncodeGithubComArkadiycheHttpRestApiInternalPkgModels13(out
 		const prefix string = ",\"name\":"
 		out.RawString(prefix)
 		out.String(string(in.Name))
+	}
+	{
+		const prefix string = ",\"image\":"
+		out.RawString(prefix)
+		out.String(string(in.Image))
 	}
 	out.RawByte('}')
 }
@@ -1218,7 +1225,7 @@ func easyjsonD2b7633eDecodeGithubComArkadiycheHttpRestApiInternalPkgModels14(in 
 		in.Delim('[')
 		if *out == nil {
 			if !in.IsDelim(']') {
-				*out = make(FilmCards, 0, 1)
+				*out = make(FilmCards, 0, 0)
 			} else {
 				*out = FilmCards{}
 			}
@@ -1304,6 +1311,8 @@ func easyjsonD2b7633eDecodeGithubComArkadiycheHttpRestApiInternalPkgModels15(in 
 			out.SmallImg = string(in.String())
 		case "year":
 			out.Year = int(in.Int())
+		case "rating":
+			out.Rating = float64(in.Float64())
 		default:
 			in.SkipRecursive()
 		}
@@ -1342,6 +1351,11 @@ func easyjsonD2b7633eEncodeGithubComArkadiycheHttpRestApiInternalPkgModels15(out
 		const prefix string = ",\"year\":"
 		out.RawString(prefix)
 		out.Int(int(in.Year))
+	}
+	{
+		const prefix string = ",\"rating\":"
+		out.RawString(prefix)
+		out.Float64(float64(in.Rating))
 	}
 	out.RawByte('}')
 }

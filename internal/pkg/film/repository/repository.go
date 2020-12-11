@@ -129,3 +129,24 @@ func (r *FilmRepository) SimilarFilms(id int) (*models.FilmCards, error) {
 	}
 	return &filmCards, nil
 }
+
+func (r *FilmRepository) Search(search string) (*models.FilmCards, error) {
+	search1 := "% " + search + "%"
+	search2 := search + "%"
+	filmCard := models.FilmCard{}
+	filmCards := models.FilmCards{}
+	filmQuery, err := r.db.Query("SELECT f.id, f.title, f.mainGenre, f.smallImg, f.year, f.rating FROM films f where lower(title) LIKE ? or lower(title) LIKE ?", search1, search2)
+
+	if err != nil {
+		return nil, err
+	}
+	defer filmQuery.Close()
+
+	for filmQuery.Next() {
+		if filmQuery.Scan(&filmCard.Id, &filmCard.Title, &filmCard.MainGenre, &filmCard.SmallImg, &filmCard.Year, &filmCard.Rating) != nil {
+			return nil, errors.New("db error")
+		}
+		filmCards = append(filmCards, filmCard)
+	}
+	return &filmCards, nil
+}

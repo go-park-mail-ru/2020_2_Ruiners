@@ -150,3 +150,10 @@ func (u *UserUseCase) GetAvatar(ids string) (*os.File, error) {
 	}
 	return file, nil
 }
+func (u *UserUseCase) Search(search string) (*models.PublicUsers, error)  {
+	users, err := u.UserRepository.Search(search)
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
+}

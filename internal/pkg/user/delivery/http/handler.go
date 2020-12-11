@@ -260,6 +260,26 @@ func (uh *UserHandler) AvatarById(w http.ResponseWriter, r *http.Request) {
 	io.Copy(w, file)
 }
 
+func (uh *UserHandler) Search(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query().Get("key")
+	persons, err := uh.UseCase.Search(query)
+	if err != nil {
+		uh.Logger.Error("error with usecase person by film")
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	res, err := easyjson.Marshal(persons)
+	//fmt.Println(string(res))
+	if err != nil {
+		uh.Logger.Error("error with delivery person by film json-marshal")
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}
+
+
 func CreateSession(w http.ResponseWriter, sessionId string) {
 	cookie := http.Cookie{
 		Name:    "session_id",

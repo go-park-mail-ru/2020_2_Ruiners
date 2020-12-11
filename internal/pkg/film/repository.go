@@ -8,4 +8,5 @@ type Repository interface {
 	FindFilmsByPerson(id int) (*models.FilmCards, error)
 	FindFilmsByPlaylist(id int) (*models.FilmCards, error)
 	SimilarFilms(id int) (*models.FilmCards, error) //new
+	Search(search string) (*models.FilmCards, error) //new
 }

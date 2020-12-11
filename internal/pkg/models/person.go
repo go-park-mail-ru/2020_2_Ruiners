@@ -10,8 +10,9 @@ type Person struct {
 }
 
 type FilmPerson struct {
-	Id   int    `json:"id"`
-	Name string `json:"name"`
+	Id    int    `json:"id"`
+	Name  string `json:"name"`
+	Image string `json:"image"`
 }
 
 //easyjson:json

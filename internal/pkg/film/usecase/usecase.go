@@ -86,9 +86,17 @@ func (uc *FilmUseCase) SimilarFilms(id string) (*models.FilmCards, error) {
 	for i, x := range fcCount {
 		cards = append(cards, x.FilmCard)
 		if i == 4 {
-			continue
+			break
 		}
 	}
 	return &cards, nil
+}
+
+func (uc *FilmUseCase) Search(search string) (*models.FilmCards, error) {
+	films, err := uc.FilmRepository.Search(search)
+	if err != nil {
+		return nil, err
+	}
+	return films, nil
 }
 

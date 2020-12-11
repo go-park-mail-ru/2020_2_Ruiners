@@ -20,6 +20,7 @@ type FilmCard struct {
 	MainGenre string `json:"main_genre"`
 	SmallImg  string `json:"small_img"`
 	Year      int    `json:"year"`
+	Rating      float64 `json:"rating"`
 }
 
 //easyjson:json

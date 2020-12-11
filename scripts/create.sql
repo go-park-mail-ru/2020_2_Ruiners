@@ -241,3 +241,5 @@ select f1.id, pf.film_id from films f1 join person_film pf on (f1.id = pf.film_i
 
 select f1.id from films f1 join person_film pf on (f1.id = pf.film_id) JOIN (select f.id, p.person_id from films f join person_film p on (f.id=p.film_id)where f.id=1) f2 on (pf.person_id=f2.person_id) WHERE f1.id != f2.id
 select f.id, p.person_id from films f join person_film p on (f.id=p.film_id)where f.id=3;
+
+select * from films where lower(title) LIKE 'по%' or lower(title) LIKE '% по%'

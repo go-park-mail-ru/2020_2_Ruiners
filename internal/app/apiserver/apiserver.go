@@ -91,11 +91,13 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/api/changeAvatar", user.ChangeAvatar)
 	s.router.HandleFunc("/api/user/avatar/{id:[0-9]+}", user.AvatarById)
 	s.router.HandleFunc("/api/people/{id:[0-9]+}", user.GetById)
+	s.router.HandleFunc("/api/users/search", user.Search).Queries("key", "{.*}")
 	//Film routes ...
 	s.router.HandleFunc("/api/film/{id:[0-9]+}", film.FilmById)
 	s.router.HandleFunc("/api/film/{genre:[A-z]+}", film.FilmsByGenre)
 	s.router.HandleFunc("/api/person_film/{id:[0-9]+}", film.FilmsByPerson)
 	s.router.HandleFunc("/api/similar/{id:[0-9]+}", film.SimilarFilms)
+	s.router.HandleFunc("/api/films/search", film.Search).Queries("key", "{.*}")
 	//Rate routes ...
 	s.router.HandleFunc("/api/rate", rating.Rate())
 	s.router.HandleFunc("/api/review/add", rating.AddReview())
@@ -104,6 +106,7 @@ func (s *APIServer) configureRouter() {
 	//Person routes ...
 	s.router.HandleFunc("/api/person/{id:[0-9]+}", person.PersonById)
 	s.router.HandleFunc("/api/{role:actor|director}/{film_id:[0-9]+}", person.PersonsByFilm)
+	s.router.HandleFunc("/api/persons/search", person.Search).Queries("key", "{.*}")
 	//Playlist routes ...
 	s.router.HandleFunc("/api/playlist/create", playlist.CreatePlaylist())
 	s.router.HandleFunc("/api/playlist/add", playlist.AddPlaylist())

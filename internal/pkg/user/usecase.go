@@ -13,4 +13,5 @@ type UseCase interface {
 	ChangePassword(s string, oldPassword string, newPassword string) error
 	ChangeAvatar(s string, file multipart.File) error
 	GetAvatar(id string) (*os.File, error)
+	Search(search string) (*models.PublicUsers, error) //new
 }
