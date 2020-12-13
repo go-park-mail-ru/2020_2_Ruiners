@@ -22,7 +22,7 @@ create table films
 (
     id          int auto_increment primary key,
     title       varchar(80) character set 'utf8' not null,
-    description varchar(255) character set 'utf8' not null,
+    description varchar(2000) character set 'utf8' not null,
     rating      float DEFAULT 0,
     sumVotes      int DEFAULT 0,
     mainGenre   varchar(80) character set 'utf8' not null,
@@ -114,7 +114,161 @@ VALUES
          'https://st.kp.yandex.net/im/poster/2/1/7/kinopoisk.ru-Gorko_21-2179555.jpg',
           2013,
          'Россия'
-    );
+    ),
+    (
+        9,
+        'Брат',
+        'Культовое российское кино с Сергеем Бодровым-младшим',
+        'Боевик',
+        'https://www.youtube.com/embed/EfaTmDkVzGw',
+        'https://st.kp.yandex.net/im/kadr/3/0/2/kinopoisk.ru-Brat-3022747.jpg',
+        'https://st.kp.yandex.net/images/poster/sm_650425.jpg',
+        1992,
+        'Россия'
+    ),
+    (
+        10,
+        'Леон',
+        '«Вы не можете остановить того, кого не видно»',
+        'Боевик',
+        'https://www.youtube.com/embed/hvya_q8KM80',
+        'https://st.kp.yandex.net/im/wallpaper/2/3/2/kinopoisk.ru-L_26_23233_3Bon-232007--w--800.jpg',
+        'https://avatars.mds.yandex.net/get-kinopoisk-image/1773646/bd1dcbd5-ad6b-4094-8243-d4d506c8b2e1/300x450',
+        1994,
+        'Франция'
+    ),
+    (
+        11,
+        'Джанго освобожденный',
+        'Эксцентричный охотник за головами, также известный как Дантист, промышляет отстрелом самых опасных преступников. Работенка пыльная, и без надежного помощника ему не обойтись. Но как найти такого и желательно не очень дорогого? Освобождённый им раб по имени Джанго – прекрасная кандидатура. Правда, у нового помощника свои мотивы – кое с чем надо сперва разобраться.',
+        'Боевик',
+        'https://www.youtube.com/embed/4McenUEna3E',
+        'https://st.kp.yandex.net/im/wallpaper/2/0/0/kinopoisk.ru-Django-Unchained-2002553--w--800.jpg',
+        'https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/ba150c00-3c30-4c7d-8eab-ca57636b0f72/300x450',
+        2012,
+        'США'
+    ),
+    (
+        12,
+        'Мстители',
+        'Локи, сводный брат Тора, возвращается, и в этот раз он не один. Земля оказывается на грани порабощения, и только лучшие из лучших могут спасти человечество. Глава международной организации Щ.И.Т. Ник Фьюри собирает выдающихся поборников справедливости и добра, чтобы отразить атаку. Под предводительством Капитана Америки Железный Человек, Тор, Невероятный Халк, Соколиный Глаз и Чёрная Вдова вступают в войну с захватчиком.',
+        'Боевик',
+        'https://www.youtube.com/embed/bxwt6TvNxas',
+        'https://st.kp.yandex.net/im/wallpaper/1/8/7/kinopoisk.ru-The-Avengers-1878662--w--1280.jpg',
+        'https://avatars.mds.yandex.net/get-kinopoisk-image/1600647/afab999b-c6bb-4fac-a951-03f72fd2b8cf/300x450',
+        2012,
+        'США'
+    ),
+    (
+        13,
+        'Области тьмы',
+        'Нью-йоркский писатель Эдди, желая преодолеть чёрную полосу в жизни, принимает засекреченный препарат под названием NZT. Таблетка выводит мозг парня на работу в нереальной мощности. Этот творческий наркотик меняет всю жизнь Эдди, за короткий срок он зарабатывает кучу денег, но скоро начинает страдать от зловещих побочных эффектов препарата. А когда пытается найти других NZT-гениев, чтобы понять, как можно справиться с этим пристрастием, он узнает страшную правду…',
+        'Триллер',
+        'https://www.youtube.com/embed/eU0Z_rsZiws',
+        'https://st.kp.yandex.net/im/wallpaper/1/5/2/kinopoisk.ru-Limitless-1525063--w--1920.jpg',
+        'https://avatars.mds.yandex.net/get-kinopoisk-image/1629390/d3bfd32d-41b4-48ad-9584-b3fc1f5669d4/300x450',
+        2011,
+        'США'
+    ),
+    (
+        14,
+        'Иллюзия обмана',
+        'Команда лучших иллюзионистов мира проворачивает дерзкие ограбления прямо во время своих шоу, играя в кошки-мышки с агентами ФБР.',
+        'Триллер',
+        'https://www.youtube.com/embed/d7bJKtjYE_E',
+        'https://st.kp.yandex.net/im/wallpaper/2/2/2/kinopoisk.ru-Now-You-See-Me-2221713--w--1920.jpg',
+        'https://avatars.mds.yandex.net/get-kinopoisk-image/1898899/dff4515a-286f-4288-b1cb-43bed18c0080/300x450',
+        2013,
+        'США'
+    ),
+    (
+        15,
+        'Законопослушный гражданин',
+        'Окружной прокурор пошёл на сделку с преступниками и освободил их из тюрьмы. Тогда человек, чьи жена и ребёнок погибли от рук убийц, решает отомстить прокурору, совершив правосудие самостоятельно. Его ловят и сажают в тюрьму, но он неожиданно ставит ультиматум: он будет убивать, не выходя из-за решетки, если его требования не будут выполнены. Смешное заявление, но вскоре люди правда начинают гибнуть...',
+        'Триллер',
+        'https://www.youtube.com/embed/jDQwoUSIXmM',
+        'https://st.kp.yandex.net/im/wallpaper/1/0/7/kinopoisk.ru-Law-Abiding-Citizen-1073550--w--1600.jpg',
+        'https://avatars.mds.yandex.net/get-kinopoisk-image/1704946/e3a342a0-6e45-4771-aa76-7d70c2cc26f4/300x450',
+        2009,
+        'США'
+    ),
+    (
+16,
+'Сияние',
+'История пробуждении зла. Экранизация романа Стивена Кинга в постановке Стэнли Кубрика, взбесившая писателя, но ставшая классикой',
+'Ужасы',
+'https://www.youtube.com/embed/bDj1El1Sr5A',
+'https://thumbs.dfs.ivi.ru/storage33/contents/2/8/69465c97537f42aae39472ac97a581.jpg',
+'https://st.kp.yandex.net/im/poster/3/5/5/kinopoisk.ru-The-Shining-3556003.jpg',
+1980,
+'США, Великобритания'
+),
+(
+17,
+'Дом, который построил Джек',
+'Исповедь серийного убийцы-философа, который строит дом мечты. Провокационная и жестокая драма Ларса фон Триера',
+'Ужасы',
+'https://www.youtube.com/embed/YMaDOx6KBK0',
+'https://i.ytimg.com/vi/YMaDOx6KBK0/maxresdefault.jpg',
+'https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/fdabc400-753b-4779-b4ad-556605f65f24/300x450',
+2018,
+'Дания, Франция, Швеция, Германия, Бельгия, Тунис'
+),
+(
+18,
+'Оно',
+'Злобный клоун терроризирует подростков. Адаптация романа-хоррора Стивена Кинга о детских страхах',
+'Ужасы',
+'https://www.youtube.com/embed/IisU-JHj_fU',
+'https://img4.goodfon.ru/wallpaper/nbig/c/e7/skarsgord-bill-film-kloun-ono-akter-sharik-ulybka-uzhasy-gri.jpg',
+'https://avatars.mds.yandex.net/get-kinopoisk-image/1629390/34653c61-8b9a-4ba4-8057-6c81d70c71ed/300x450',
+2017,
+'Канада, США'
+),
+(
+19,
+'Пролетая над гнездом кукушки',
+'История пробуждении зла. Экранизация романа Стивена Кинга в постановке Стэнли Кубрика, взбесившая писателя, но ставшая классикой',
+'Драма',
+'https://www.youtube.com/embed/9peCby4gtPU',
+'https://st.kp.yandex.net/im/wallpaper/2/4/5/kinopoisk.ru-One-Flew-Over-the-Cuckoo_27s-Nest-245661--w--1280.jpg',
+'https://st.kp.yandex.net/images/poster/sm_2542932.jpg',
+1975,
+'США'
+),
+(
+20,
+'Однажды в Америке',
+'Мальчишки становятся гангстерами. Классический криминальный эпос Серджио Леоне',
+'Драма',
+'https://www.youtube.com/embed/9peCby4gtPU',
+'https://st.kp.yandex.net/im/wallpaper/2/4/0/kinopoisk.ru-Once-Upon-a-Time-in-America-240193--w--800.jpg',
+'https://st.kp.yandex.net/im/poster/1/8/9/kinopoisk.ru-Once-Upon-a-Time-in-America-1897342.jpg',
+1983,
+'США, Италия'
+),
+(
+21,
+'Крестный отец 2',
+'Юность Вито Корлеоне и первые шаги его сына Майкла в роли главы клана — сразу и приквел, и сиквел. Шесть «Оскаров»',
+'Драма',
+'https://www.youtube.com/embed/8XuRdX35hiQ',
+'https://img1.goodfon.ru/wallpaper/nbig/9/c2/marlon-brando-godfather.jpg',
+'https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/33474b2a-d670-47c8-9cbe-51291847b6d4/300x450',
+1974,
+'США'
+),
+(
+22,
+'Лицо со шрамом',
+'Классическая гангстерская драма с Аль Пачино. После нее имя Тони Монтаны стало нарицательным',
+'Драма',
+'https://www.youtube.com/embed/D64n6DIkPzw',
+'https://st.kp.yandex.net/im/wallpaper/1/6/8/kinopoisk.ru-Scarface-1683877--w--960.jpg',
+'https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/1303d9e8-8fdb-4290-a42f-0491a2910a83/300x450',
+1983,
+'США'
+);
 
 create table rating
 (
@@ -210,7 +364,27 @@ insert into person(id, name, image, born_date, born_place)
     (15, 'Джон Гудман', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/5314f983-8a8a-422c-8019-ebd41ffae162/280x420', '20 июня, 1952', 'США'),
     (16, 'Сергей Светлаков', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1946459/ca3aa329-cd7f-4137-9db7-b8ce9080ef9c/280x420', '1977, 2 декабря', 'СССР(Россия)'),
     (17, 'Александр Паль', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/32eb2f4a-7140-41c3-aa1a-97b9e0a19b7d/280x420', '1988, 16 декабря', 'СССР(Россия)'),
-    (18, 'Юлия Александрова', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/b399342a-bff0-442d-8869-bfb379e956f9/280x420', '1982, 14 апреля', 'СССР(Россия)');
+    (18, 'Юлия Александрова', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1599028/b399342a-bff0-442d-8869-bfb379e956f9/280x420', '1982, 14 апреля', 'СССР(Россия)'),
+           (19, 'Сергей Бодров мл.', 'https://st.kp.yandex.net/im/kadr/3/5/6/kinopoisk.ru-Sergei-Bodrov-Jr-3565493.jpg', '27 декабря, 1971', 'СССР(Россия)'),
+          (20, 'Виктор Сухоруков', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/d289c71a-ff34-4b69-af2b-01e0e7567552/280x420', '10 ноября, 1951', 'СССР(Россия)'),
+        (21, 'Жан Рено', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1600647/37fa157e-5017-4684-b009-5118d222d094/280x420', '30 июля, 1948', 'Марокко'),
+        (22, 'Натали Портман', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1773646/61797efe-b2e8-45b8-a60a-ae8a970da958/280x420', '9 июня, 1981', 'Израиль'),
+        (23, 'Джейми Фокс', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1704946/962e6fd5-203c-4da1-a90c-312cc08e05bc/280x420', '13 декабря, 1967', 'США'),
+        (24, 'Кристоф Вальц', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1600647/185e33cd-c346-4180-8dcc-773ba5791d23/280x420', '4 октября, 1956', 'Австрия'),
+        (25, 'Роберт Дауни мл.', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/badcb124-2d8c-455b-a8f6-ffd7459fc3be/280x420', '4 апреля, 1965', 'США'),
+        (26, 'Крис Эванс', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1900788/0357ad10-8f5a-463e-86a6-42f5f6c4928c/280x420', '13 июня, 1981', 'США'),
+        (27, 'Мелани Лоран', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/236249a9-a114-4d7a-9d90-50a0462b48d7/280x420', '21 февраля, 1983', 'Франция'),
+        (28, 'Морган Фриман', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/eeea24c3-0990-4127-bc42-f74474c03dbb/280x420', '1 июня, 1937', 'США'),
+        (29, 'Джерард Батлер', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1946459/a47766a8-fa33-41b3-aa91-5564f22681b4/280x420', '13 ноября, 1969', 'Великобритания'),
+        (30, 'Джек Николсон', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1773646/57344f8d-5272-4ea5-b5ca-6b7df0ff59ae/280x420', '1937, 22 апреля', 'США'),
+(31, 'Скэтмэн Крозерс', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1773646/d3faa0ff-3330-4a87-9415-91c590a34bcf/280x420', '1910, 23 мая', 'США'),
+(32, 'Луиза Флетчер', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1704946/7c4c9dcc-72de-450f-83e0-e10e04d88f09/280x420', '1934, 22 июля', 'США'),
+(33, 'Роберт Де Нирор', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/8faa0fd8-6780-4fc2-84ef-3fb89687bd85/280x420', '1943, 17 августа', 'США'),
+(34, 'Аль Пачино', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1946459/a62839f1-3ecf-47be-bb1e-71495c744539/280x420', '1940, 25 апреля', 'США'),
+(35, 'Билл Скарсгард', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/572f58b2-952d-4c71-af00-736ca07a3248/280x420', '1990, 9 августа', 'США'),
+(36, 'Мэтт Диллон', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1777765/36d4a95f-5823-4fe1-ba6f-2f1da79993eb/280x420', '1964, 18 февраля', 'США'),
+(37, 'Ума Турман', 'https://avatars.mds.yandex.net/get-kinopoisk-image/1946459/55b29d0d-fd4c-45a9-aba4-159c664549c1/280x420', '1970, 29 апреля', 'США');
+
 insert into person_film(film_id, person_id, role)
     VALUES(1, 1, 'actor'),
     (1, 2, 'actor'),
@@ -229,17 +403,32 @@ insert into person_film(film_id, person_id, role)
     (6, 15, 'actor'),
     (8, 16, 'actor'),
     (8, 17, 'actor'),
-    (8, 18, 'actor');
+    (8, 18, 'actor'),
+    (9, 19, 'actor'),
+    (9, 20, 'actor'),
+    (10, 21, 'actor'),
+    (10, 22, 'actor'),
+    (11, 23, 'actor'),
+    (11, 24, 'actor'),
+    (12, 25, 'actor'),
+    (12, 26, 'actor'),
+    (13, 11, 'actor'),
+    (13, 33, 'actor'),
+    (14, 27, 'actor'),
+    (14, 28, 'actor'),
+    (15, 23, 'actor'),
+  (16, 30, 'actor'),
+  (16, 31, 'actor'),
+  (19, 30, 'actor'),
+  (19, 31, 'actor'),
+  (19, 32, 'actor'),
+  (20, 32, 'actor'),
+  (20, 33, 'actor'),
+  (21, 33, 'actor'),
+  (21, 34, 'actor'),
+  (22, 34, 'actor'),
+  (18, 35, 'actor'),
+  (17, 36, 'actor'),
+  (17, 37, 'actor');
 
 
-select f1.* from films f1 join (select f.* from films f where f.id=1) f2 WHERE f1.mainGenre = f2.mainGenre AND f1.id != f2.id
-select f1.* from films f1 join (select f.* from films f where f.id=1) f2 WHERE ABS(f1.rating-f2.rating)<1 AND f1.id != f2.id
-select f1.id, pf.film_id from films f1 join(select f.* from films f where f.id=3) f2 JOIN person_film pf on (f1.id = pf.film_id) WHERE pf.film_id = f2.id AND f1.id != f2.id;
-select f1.id, pf.film_id from films f1 join person_film pf on (f1.id = pf.film_id) JOIN (select f.* from films f where f.id=3) f2 on (pf.film_id=f2.id) WHERE f1.id != f2.id
-
-
-
-select f1.id from films f1 join person_film pf on (f1.id = pf.film_id) JOIN (select f.id, p.person_id from films f join person_film p on (f.id=p.film_id)where f.id=1) f2 on (pf.person_id=f2.person_id) WHERE f1.id != f2.id
-select f.id, p.person_id from films f join person_film p on (f.id=p.film_id)where f.id=3;
-
-select * from films where lower(title) LIKE 'по%' or lower(title) LIKE '% по%'
