@@ -104,9 +104,9 @@ func TestFindFilmsByGenre(t *testing.T) {
 	rows := sqlmock.
 		NewRows([]string{"id", "title", "mainGenre", "smallImg", "year"})
 	expect := models.FilmCards{
-		{1, "title1", genre, "smallImg", 2005},
-		{2, "title2", genre, "smallImg", 2020},
-		{9, "title9", genre, "smallImg", 2000},
+		{1, "title1", genre, "smallImg", 2005, 0},
+		{2, "title2", genre, "smallImg", 2020, 0},
+		{9, "title9", genre, "smallImg", 2000, 0},
 	}
 
 	for _, film := range expect {
@@ -185,9 +185,9 @@ func TestFindFilmsByPerson(t *testing.T) {
 	rows := sqlmock.
 		NewRows([]string{"id", "title", "mainGenre", "smallImg", "year"})
 	expect := models.FilmCards{
-		{1, "title1", "genre", "smallImg", 2005},
-		{2, "title2", "genre", "smallImg", 2020},
-		{9, "title9", "genre", "smallImg", 2000},
+		{1, "title1", "genre", "smallImg", 2005, 0},
+		{2, "title2", "genre", "smallImg", 2020, 0},
+		{9, "title9", "genre", "smallImg", 2000, 0},
 	}
 
 	for _, film := range expect {
@@ -266,9 +266,9 @@ func TestFindFilmsByPlaylist(t *testing.T) {
 	rows := sqlmock.
 		NewRows([]string{"id", "title", "mainGenre", "smallImg", "year"})
 	expect := models.FilmCards{
-		{1, "title1", "genre", "smallImg", 2005},
-		{2, "title2", "genre", "smallImg", 2020},
-		{9, "title9", "genre", "smallImg", 2000},
+		{1, "title1", "genre", "smallImg", 2005, 0},
+		{2, "title2", "genre", "smallImg", 2020, 0},
+		{9, "title9", "genre", "smallImg", 2000, 0},
 	}
 
 	for _, film := range expect {
@@ -322,6 +322,295 @@ func TestFindFilmsByPlaylist(t *testing.T) {
 		WillReturnRows(rows)
 
 	_, err = repo.FindFilmsByPlaylist(playlistID)
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
+	if err == nil {
+		t.Errorf("expected error, got nil")
+		return
+	}
+}
+
+func TestSimilarFilms(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("cant create mock: %s", err)
+	}
+	defer db.Close()
+
+	repo := NewFilmRepository(db)
+
+	var playlistID = 1
+
+	// good query
+	rows := sqlmock.
+		NewRows([]string{"id", "title", "mainGenre", "smallImg", "year"})
+	rows2 := sqlmock.
+		NewRows([]string{"id", "title", "mainGenre", "smallImg", "year"})
+	rows3 := sqlmock.
+		NewRows([]string{"id", "title", "mainGenre", "smallImg", "year"})
+	expect := models.FilmCards{
+		{1, "title1", "genre", "smallImg", 2005, 0},
+		{2, "title2", "genre", "smallImg", 2020, 0},
+		{9, "title9", "genre", "smallImg", 2000, 0},
+		{1, "title1", "genre", "smallImg", 2005, 0},
+		{2, "title2", "genre", "smallImg", 2020, 0},
+		{9, "title9", "genre", "smallImg", 2000, 0},
+		{1, "title1", "genre", "smallImg", 2005, 0},
+		{2, "title2", "genre", "smallImg", 2020, 0},
+		{9, "title9", "genre", "smallImg", 2000, 0},
+	}
+
+	for i := 0; i < 3; i++ {
+		rows = rows.AddRow(expect[i].Id, expect[i].Title, expect[i].MainGenre, expect[i].SmallImg, expect[i].Year)
+		rows2 = rows2.AddRow(expect[i+3].Id, expect[i+3].Title, expect[i+3].MainGenre, expect[i+3].SmallImg, expect[i+3].Year)
+		rows3 = rows3.AddRow(expect[i+6].Id, expect[i+6].Title, expect[i+6].MainGenre, expect[i+6].SmallImg, expect[i+6].Year)
+
+	}
+
+	//for film := range (3) {
+	//	rows = rows.AddRow(film.Id, film.Title, film.MainGenre, film.SmallImg, film.Year)
+	//}
+
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(playlistID).
+		WillReturnRows(rows)
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(playlistID).
+		WillReturnRows(rows2)
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(playlistID).
+		WillReturnRows(rows3)
+
+	item, err := repo.SimilarFilms(playlistID)
+	if err != nil {
+		t.Errorf("unexpected err: %s", err)
+		return
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
+	if !reflect.DeepEqual(*item, expect) {
+		t.Errorf("results not match, want %v, have %v", expect, *item)
+		return
+	}
+
+	// query error
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(playlistID).
+		WillReturnError(fmt.Errorf("db_error"))
+
+	_, err = repo.SimilarFilms(playlistID)
+
+	if err == nil {
+		t.Errorf("expected error, got nil")
+		return
+	}
+
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
+
+	// query error 2
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(playlistID).
+		WillReturnRows(rows)
+
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(playlistID).
+		WillReturnError(fmt.Errorf("db_error"))
+
+	_, err = repo.SimilarFilms(playlistID)
+
+	if err == nil {
+		t.Errorf("expected error, got nil")
+		return
+	}
+
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
+	// query error 3
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(playlistID).
+		WillReturnRows(rows)
+
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(playlistID).
+		WillReturnRows(rows)
+
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(playlistID).
+		WillReturnError(fmt.Errorf("db_error"))
+
+	_, err = repo.SimilarFilms(playlistID)
+
+	if err == nil {
+		t.Errorf("expected error, got nil")
+		return
+	}
+
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
+
+	// row scan error
+	rows = sqlmock.NewRows([]string{"id", "title"}).
+		AddRow(1, "title")
+
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(playlistID).
+		WillReturnRows(rows)
+
+	_, err = repo.SimilarFilms(playlistID)
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
+	if err == nil {
+		t.Errorf("expected error, got nil")
+		return
+	}
+	// row scan error 2
+	rows = sqlmock.NewRows([]string{"id", "title"}).
+		AddRow(1, "title")
+
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(playlistID).
+		WillReturnRows(rows2)
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(playlistID).
+		WillReturnRows(rows)
+
+	_, err = repo.SimilarFilms(playlistID)
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
+	if err == nil {
+		t.Errorf("expected error, got nil")
+		return
+	}
+	// row scan  3
+	rows = sqlmock.NewRows([]string{"id", "title"}).
+		AddRow(1, "title")
+
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(playlistID).
+		WillReturnRows(rows2)
+
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(playlistID).
+		WillReturnRows(rows2)
+
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(playlistID).
+		WillReturnRows(rows)
+
+	_, err = repo.SimilarFilms(playlistID)
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
+	if err == nil {
+		t.Errorf("expected error, got nil")
+		return
+	}
+}
+
+func TestSearch(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("cant create mock: %s", err)
+	}
+	defer db.Close()
+
+	repo := NewFilmRepository(db)
+
+	search := "Mishail"
+	search1 := "% " + search + "%"
+	search2 := search + "%"
+
+	// good query
+	rows := sqlmock.
+		NewRows([]string{"id", "title", "mainGenre", "smallImg", "year", "rating"})
+	expect := models.FilmCards{
+		{1, "title1", search, "smallImg", 2005, 0},
+		{2, "title2", search, "smallImg", 2020, 0},
+		{9, "title9", search, "smallImg", 2000, 0},
+	}
+
+	for _, film := range expect {
+		rows = rows.AddRow(film.Id, film.Title, film.MainGenre, film.SmallImg, film.Year, film.Rating)
+	}
+
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(search1, search2).
+		WillReturnRows(rows)
+
+	item, err := repo.Search(search)
+	if err != nil {
+		t.Errorf("unexpected err: %s", err)
+		return
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
+	if !reflect.DeepEqual(*item, expect) {
+		t.Errorf("results not match, want %v, have %v", expect[0], *item)
+		return
+	}
+
+	// query error
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(search1, search2).
+		WillReturnError(fmt.Errorf("db_error"))
+
+	_, err = repo.Search(search)
+
+	if err == nil {
+		t.Errorf("expected error, got nil")
+		return
+	}
+
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
+
+	// row scan error
+	rows = sqlmock.NewRows([]string{"id", "title"}).
+		AddRow(1, "title")
+
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(search1, search2).
+		WillReturnRows(rows)
+
+	_, err = repo.Search(search)
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("there were unfulfilled expectations: %s", err)
 		return
