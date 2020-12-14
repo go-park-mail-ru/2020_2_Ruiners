@@ -99,3 +99,16 @@ func (mr *MockRecorderMockRepository) CheckExist(login interface{}) *gomock.Call
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckExist", reflect.TypeOf((*MockRepository)(nil).CheckExist), login)
 }
+
+func (m *MockRepository) Search(search string) (*models.PublicUsers, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Search", search)
+	ret0, _ := ret[0].(*models.PublicUsers)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+func (mr *MockRecorderMockRepository) Search(login interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Search", reflect.TypeOf((*MockRepository)(nil).Search), login)
+}

@@ -6,5 +6,5 @@ type Repository interface {
 	FindByFilmIdAndRole(id int, role string) (*models.FilmPersons, error)
 	FindById(id int) (*models.Person, error)
 	FindFilmsIdByPersonId(id int) ([]int, error)
-	Search(search string) (*models.FilmPersons, error) //new
+	Search(search string) (*models.FilmPersons, error)
 }
