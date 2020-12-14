@@ -105,7 +105,7 @@ func TestFindByGenre(t *testing.T) {
 		rr := httptest.NewRecorder()
 		handler := http.HandlerFunc(filmHandler.FilmsByGenre)
 		handler.ServeHTTP(rr, req)
-		assert.Equal(t, rr.Body.String(), "[{\"id\":5,\"title\":\"string\",\"main_genre\":\"string\",\"small_img\":\"string\",\"year\":2007}]")
+		assert.Equal(t, rr.Body.String(), "[{\"id\":5,\"title\":\"string\",\"main_genre\":\"string\",\"small_img\":\"string\",\"year\":2007,\"rating\":0}]")
 	})
 }
 
@@ -143,6 +143,6 @@ func TestFindByPerson(t *testing.T) {
 		rr := httptest.NewRecorder()
 		handler := http.HandlerFunc(filmHandler.FilmsByPerson)
 		handler.ServeHTTP(rr, req)
-		assert.Equal(t, rr.Body.String(), "[{\"id\":5,\"title\":\"string\",\"main_genre\":\"string\",\"small_img\":\"string\",\"year\":2007}]")
+		assert.Equal(t, rr.Body.String(), "[{\"id\":5,\"title\":\"string\",\"main_genre\":\"string\",\"small_img\":\"string\",\"year\":2007,\"rating\":0}]")
 	})
 }

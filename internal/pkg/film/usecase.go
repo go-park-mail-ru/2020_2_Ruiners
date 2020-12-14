@@ -6,6 +6,6 @@ type UseCase interface {
 	FindById(id string) (*models.Film, error)
 	FilmsByGenre(genre string) (*models.FilmCards, error)
 	FilmsByPerson(genre string) (*models.FilmCards, error)
-	SimilarFilms(id string) (*models.FilmCards, error) //new
-	Search(search string) (*models.FilmCards, error) //new
+	SimilarFilms(id string) (*models.FilmCards, error)
+	Search(search string) (*models.FilmCards, error)
 }

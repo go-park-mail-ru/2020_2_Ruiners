@@ -63,3 +63,29 @@ func (mr *MockRecorderMockUseCase) FilmsByPerson(s interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FilmsByPerson", reflect.TypeOf((*MockUseCase)(nil).FilmsByPerson), s)
 }
+
+func (m *MockUseCase) SimilarFilms(s string) (*models.FilmCards, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SimilarFilms", s)
+	ret0, _ := ret[0].(*models.FilmCards)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+func (mr *MockRecorderMockUseCase) SimilarFilms(s interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SimilarFilms", reflect.TypeOf((*MockUseCase)(nil).SimilarFilms), s)
+}
+
+func (m *MockUseCase) Search(s string) (*models.FilmCards, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Search", s)
+	ret0, _ := ret[0].(*models.FilmCards)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+func (mr *MockRecorderMockUseCase) Search(s interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Search", reflect.TypeOf((*MockUseCase)(nil).Search), s)
+}
