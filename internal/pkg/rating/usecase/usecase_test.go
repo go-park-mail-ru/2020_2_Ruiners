@@ -152,4 +152,91 @@ func TestGetReviews(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, *reviews, testReviewsNotOk2)
 	})
+
+	t.Run("GET NOT OK 4", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m0 := rating.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
+		usecase := NewRatingUseCase(m0, m1)
+		_, err := usecase.GetReviews("tuk,1rjmrym")
+		assert.Error(t, err)
+	})
+}
+
+func TestGetCurrentRating(t *testing.T) {
+	t.Run("GetCurrentRating-OK", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m0 := rating.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
+
+		m1.
+			EXPECT().
+			GetUserIdBySession(gomock.Eq(testSession.Id)).
+			Return(5, nil)
+
+		m0.
+			EXPECT().
+			GetRating(gomock.Eq(1), gomock.Eq(5)).
+			Return(9, nil)
+
+		usecase := NewRatingUseCase(m0, m1)
+		rate, err := usecase.GetCurrentRating("1", testSession.Id)
+		assert.NoError(t, err)
+		assert.Equal(t, rate, 9)
+	})
+
+	t.Run("GetCurrentRating-OK-Non rate", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m0 := rating.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
+
+		m1.
+			EXPECT().
+			GetUserIdBySession(gomock.Eq(testSession.Id)).
+			Return(5, nil)
+
+		m0.
+			EXPECT().
+			GetRating(gomock.Eq(1), gomock.Eq(5)).
+			Return(0, errors.New("error"))
+
+		usecase := NewRatingUseCase(m0, m1)
+		rate, err := usecase.GetCurrentRating("1", testSession.Id)
+		assert.NoError(t, err)
+		assert.Equal(t, rate, 0)
+	})
+
+	t.Run("GetCurrentRating-OK-Non rate", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m0 := rating.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
+
+		m1.
+			EXPECT().
+			GetUserIdBySession(gomock.Eq(testSession.Id)).
+			Return(5, errors.New("error"))
+
+		usecase := NewRatingUseCase(m0, m1)
+		_, err := usecase.GetCurrentRating("1", testSession.Id)
+		assert.Error(t, err)
+	})
+
+	t.Run("GetCurrentRating-Bad in", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m0 := rating.NewMockRepository(ctrl)
+		m1 := session.NewMockRepository(ctrl)
+		usecase := NewRatingUseCase(m0, m1)
+		_, err := usecase.GetCurrentRating("tuk,1rjmrym", testSession.Id)
+		assert.Error(t, err)
+	})
 }
