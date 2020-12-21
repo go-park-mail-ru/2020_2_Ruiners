@@ -1,6 +1,7 @@
 package http
 
 import (
+	"errors"
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 	"net/http/httptest"
@@ -69,6 +70,38 @@ func TestFindById(t *testing.T) {
 		handler.ServeHTTP(rr, req)
 		assert.Equal(t, rr.Body.String(), "{\"id\":5,\"title\":\"string\",\"rating\":7,\"sum_votes\":5,\"description\":\"string\",\"main_genre\":\"string\",\"youtube_link\":\"string\",\"big_img\":\"string\",\"small_img\":\"string\",\"year\":2007,\"country\":\"string\"}")
 	})
+
+	t.Run("FindById-fail", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m := film.NewMockUseCase(ctrl)
+
+		m.
+			EXPECT().
+			FindById(gomock.Eq(strconv.Itoa(testFilm.Id))).
+			Return(&testFilm, errors.New("error"))
+		filmHandler := FilmHandler{
+			UseCase: m,
+			Logger:  logrus.New(),
+		}
+		req, err := http.NewRequest("GET", "/film/5", nil)
+
+		vars := map[string]string{
+			"id": "5",
+		}
+
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		req = mux.SetURLVars(req, vars)
+
+		rr := httptest.NewRecorder()
+		handler := http.HandlerFunc(filmHandler.FilmById)
+		handler.ServeHTTP(rr, req)
+		assert.Equal(t, rr.Code, 400)
+	})
 }
 
 func TestFindByGenre(t *testing.T) {
@@ -107,6 +140,38 @@ func TestFindByGenre(t *testing.T) {
 		handler.ServeHTTP(rr, req)
 		assert.Equal(t, rr.Body.String(), "[{\"id\":5,\"title\":\"string\",\"main_genre\":\"string\",\"small_img\":\"string\",\"year\":2007,\"rating\":0}]")
 	})
+
+	t.Run("FindById-OK", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m := film.NewMockUseCase(ctrl)
+
+		m.
+			EXPECT().
+			FilmsByGenre(gomock.Eq(testFilm.MainGenre)).
+			Return(&testFilmCards, errors.New("error"))
+		filmHandler := FilmHandler{
+			UseCase: m,
+			Logger:  logrus.New(),
+		}
+		req, err := http.NewRequest("GET", "/film/string", nil)
+
+		vars := map[string]string{
+			"genre": testFilm.MainGenre,
+		}
+
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		req = mux.SetURLVars(req, vars)
+
+		rr := httptest.NewRecorder()
+		handler := http.HandlerFunc(filmHandler.FilmsByGenre)
+		handler.ServeHTTP(rr, req)
+		assert.Equal(t, rr.Code, 400)
+	})
 }
 
 func TestFindByPerson(t *testing.T) {
@@ -144,5 +209,37 @@ func TestFindByPerson(t *testing.T) {
 		handler := http.HandlerFunc(filmHandler.FilmsByPerson)
 		handler.ServeHTTP(rr, req)
 		assert.Equal(t, rr.Body.String(), "[{\"id\":5,\"title\":\"string\",\"main_genre\":\"string\",\"small_img\":\"string\",\"year\":2007,\"rating\":0}]")
+	})
+
+	t.Run("FindById-fail", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m := film.NewMockUseCase(ctrl)
+
+		m.
+			EXPECT().
+			FilmsByPerson(gomock.Eq("1")).
+			Return(&testFilmCards, errors.New("error"))
+		filmHandler := FilmHandler{
+			UseCase: m,
+			Logger:  logrus.New(),
+		}
+		req, err := http.NewRequest("GET", "/person_film/1", nil)
+
+		vars := map[string]string{
+			"id": "1",
+		}
+
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		req = mux.SetURLVars(req, vars)
+
+		rr := httptest.NewRecorder()
+		handler := http.HandlerFunc(filmHandler.FilmsByPerson)
+		handler.ServeHTTP(rr, req)
+		assert.Equal(t, rr.Code, 400)
 	})
 }
