@@ -1,7 +1,6 @@
 package http
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -11,7 +10,6 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
-	"log"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
