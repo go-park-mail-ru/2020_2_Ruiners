@@ -279,12 +279,11 @@ func (uh *UserHandler) Search(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-
 func CreateSession(w http.ResponseWriter, sessionId string) {
 	cookie := http.Cookie{
-		Name:    "session_id",
-		Value:   sessionId,
-		Expires: time.Now().Add(10 * time.Hour),
+		Name:     "session_id",
+		Value:    sessionId,
+		Expires:  time.Now().Add(10 * time.Hour),
 		HttpOnly: true,
 		Path:     "/",
 	}

@@ -51,7 +51,7 @@ func (uc *FilmUseCase) FilmsByPerson(id string) (*models.FilmCards, error) {
 func (uc *FilmUseCase) SimilarFilms(id string) (*models.FilmCards, error) {
 	type FilmCardCount struct {
 		FilmCard models.FilmCard
-		Count int
+		Count    int
 	}
 	var fcCount []FilmCardCount
 	cards := models.FilmCards{}
@@ -66,13 +66,13 @@ func (uc *FilmUseCase) SimilarFilms(id string) (*models.FilmCards, error) {
 	for _, x := range *films {
 		fcCount = append(fcCount, FilmCardCount{FilmCard: x, Count: 1})
 	}
-	for i := 0; i < len(fcCount) - 1; i++ {
+	for i := 0; i < len(fcCount)-1; i++ {
 		counter := 0
 		var deleteSlice []int
-		for j := i + 1; j < len(fcCount); j++{
+		for j := i + 1; j < len(fcCount); j++ {
 			if fcCount[i].FilmCard == fcCount[j].FilmCard {
 				fcCount[i].Count++
-				deleteSlice =append(deleteSlice, j)
+				deleteSlice = append(deleteSlice, j)
 			}
 		}
 		for _, x := range deleteSlice {
@@ -99,4 +99,3 @@ func (uc *FilmUseCase) Search(search string) (*models.FilmCards, error) {
 	}
 	return films, nil
 }
-
