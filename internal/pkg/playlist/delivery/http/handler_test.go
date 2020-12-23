@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
-	"github.com/Arkadiyche/http-rest-api/internal/pkg/subscribe"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/playlist"
 	"github.com/golang/mock/gomock"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
@@ -14,32 +14,25 @@ import (
 	"time"
 )
 
-var testUser = models.PublicUser{
-	Id:    1,
-	Login: "Erik",
-	Email: "er@mail.ru",
-}
-
-var testUsers = models.PublicUsers{testUser}
-
 var testSession = models.Session{
 	Id:       "wefwuifbwiuhegfdjvsoafjh",
 	Username: "Arkadiy",
 }
 
-var testFeed = models.Feed{}
+var testPlaylists = models.Playlists{}
 
-func TestShowAuthors(t *testing.T) {
+func TestShowList(t *testing.T) {
 	t.Run("OK", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
-		m := subscribe.NewMockUseCase(ctrl)
+		m := playlist.NewMockUseCase(ctrl)
 
 		m.
 			EXPECT().
-			GetAuthors(gomock.Eq(testSession.Id)).
-			Return(&testUsers, nil)
-		subscribeHandler := SubscribeHandler{
+			GetList(gomock.Eq(testSession.Id)).
+			Return(&testPlaylists, nil)
+
+		playlistHandler := PlaylistHandler{
 			UseCase: m,
 			Logger:  logrus.New(),
 		}
@@ -55,22 +48,23 @@ func TestShowAuthors(t *testing.T) {
 		}
 
 		rr := httptest.NewRecorder()
-		handler := http.HandlerFunc(subscribeHandler.ShowAuthors)
+		handler := http.HandlerFunc(playlistHandler.ShowList)
 		handler.ServeHTTP(rr, req)
-		res, _ := json.Marshal(testUsers)
+		res, _ := json.Marshal(testPlaylists)
 		assert.Equal(t, rr.Body.String(), string(res))
 	})
 
 	t.Run("fail", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
-		m := subscribe.NewMockUseCase(ctrl)
+		m := playlist.NewMockUseCase(ctrl)
 
 		m.
 			EXPECT().
-			GetAuthors(gomock.Eq(testSession.Id)).
-			Return(&testUsers, errors.New("error"))
-		subscribeHandler := SubscribeHandler{
+			GetList(gomock.Eq(testSession.Id)).
+			Return(&testPlaylists, errors.New("error"))
+
+		playlistHandler := PlaylistHandler{
 			UseCase: m,
 			Logger:  logrus.New(),
 		}
@@ -86,7 +80,7 @@ func TestShowAuthors(t *testing.T) {
 		}
 
 		rr := httptest.NewRecorder()
-		handler := http.HandlerFunc(subscribeHandler.ShowAuthors)
+		handler := http.HandlerFunc(playlistHandler.ShowList)
 		handler.ServeHTTP(rr, req)
 		assert.Equal(t, rr.Code, 400)
 	})
@@ -94,9 +88,9 @@ func TestShowAuthors(t *testing.T) {
 	t.Run("No Cookie", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
-		m := subscribe.NewMockUseCase(ctrl)
+		m := playlist.NewMockUseCase(ctrl)
 
-		subscribeHandler := SubscribeHandler{
+		playlistHandler := PlaylistHandler{
 			UseCase: m,
 			Logger:  logrus.New(),
 		}
@@ -107,23 +101,25 @@ func TestShowAuthors(t *testing.T) {
 		}
 
 		rr := httptest.NewRecorder()
-		handler := http.HandlerFunc(subscribeHandler.ShowAuthors)
+		handler := http.HandlerFunc(playlistHandler.ShowList)
 		handler.ServeHTTP(rr, req)
 		assert.Equal(t, rr.Code, 400)
 	})
 }
 
-func TestShowFeed(t *testing.T) {
+func TestShowPlaylist(t *testing.T) {
 	t.Run("OK", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
-		m := subscribe.NewMockUseCase(ctrl)
+
+		m := playlist.NewMockUseCase(ctrl)
 
 		m.
 			EXPECT().
-			GetFeed(gomock.Eq(testSession.Id)).
-			Return(&testUsers, nil)
-		subscribeHandler := SubscribeHandler{
+			GetPlaylist(gomock.Eq(testSession.Id)).
+			Return(&testPlaylists, nil)
+
+		playlistHandler := PlaylistHandler{
 			UseCase: m,
 			Logger:  logrus.New(),
 		}
@@ -139,20 +135,23 @@ func TestShowFeed(t *testing.T) {
 		}
 
 		rr := httptest.NewRecorder()
-		handler := http.HandlerFunc(subscribeHandler.ShowFeed)
+		handler := http.HandlerFunc(playlistHandler.ShowPlaylist)
 		handler.ServeHTTP(rr, req)
+		//res, _ := json.Marshal(testPlaylists)
+		//assert.Equal(t, rr.Body.String(), string(res))
 	})
 
 	t.Run("fail", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
-		m := subscribe.NewMockUseCase(ctrl)
+		m := playlist.NewMockUseCase(ctrl)
 
 		m.
 			EXPECT().
-			GetFeed(gomock.Eq(testSession.Id)).
-			Return(&testUsers, errors.New("error"))
-		subscribeHandler := SubscribeHandler{
+			GetPlaylist(gomock.Eq(testSession.Id)).
+			Return(&testPlaylists, errors.New("error"))
+
+		playlistHandler := PlaylistHandler{
 			UseCase: m,
 			Logger:  logrus.New(),
 		}
@@ -168,7 +167,7 @@ func TestShowFeed(t *testing.T) {
 		}
 
 		rr := httptest.NewRecorder()
-		handler := http.HandlerFunc(subscribeHandler.ShowFeed)
+		handler := http.HandlerFunc(playlistHandler.ShowPlaylist)
 		handler.ServeHTTP(rr, req)
 		assert.Equal(t, rr.Code, 400)
 	})
@@ -176,9 +175,9 @@ func TestShowFeed(t *testing.T) {
 	t.Run("No Cookie", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
-		m := subscribe.NewMockUseCase(ctrl)
+		m := playlist.NewMockUseCase(ctrl)
 
-		subscribeHandler := SubscribeHandler{
+		playlistHandler := PlaylistHandler{
 			UseCase: m,
 			Logger:  logrus.New(),
 		}
@@ -189,7 +188,7 @@ func TestShowFeed(t *testing.T) {
 		}
 
 		rr := httptest.NewRecorder()
-		handler := http.HandlerFunc(subscribeHandler.ShowFeed)
+		handler := http.HandlerFunc(playlistHandler.ShowPlaylist)
 		handler.ServeHTTP(rr, req)
 		assert.Equal(t, rr.Code, 400)
 	})

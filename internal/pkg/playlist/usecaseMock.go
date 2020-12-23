@@ -88,7 +88,7 @@ func (mr *MockRecorderMockUseCase) GetList(search interface{}) *gomock.Call {
 
 func (m *MockUseCase) GetPlaylist(search string) (*models.Playlists, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetList", search)
+	ret := m.ctrl.Call(m, "GetPlaylist", search)
 	ret0, _ := ret[0].(*models.Playlists)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1

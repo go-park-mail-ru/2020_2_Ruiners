@@ -93,6 +93,17 @@ func TestFindById(t *testing.T) {
 		assert.Equal(t, *film, testFilm)
 	})
 
+	t.Run("Bad in", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m0 := film.NewMockRepository(ctrl)
+
+		usecase := NewFilmUseCase(m0)
+		_, err := usecase.FindById("lgv")
+		assert.Error(t, err)
+	})
+
 	t.Run("error rep", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
@@ -169,7 +180,6 @@ func TestFindByPerson(t *testing.T) {
 	})
 }
 
-
 func TestSearch(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		testFilmCards = append(testFilmCards, testFilmCard)
@@ -201,7 +211,6 @@ func TestSearch(t *testing.T) {
 	})
 }
 
-
 func TestSimilar(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		testFilmCards = append(testFilmCards, testFilmCard)
@@ -216,6 +225,18 @@ func TestSimilar(t *testing.T) {
 		films, err := usecase.SimilarFilms("1")
 		assert.NoError(t, err)
 		assert.Equal(t, *films, testSimilar)
+	})
+
+	t.Run("Bad in", func(t *testing.T) {
+		testFilmCards = append(testFilmCards, testFilmCard)
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m0 := film.NewMockRepository(ctrl)
+
+		usecase := NewFilmUseCase(m0)
+		_, err := usecase.SimilarFilms("khg")
+		assert.Error(t, err)
 	})
 
 	t.Run("Same films", func(t *testing.T) {
