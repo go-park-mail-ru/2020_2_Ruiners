@@ -171,3 +171,69 @@ func TestPersonsByFilm(t *testing.T) {
 		assert.Equal(t, rr.Code, 400)
 	})
 }
+
+func TestSearch(t *testing.T) {
+
+	t.Run("Search-OK", func(t *testing.T) {
+		var testFilmPerson = models.FilmPerson{
+			Id:   1,
+			Name: "Erik",
+		}
+		var testFilmPersons = models.FilmPersons{}
+		testFilmPersons = append(testFilmPersons, testFilmPerson)
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m := person.NewMockUseCase(ctrl)
+
+		m.
+			EXPECT().
+			Search(gomock.Eq("people")).
+			Return(&testFilmPersons, nil)
+		personHandler := PersonHandler{
+			UseCase: m,
+			Logger:  logrus.New(),
+		}
+		req, err := http.NewRequest("GET", "/search?key=people", nil)
+
+		if err != nil {
+			t.Fatal(err)
+		}
+		rr := httptest.NewRecorder()
+		handler := http.HandlerFunc(personHandler.Search)
+		handler.ServeHTTP(rr, req)
+		res, _ := json.Marshal(&testFilmPersons)
+		assert.Equal(t, rr.Body.String(), string(res))
+	})
+
+	t.Run("Search-fail", func(t *testing.T) {
+		var testFilmPerson = models.FilmPerson{
+			Id:   1,
+			Name: "Erik",
+		}
+		var testFilmPersons = models.FilmPersons{}
+		testFilmPersons = append(testFilmPersons, testFilmPerson)
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m := person.NewMockUseCase(ctrl)
+
+		m.
+			EXPECT().
+			Search(gomock.Eq("people")).
+			Return(&testFilmPersons, errors.New("error"))
+		personHandler := PersonHandler{
+			UseCase: m,
+			Logger:  logrus.New(),
+		}
+		req, err := http.NewRequest("GET", "/search?key=people", nil)
+
+		if err != nil {
+			t.Fatal(err)
+		}
+		rr := httptest.NewRecorder()
+		handler := http.HandlerFunc(personHandler.Search)
+		handler.ServeHTTP(rr, req)
+		assert.Equal(t, rr.Code, 400)
+	})
+}

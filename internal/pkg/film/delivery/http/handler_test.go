@@ -1,6 +1,7 @@
 package http
 
 import (
+	"encoding/json"
 	"errors"
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
@@ -239,6 +240,132 @@ func TestFindByPerson(t *testing.T) {
 
 		rr := httptest.NewRecorder()
 		handler := http.HandlerFunc(filmHandler.FilmsByPerson)
+		handler.ServeHTTP(rr, req)
+		assert.Equal(t, rr.Code, 400)
+	})
+}
+
+func TestSimilarFilms(t *testing.T) {
+
+	var testFilmCards = models.FilmCards{}
+	testFilmCards = append(testFilmCards, testFilmCard)
+
+	t.Run("SimilarFilms-OK", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m := film.NewMockUseCase(ctrl)
+
+		m.
+			EXPECT().
+			SimilarFilms(gomock.Eq("1")).
+			Return(&testFilmCards, nil)
+		filmHandler := FilmHandler{
+			UseCase: m,
+			Logger:  logrus.New(),
+		}
+		req, err := http.NewRequest("GET", "/person_film/1", nil)
+
+		vars := map[string]string{
+			"id": "1",
+		}
+
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		req = mux.SetURLVars(req, vars)
+
+		rr := httptest.NewRecorder()
+		handler := http.HandlerFunc(filmHandler.SimilarFilms)
+		handler.ServeHTTP(rr, req)
+		assert.Equal(t, rr.Body.String(), "[{\"id\":5,\"title\":\"string\",\"main_genre\":\"string\",\"small_img\":\"string\",\"year\":2007,\"rating\":0}]")
+	})
+
+	t.Run("SimilarFilms-fail", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m := film.NewMockUseCase(ctrl)
+
+		m.
+			EXPECT().
+			SimilarFilms(gomock.Eq("1")).
+			Return(&testFilmCards, errors.New("error"))
+		filmHandler := FilmHandler{
+			UseCase: m,
+			Logger:  logrus.New(),
+		}
+		req, err := http.NewRequest("GET", "/person_film/1", nil)
+
+		vars := map[string]string{
+			"id": "1",
+		}
+
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		req = mux.SetURLVars(req, vars)
+
+		rr := httptest.NewRecorder()
+		handler := http.HandlerFunc(filmHandler.SimilarFilms)
+		handler.ServeHTTP(rr, req)
+		assert.Equal(t, rr.Code, 400)
+	})
+}
+
+func TestSearch(t *testing.T) {
+	var testFilmCards = models.FilmCards{}
+	testFilmCards = append(testFilmCards, testFilmCard)
+
+	t.Run("Search-OK", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m := film.NewMockUseCase(ctrl)
+
+		m.
+			EXPECT().
+			Search(gomock.Eq("people")).
+			Return(&testFilmCards, nil)
+		filmHandler := FilmHandler{
+			UseCase: m,
+			Logger:  logrus.New(),
+		}
+		req, err := http.NewRequest("GET", "/search?key=people", nil)
+
+		if err != nil {
+			t.Fatal(err)
+		}
+		rr := httptest.NewRecorder()
+		handler := http.HandlerFunc(filmHandler.Search)
+		handler.ServeHTTP(rr, req)
+		res, _ := json.Marshal(&testFilmCards)
+		assert.Equal(t, rr.Body.String(), string(res))
+	})
+
+	t.Run("Search-fail", func(t *testing.T) {
+		ctrl := gomock.NewController(t)
+		defer ctrl.Finish()
+
+		m := film.NewMockUseCase(ctrl)
+
+		m.
+			EXPECT().
+			Search(gomock.Eq("people")).
+			Return(&testFilmCards, errors.New("error"))
+		filmHandler := FilmHandler{
+			UseCase: m,
+			Logger:  logrus.New(),
+		}
+		req, err := http.NewRequest("GET", "/search?key=people", nil)
+
+		if err != nil {
+			t.Fatal(err)
+		}
+		rr := httptest.NewRecorder()
+		handler := http.HandlerFunc(filmHandler.Search)
 		handler.ServeHTTP(rr, req)
 		assert.Equal(t, rr.Code, 400)
 	})
