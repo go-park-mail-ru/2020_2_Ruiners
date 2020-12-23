@@ -51,7 +51,7 @@ func (mr *MockRecorderMockUseCase) Delete(playlistId interface{}) *gomock.Call {
 
 func (m *MockUseCase) Add(filmId int, playlistId int) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetPersonsByFilm", filmId, playlistId)
+	ret := m.ctrl.Call(m, "Add", filmId, playlistId)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
