@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/app/apiserver"
 	session "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/session/server"
@@ -10,19 +9,10 @@ import (
 	"log"
 )
 
-var (
-	configPath string
-)
-
-func init() {
-//	flag.StringVar(&configPath, "config-path", "configs/session.toml", "path to config file")
-}
-
 func main() {
-	flag.Parse()
 
 	config := apiserver.NewConfig()
-	_, err := toml.DecodeFile(configPath, config)
+	_, err := toml.DecodeFile("configs/session.toml", config)
 	if err != nil {
 		log.Fatal(err)
 	}
