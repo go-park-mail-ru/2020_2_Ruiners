@@ -44,7 +44,11 @@ jobs:
 
       - name: Build
         run: make build
-
+      - name: Upload build res
+        uses: actions/upload-artifact@v1
+        with:
+          name: bin
+          path: ./apiserver
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -52,14 +56,14 @@ jobs:
       - name: Download bin file
         uses: actions/download-artifact@v1
         with:
-          name: ./apiserver
+          name: bin
       - name: Transfer build files to server
         uses: appleboy/scp-action@v0.0.10
         with:
           host: 95.163.208.72
           username: ubuntu
           key: ${{ secrets.PRIVATE_KEY }}
-          source: ./apiserver
+          source: bin/apiserver
           target: "/home/ubuntu/back/2020_2_Ruiners"
       - name: chmod
         uses: appleboy/scp-action@master
