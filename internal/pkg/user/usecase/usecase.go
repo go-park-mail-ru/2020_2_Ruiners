@@ -110,7 +110,7 @@ func (u *UserUseCase) ChangePassword(s string, oldPassword string, newPassword s
 
 func (u *UserUseCase) ChangeAvatar(s string, file multipart.File) error {
 	str := uuid2.NewV4().String()
-	f, err := os.Create("uploads/" + str + ".png")
+	f, err := os.Create("/home/ubuntu/back/2020_2_Ruiners/uploads/" + str + ".png")
 	if err != nil {
 		return err
 	}
