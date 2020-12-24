@@ -71,7 +71,12 @@ jobs:
           host: 95.163.208.72
           username: ubuntu
           key: ${{ secrets.PRIVATE_KEY }}
-          script: chmod 755 /home/ubuntu/back/2020_2_Ruiners/bin/apiserver
+          script: |
+            cd /home/ubuntu/2020_2_Ruiners/bin
+            chmod 755 session
+            chmod 755 auth
+            chmod 755 rate
+            chmod 755 apiserver
       - name: restart
         uses: appleboy/ssh-action@master
         with:

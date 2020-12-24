@@ -13,7 +13,7 @@ import (
 func main() {
 
 	config := apiserver.NewConfig()
-	_, err := toml.DecodeFile("configs/auth.toml", config)
+	_, err := toml.DecodeFile("../configs/auth.toml", config)
 	if err != nil {
 		log.Fatal(err)
 	}

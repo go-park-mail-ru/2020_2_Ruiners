@@ -12,7 +12,7 @@ import (
 func main() {
 
 	config := apiserver.NewConfig()
-	_, err := toml.DecodeFile("configs/session.toml", config)
+	_, err := toml.DecodeFile("../configs/session.toml", config)
 	if err != nil {
 		log.Fatal(err)
 	}

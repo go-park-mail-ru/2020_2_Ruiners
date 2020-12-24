@@ -1,6 +1,9 @@
 .PHONY: build
 build:
 	go build -o bin/apiserver -v ./cmd/apiserver
+	go build -o bin/session -v ./cmd/apiserver
+	go build -o bin/auth -v ./cmd/apiserver
+	go build -o bin/rate -v ./cmd/apiserver
 
 .PHONY: test
 test:
