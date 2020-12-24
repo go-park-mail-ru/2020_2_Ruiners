@@ -115,11 +115,7 @@ func (u *UserUseCase) ChangeAvatar(s string, file multipart.File) error {
 		return err
 	}
 	defer f.Close()
-	_, err = io.Copy(f, file)
-	if err != nil {
-		fmt.Println("aa")
-		return err
-	}
+	io.Copy(f, file)
 	_, login, err := u.RpcSession.FindById(s)
 	if err != nil {
 		return err
