@@ -63,7 +63,7 @@ jobs:
           host: 95.163.208.72
           username: ubuntu
           key: ${{ secrets.PRIVATE_KEY }}
-          source: apiserver
+          source: bin
           target: "/home/ubuntu/back/2020_2_Ruiners"
       - name: chmod
         uses: appleboy/scp-action@master
