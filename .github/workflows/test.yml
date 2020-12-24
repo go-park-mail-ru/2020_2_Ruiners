@@ -2,12 +2,9 @@ name: Docker Build
 
 on:
   push:
-    branches:
-      - master
-      - dev
-      - Arkadiyche1
+    branches: [ master, dev, Arkadiyche1]
   pull_request:
-    branches: [ master ]
+    branches: [ master, dev ]
 
 jobs:
   golangci-main:
