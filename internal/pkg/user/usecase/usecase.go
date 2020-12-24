@@ -110,16 +110,12 @@ func (u *UserUseCase) ChangePassword(s string, oldPassword string, newPassword s
 
 func (u *UserUseCase) ChangeAvatar(s string, file multipart.File) error {
 	str := uuid2.NewV4().String()
-	f, err := os.Create("uploads/" + str + ".png")
+	f, err := os.Create("/home/ubuntu/back/2020_2_Ruiners/uploads/" + str + ".png")
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 	io.Copy(f, file)
-	if err != nil {
-		fmt.Println("aa")
-		return err
-	}
 	_, login, err := u.RpcSession.FindById(s)
 	if err != nil {
 		return err
@@ -144,9 +140,18 @@ func (u *UserUseCase) GetAvatar(ids string) (*os.File, error) {
 	if err != nil {
 		return nil, err
 	}
-	file, err := os.Open("uploads/" + user.Image + ".png")
+	fmt.Println(user.Image)
+	file, err := os.Open("/home/ubuntu/back/2020_2_Ruiners/uploads/" + user.Image + ".png")
 	if err != nil {
-		file, _ = os.Open("uploads/def.png")
+		file, _ = os.Open("/home/ubuntu/back/2020_2_Ruiners/uploads/def.png")
 	}
 	return file, nil
+}
+
+func (u *UserUseCase) Search(search string) (*models.PublicUsers, error) {
+	users, err := u.UserRepository.Search(search)
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
 }

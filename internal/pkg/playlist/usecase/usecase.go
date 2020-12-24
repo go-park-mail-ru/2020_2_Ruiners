@@ -61,6 +61,9 @@ func (uc *PlaylistUseCase) Remove(filmId int, playlistId int) error {
 
 func (uc *PlaylistUseCase) GetList(session string) (*models.Playlists, error) {
 	userId, err := uc.RpcSession.GetUserIdBySession(session)
+	if err != nil {
+		return nil, err
+	}
 	playlist, err := uc.PlaylistRepository.GetList(userId)
 	if err != nil {
 		return nil, err
@@ -71,6 +74,9 @@ func (uc *PlaylistUseCase) GetList(session string) (*models.Playlists, error) {
 func (uc *PlaylistUseCase) GetPlaylist(session string) (*models.Playlists, error) {
 	res := models.Playlists{}
 	userId, err := uc.RpcSession.GetUserIdBySession(session)
+	if err != nil {
+		return nil, err
+	}
 	playlist, err := uc.PlaylistRepository.GetList(userId)
 	if err != nil {
 		return nil, err

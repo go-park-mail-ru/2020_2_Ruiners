@@ -15,11 +15,12 @@ type Film struct {
 }
 
 type FilmCard struct {
-	Id        int    `json:"id"`
-	Title     string `json:"title"`
-	MainGenre string `json:"main_genre"`
-	SmallImg  string `json:"small_img"`
-	Year      int    `json:"year"`
+	Id        int     `json:"id"`
+	Title     string  `json:"title"`
+	MainGenre string  `json:"main_genre"`
+	SmallImg  string  `json:"small_img"`
+	Year      int     `json:"year"`
+	Rating    float64 `json:"rating"`
 }
 
 //easyjson:json
@@ -29,4 +30,7 @@ var TranslateGenre = map[string]string{
 	"fantasy": "Фантастика",
 	"comedy":  "Комедия",
 	"horror":  "Ужасы",
+	"drama":   "Драма",
+	"triller": "Триллер",
+	"war":     "Боевик",
 }

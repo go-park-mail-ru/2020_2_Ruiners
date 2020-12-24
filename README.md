@@ -2,7 +2,7 @@
 Бекенд репозиторий команды Ruiners!
 
 ## Cсылка на деплой:
-http://95.163.208.72:3000/
+https://kino-park.online/
 
 ## Cсылка на репозиторий фронтенда:
 https://github.com/frontend-park-mail-ru/2020_2_Ruiners

@@ -76,3 +76,29 @@ func (mr *MockRecorderMockRepository) FindFilmsByPlaylist(id interface{}) *gomoc
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindFilmsByPlaylist", reflect.TypeOf((*MockRepository)(nil).FindFilmsByPlaylist), id)
 }
+
+func (m *MockRepository) Search(search string) (*models.FilmCards, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Search", search)
+	ret0, _ := ret[0].(*models.FilmCards)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+func (mr *MockRecorderMockRepository) Search(search interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Search", reflect.TypeOf((*MockRepository)(nil).Search), search)
+}
+
+func (m *MockRepository) SimilarFilms(id int) (*models.FilmCards, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SimilarFilms", id)
+	ret0, _ := ret[0].(*models.FilmCards)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+func (mr *MockRecorderMockRepository) SimilarFilms(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SimilarFilms", reflect.TypeOf((*MockRepository)(nil).SimilarFilms), id)
+}

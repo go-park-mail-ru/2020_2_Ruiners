@@ -9,4 +9,5 @@ type Repository interface {
 	UpdatePassword(login string, newPassword string) error
 	UpdateAvatar(login string, name string) error
 	CheckExist(login string) (bool, error)
+	Search(search string) (*models.PublicUsers, error)
 }

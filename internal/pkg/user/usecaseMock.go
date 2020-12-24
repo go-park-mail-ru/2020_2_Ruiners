@@ -139,3 +139,16 @@ func (mr *MockRecorderMockUseCase) GetAvatar(id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ChangeAvatar", reflect.TypeOf((*MockUseCase)(nil).GetAvatar), id)
 }
+
+func (m *MockUseCase) Search(s string) (*models.PublicUsers, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Search", s)
+	ret0, _ := ret[0].(*models.PublicUsers)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+func (mr *MockRecorderMockUseCase) Search(s interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Search", reflect.TypeOf((*MockUseCase)(nil).Search), s)
+}

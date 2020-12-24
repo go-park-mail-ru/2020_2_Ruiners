@@ -50,3 +50,16 @@ func (mr *MockRecorderMockUseCase) GetPersonsByFilm(id interface{}, role interfa
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPersonsByFilm", reflect.TypeOf((*MockUseCase)(nil).GetPersonsByFilm), id, role)
 }
+
+func (m *MockUseCase) Search(search string) (*models.FilmPersons, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Search", search)
+	ret0, _ := ret[0].(*models.FilmPersons)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+func (mr *MockRecorderMockUseCase) Search(search interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Search", reflect.TypeOf((*MockUseCase)(nil).Search), search)
+}

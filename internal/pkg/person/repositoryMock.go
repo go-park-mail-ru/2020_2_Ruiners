@@ -63,3 +63,16 @@ func (mr *MockRecorderMockRepository) FindFilmsIdByPersonId(id interface{}) *gom
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindFilmsIdByPersonId", reflect.TypeOf((*MockRepository)(nil).FindFilmsIdByPersonId), id)
 }
+
+func (m *MockRepository) Search(search string) (*models.FilmPersons, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Search", search)
+	ret0, _ := ret[0].(*models.FilmPersons)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+func (mr *MockRecorderMockRepository) Search(search interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Search", reflect.TypeOf((*MockRepository)(nil).Search), search)
+}

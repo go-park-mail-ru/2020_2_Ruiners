@@ -20,7 +20,7 @@ func TestFindByLogin(t *testing.T) {
 	repo := NewUserRepository(db)
 
 	var username = "Admin"
-	admin := models.User{1, username, "fdvvvccc", "gg@gmail.com", "my_img"}
+	admin := models.User{Id: 1, Username: username, Password: "fdvvvccc", Email: "gg@gmail.com", Image: "my_img"}
 
 	// good query
 	rows := sqlmock.
@@ -95,7 +95,7 @@ func TestFindById(t *testing.T) {
 
 	var user_id = 5
 
-	admin := models.User{user_id, "username", "fdvvvccc", "gg@gmail.com", "my_img"}
+	admin := models.User{Id: user_id, Username: "username", Password: "fdvvvccc", Email: "gg@gmail.com", Image: "my_img"}
 
 	// good query
 	rows := sqlmock.
@@ -221,7 +221,7 @@ func TestCheckExist(t *testing.T) {
 	repo := NewUserRepository(db)
 
 	var username = "Admin"
-	admin := models.User{1, username, "fdvvvccc", "gg@gmail.com", "my_img"}
+	admin := models.User{Id: 1, Username: username, Password: "fdvvvccc", Email: "gg@gmail.com", Image: "my_img"}
 
 	// good query
 	rows := sqlmock.
@@ -275,6 +275,10 @@ func TestCheckExist(t *testing.T) {
 		WillReturnRows(rows)
 
 	_, err = repo.CheckExist(username)
+	if err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("there were unfulfilled expectations: %s", err)
 		return
@@ -300,6 +304,89 @@ func TestCheckExist(t *testing.T) {
 
 	if !reflect.DeepEqual(item, false) {
 		t.Errorf("results not match, want %v, have %v", false, item)
+		return
+	}
+}
+
+func TestSearch(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("cant create mock: %s", err)
+	}
+	defer db.Close()
+
+	repo := NewUserRepository(db)
+
+	search := "Mishail"
+	search1 := "% " + search + "%"
+	search2 := search + "%"
+
+	// good query
+	rows := sqlmock.
+		NewRows([]string{"id", "username", "email"})
+	expect := models.PublicUsers{
+		{Id: 3, Login: "name", Email: "d@gmail.com"},
+		{Id: 3, Login: "name3", Email: "d@gmail.com"},
+		{Id: 3, Login: "name10", Email: "d@gmail.com"},
+	}
+
+	for _, person := range expect {
+		rows = rows.AddRow(person.Id, person.Login, person.Email)
+	}
+
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(search1, search2).
+		WillReturnRows(rows)
+
+	item, err := repo.Search(search)
+	if err != nil {
+		t.Errorf("unexpected err: %s", err)
+		return
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
+	if !reflect.DeepEqual(*item, expect) {
+		t.Errorf("results not match, want %v, have %v", expect[0], *item)
+		return
+	}
+
+	// query error
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(search1, search2).
+		WillReturnError(fmt.Errorf("db_error"))
+
+	_, err = repo.Search(search)
+
+	if err == nil {
+		t.Errorf("expected error, got nil")
+		return
+	}
+
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
+
+	// row scan error
+	rows = sqlmock.NewRows([]string{"id", "title"}).
+		AddRow(1, "title")
+
+	mock.
+		ExpectQuery("SELECT").
+		WithArgs(search1, search2).
+		WillReturnRows(rows)
+
+	_, err = repo.Search(search)
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
+	if err == nil {
+		t.Errorf("expected error, got nil")
 		return
 	}
 }

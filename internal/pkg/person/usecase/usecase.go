@@ -44,3 +44,11 @@ func (uc *PersonUseCase) GetPersonsByFilm(id string, role string) (*models.FilmP
 	}
 	return persons, nil
 }
+
+func (uc *PersonUseCase) Search(search string) (*models.FilmPersons, error) {
+	persons, err := uc.PersonRepository.Search(search)
+	if err != nil {
+		return nil, err
+	}
+	return persons, nil
+}

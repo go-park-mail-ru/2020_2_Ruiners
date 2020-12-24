@@ -75,3 +75,23 @@ func (r *UserRepository) CheckExist(login string) (bool, error) {
 	}
 	return false, nil
 }
+
+func (r *UserRepository) Search(search string) (*models.PublicUsers, error) {
+	search1 := "% " + search + "%"
+	search2 := search + "%"
+	user := models.PublicUser{}
+	users := models.PublicUsers{}
+	authorsQuery, err := r.db.Query("SELECT u.id, u.username, u.email FROM users u WHERE lower(u.username) LIKE ? or lower(u.username) LIKE ?", search1, search2)
+	if err != nil {
+		return nil, err
+	}
+	defer authorsQuery.Close()
+
+	for authorsQuery.Next() {
+		if authorsQuery.Scan(&user.Id, &user.Login, &user.Email) != nil {
+			return nil, errors.New("db error")
+		}
+		users = append(users, user)
+	}
+	return &users, nil
+}

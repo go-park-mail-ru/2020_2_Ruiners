@@ -55,3 +55,22 @@ func (ph *PersonHandler) PersonsByFilm(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
+
+func (ph *PersonHandler) Search(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query().Get("key")
+	persons, err := ph.UseCase.Search(query)
+	if err != nil {
+		ph.Logger.Error("error with usecase person by film")
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	res, err := easyjson.Marshal(persons)
+	//fmt.Println(string(res))
+	if err != nil {
+		ph.Logger.Error("error with delivery person by film json-marshal")
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}

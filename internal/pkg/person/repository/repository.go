@@ -64,3 +64,24 @@ func (r *PersonRepository) FindFilmsIdByPersonId(id int) ([]int, error) {
 	}
 	return ids, err
 }
+
+func (r *PersonRepository) Search(search string) (*models.FilmPersons, error) {
+	search1 := "% " + search + "%"
+	search2 := search + "%"
+	filmPerson := models.FilmPerson{}
+	filmPersons := models.FilmPersons{}
+	filmPersonQuery, err := r.db.Query("SELECT p.id, p.name, p.image  FROM person p WHERE lower(p.name) LIKE ? or lower(p.name) LIKE ?", search1, search2)
+
+	if err != nil {
+		return nil, err
+	}
+	defer filmPersonQuery.Close()
+
+	for filmPersonQuery.Next() {
+		if filmPersonQuery.Scan(&filmPerson.Id, &filmPerson.Name, &filmPerson.Image) != nil {
+			return nil, errors.New("db error")
+		}
+		filmPersons = append(filmPersons, filmPerson)
+	}
+	return &filmPersons, nil
+}

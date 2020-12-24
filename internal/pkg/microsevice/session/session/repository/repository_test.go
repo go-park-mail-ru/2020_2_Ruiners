@@ -220,7 +220,7 @@ func TestCreate(t *testing.T) {
 
 	repo := NewSessionRepository(db)
 
-	session := models.Session{"hhh5", "username"}
+	session := models.Session{Id: "hhh5", Username: "username"}
 
 	// good query
 	mock.
