@@ -256,13 +256,9 @@ func (uh *UserHandler) AvatarById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Println(file.Name())
 	w.WriteHeader(http.StatusOK)
-	_, err = io.Copy(w, file)
-	if err != nil {
-		uh.Logger.Error("error with usecase avatar by id")
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+	io.Copy(w, file)
 }
 
 func (uh *UserHandler) Search(w http.ResponseWriter, r *http.Request) {
