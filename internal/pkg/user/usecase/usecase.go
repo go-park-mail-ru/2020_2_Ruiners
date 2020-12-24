@@ -141,7 +141,7 @@ func (u *UserUseCase) GetAvatar(ids string) (*os.File, error) {
 		return nil, err
 	}
 	fmt.Println(user.Image)
-	file, err := os.Open("/home/ubuntu/back/2020_2_Ruiners/" + user.Image + ".png")
+	file, err := os.Open("/home/ubuntu/back/2020_2_Ruiners/uploads/" + user.Image + ".png")
 	if err != nil {
 		file, _ = os.Open("/home/ubuntu/back/2020_2_Ruiners/uploads/def.png")
 	}
