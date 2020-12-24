@@ -83,5 +83,9 @@ jobs:
           host: 95.163.208.72
           username: ubuntu
           key: ${{ secrets.PRIVATE_KEY }}
-          script: ./home/ubuntu/back/2020_2_Ruiners/bin/apiserver &
+          script: |
+            sudo systemctl restart apiserver.service
+            sudo systemctl restart apisession.service
+            sudo systemctl restart apiauth.service
+            sudo systemctl restart apirate.service
 

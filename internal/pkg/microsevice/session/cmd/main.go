@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/Arkadiyche/http-rest-api/internal/app/apiserver"
 	session "github.com/Arkadiyche/http-rest-api/internal/pkg/microsevice/session/server"
+	"github.com/Arkadiyche/http-rest-api/internal/pkg/models"
 	"github.com/Arkadiyche/http-rest-api/internal/pkg/store"
 	"github.com/BurntSushi/toml"
 	"log"
@@ -12,9 +13,14 @@ import (
 func main() {
 
 	config := apiserver.NewConfig()
-	_, err := toml.DecodeFile("../configs/session.toml", config)
+	_, err := toml.DecodeFile("/home/ubuntu/back/2020_2_Ruiners/session.toml", config)
 	if err != nil {
-		log.Fatal(err)
+		config = &apiserver.Config{
+			BindAddr: ":8003",
+			LogLevel: "debug",
+			Store:    &store.Config{DatabaseURL: "root:password@/kino_park"},
+			CORS:     models.CORSConfig{},
+		}
 	}
 	db := store.New(config.Store)
 	if err != nil {
