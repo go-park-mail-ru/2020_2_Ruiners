@@ -43,7 +43,7 @@ jobs:
       - name: Build
         run: go test ./...
       - name: Upload build res
-        uses: actions/uploads-artifact@v1
+        uses: actions/upload-artifact@v1
         with:
           name: bin
           path: ./apiserver
