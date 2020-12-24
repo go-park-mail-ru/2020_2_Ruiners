@@ -115,7 +115,7 @@ func (u *UserUseCase) ChangeAvatar(s string, file multipart.File) error {
 		return err
 	}
 	defer f.Close()
-	io.Copy(f, file)
+	_, err = io.Copy(f, file)
 	if err != nil {
 		fmt.Println("aa")
 		return err

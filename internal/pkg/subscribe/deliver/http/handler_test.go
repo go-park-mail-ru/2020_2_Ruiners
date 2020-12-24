@@ -27,7 +27,6 @@ var testSession = models.Session{
 	Username: "Arkadiy",
 }
 
-var testFeed = models.Feed{}
 
 func TestShowAuthors(t *testing.T) {
 	t.Run("OK", func(t *testing.T) {

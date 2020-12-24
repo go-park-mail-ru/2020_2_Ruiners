@@ -28,9 +28,12 @@ func (uc *RatingUseCase) Rate(rating int, filmId int, session string) error {
 		return err
 	}
 	if !check {
-		uc.RatingRepository.AddRating(rating, filmId, userId)
+		err = uc.RatingRepository.AddRating(rating, filmId, userId)
 	} else {
-		uc.RatingRepository.UpdateRating(rating, filmId, userId)
+		err = uc.RatingRepository.UpdateRating(rating, filmId, userId)
+	}
+	if err != nil {
+		return err
 	}
 	return nil
 }

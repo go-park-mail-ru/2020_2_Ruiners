@@ -199,7 +199,7 @@ func TestShowPlaylist(t *testing.T) {
 func TestRemovePlaylist(t *testing.T) {
 	type RemovePlaylist struct {
 		PlaylistId int `json:"playlist_id"`
-		FilmId     int `json:"film_id"'`
+		FilmId     int `json:"film_id"`
 	}
 	t.Run("OK", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
@@ -223,6 +223,9 @@ func TestRemovePlaylist(t *testing.T) {
 		}
 
 		bytesRepresentation, err := json.Marshal(elem)
+		if err != nil {
+			t.Fatal(err)
+		}
 		req, err := http.NewRequest("GET", "/authors", bytes.NewBuffer(bytesRepresentation))
 		req.AddCookie(&http.Cookie{
 			Name:    "session_id",
@@ -260,6 +263,9 @@ func TestRemovePlaylist(t *testing.T) {
 		}
 
 		bytesRepresentation, err := json.Marshal(elem)
+		if err != nil {
+			t.Fatal(err)
+		}
 		req, err := http.NewRequest("GET", "/authors", bytes.NewBuffer(bytesRepresentation))
 		req.AddCookie(&http.Cookie{
 			Name:    "session_id",
@@ -277,7 +283,7 @@ func TestRemovePlaylist(t *testing.T) {
 	})
 	type RemovePlaylistBad struct {
 		PlaylistId string `json:"playlist_id"`
-		FilmId     string `json:"film_id"'`
+		FilmId     string `json:"film_id"`
 	}
 	t.Run("fail", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
@@ -296,6 +302,9 @@ func TestRemovePlaylist(t *testing.T) {
 		}
 
 		bytesRepresentation, err := json.Marshal(elem)
+		if err != nil {
+			t.Fatal(err)
+		}
 		req, err := http.NewRequest("GET", "/authors", bytes.NewBuffer(bytesRepresentation))
 		req.AddCookie(&http.Cookie{
 			Name:    "session_id",
@@ -316,7 +325,7 @@ func TestRemovePlaylist(t *testing.T) {
 func TestAddPlaylist(t *testing.T) {
 	type RemovePlaylist struct {
 		PlaylistId int `json:"playlist_id"`
-		FilmId     int `json:"film_id"'`
+		FilmId     int `json:"film_id"`
 	}
 	t.Run("OK", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
@@ -340,6 +349,9 @@ func TestAddPlaylist(t *testing.T) {
 		}
 
 		bytesRepresentation, err := json.Marshal(elem)
+		if err != nil {
+			t.Fatal(err)
+		}
 		req, err := http.NewRequest("GET", "/authors", bytes.NewBuffer(bytesRepresentation))
 		req.AddCookie(&http.Cookie{
 			Name:    "session_id",
@@ -377,6 +389,9 @@ func TestAddPlaylist(t *testing.T) {
 		}
 
 		bytesRepresentation, err := json.Marshal(elem)
+		if err != nil {
+			t.Fatal(err)
+		}
 		req, err := http.NewRequest("GET", "/authors", bytes.NewBuffer(bytesRepresentation))
 		req.AddCookie(&http.Cookie{
 			Name:    "session_id",
@@ -394,7 +409,7 @@ func TestAddPlaylist(t *testing.T) {
 	})
 	type RemovePlaylistBad struct {
 		PlaylistId string `json:"playlist_id"`
-		FilmId     string `json:"film_id"'`
+		FilmId     string `json:"film_id"`
 	}
 	t.Run("fail", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
@@ -413,6 +428,9 @@ func TestAddPlaylist(t *testing.T) {
 		}
 
 		bytesRepresentation, err := json.Marshal(elem)
+		if err != nil {
+			t.Fatal(err)
+		}
 		req, err := http.NewRequest("GET", "/authors", bytes.NewBuffer(bytesRepresentation))
 		req.AddCookie(&http.Cookie{
 			Name:    "session_id",
@@ -455,6 +473,9 @@ func TestDeletePlaylist(t *testing.T) {
 		}
 
 		bytesRepresentation, err := json.Marshal(elem)
+		if err != nil {
+			t.Fatal(err)
+		}
 		req, err := http.NewRequest("GET", "/authors", bytes.NewBuffer(bytesRepresentation))
 		req.AddCookie(&http.Cookie{
 			Name:    "session_id",
@@ -491,6 +512,9 @@ func TestDeletePlaylist(t *testing.T) {
 		}
 
 		bytesRepresentation, err := json.Marshal(elem)
+		if err != nil {
+			t.Fatal(err)
+		}
 		req, err := http.NewRequest("GET", "/authors", bytes.NewBuffer(bytesRepresentation))
 		req.AddCookie(&http.Cookie{
 			Name:    "session_id",
@@ -523,6 +547,9 @@ func TestDeletePlaylist(t *testing.T) {
 		}
 
 		bytesRepresentation, err := json.Marshal(elem)
+		if err != nil {
+			t.Fatal(err)
+		}
 		req, err := http.NewRequest("GET", "/authors", bytes.NewBuffer(bytesRepresentation))
 
 		if err != nil {
@@ -554,6 +581,9 @@ func TestDeletePlaylist(t *testing.T) {
 		}
 
 		bytesRepresentation, err := json.Marshal(elem)
+		if err != nil {
+			t.Fatal(err)
+		}
 		req, err := http.NewRequest("GET", "/authors", bytes.NewBuffer(bytesRepresentation))
 		req.AddCookie(&http.Cookie{
 			Name:    "session_id",
@@ -597,6 +627,9 @@ func TestCreatePlaylist(t *testing.T) {
 		}
 
 		bytesRepresentation, err := json.Marshal(elem)
+		if err != nil {
+			t.Fatal(err)
+		}
 		req, err := http.NewRequest("GET", "/authors", bytes.NewBuffer(bytesRepresentation))
 		req.AddCookie(&http.Cookie{
 			Name:    "session_id",
@@ -634,6 +667,9 @@ func TestCreatePlaylist(t *testing.T) {
 		}
 
 		bytesRepresentation, err := json.Marshal(elem)
+		if err != nil {
+			t.Fatal(err)
+		}
 		req, err := http.NewRequest("GET", "/authors", bytes.NewBuffer(bytesRepresentation))
 		req.AddCookie(&http.Cookie{
 			Name:    "session_id",
@@ -667,6 +703,9 @@ func TestCreatePlaylist(t *testing.T) {
 		}
 
 		bytesRepresentation, err := json.Marshal(elem)
+		if err != nil {
+			t.Fatal(err)
+		}
 		req, err := http.NewRequest("GET", "/authors", bytes.NewBuffer(bytesRepresentation))
 
 		if err != nil {
@@ -699,6 +738,9 @@ func TestCreatePlaylist(t *testing.T) {
 		}
 
 		bytesRepresentation, err := json.Marshal(elem)
+		if err != nil {
+			t.Fatal(err)
+		}
 		req, err := http.NewRequest("GET", "/authors", bytes.NewBuffer(bytesRepresentation))
 		req.AddCookie(&http.Cookie{
 			Name:    "session_id",

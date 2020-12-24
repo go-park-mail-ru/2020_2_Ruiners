@@ -57,7 +57,7 @@ func (u *UserUseCase) Login(login, password string) (string, error) {
 		return "", err
 	}
 	check, err := crypto.CheckPassword(password, user.Password)
-	if !check {
+	if !check || err != nil{
 		return "", errors.New("wrong password")
 	}
 	sessionId := uuid2.NewV4().String()

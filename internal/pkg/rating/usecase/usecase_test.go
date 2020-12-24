@@ -114,14 +114,14 @@ func TestGetReviews(t *testing.T) {
 			Rate:      10,
 		}
 
-		var testReviewNotOk = models.Review{
-			Id:        1,
-			UserLogin: "Deleted",
-			TextBody:  "Piece of sh*t",
-			UserId:    1,
-			FilmId:    1,
-			Rate:      10,
-		}
+		//var testReviewNotOk = models.Review{
+		//	Id:        1,
+		//	UserLogin: "Deleted",
+		//	TextBody:  "Piece of sh*t",
+		//	UserId:    1,
+		//	FilmId:    1,
+		//	Rate:      10,
+		//}
 
 		var testReviewNotOk2 = models.Review{
 			Id:        1,
@@ -132,12 +132,12 @@ func TestGetReviews(t *testing.T) {
 			Rate:      0,
 		}
 
-		var testReviews = models.Reviews{}
-		var testReviewsNotOk = models.Reviews{}
-		var testReviewsNotOk2 = models.Reviews{}
+		testReviews := models.Reviews{}
+		//testReviewsNotOk1 := models.Reviews{}
+		testReviewsNotOk2 := models.Reviews{}
 
 		testReviews = append(testReviews, testReview)
-		testReviewsNotOk = append(testReviewsNotOk, testReviewNotOk)
+		//testReviewsNotOk1 = append(testReviewsNotOk1, testReviewNotOk)
 		testReviewsNotOk2 = append(testReviewsNotOk2, testReviewNotOk2)
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()

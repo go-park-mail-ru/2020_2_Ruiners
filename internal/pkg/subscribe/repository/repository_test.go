@@ -118,9 +118,9 @@ func TestGetAuthors(t *testing.T) {
 	rows := sqlmock.
 		NewRows([]string{"id", "username", "email"})
 	expect := models.PublicUsers{
-		{1, "title1", "gen@r.e"},
-		{2, "title2", "ge@nr.e"},
-		{9, "title9", "ge@n.re"},
+		{Id: 1, Login: "title1", Email: "gen@r.e"},
+		{Id: 2, Login: "title2", Email: "ge@nr.e"},
+		{Id: 9, Login: "title9", Email: "ge@n.re"},
 	}
 
 	for _, people := range expect {
@@ -200,9 +200,9 @@ func TestGetRatingFeed(t *testing.T) {
 	rows := sqlmock.
 		NewRows([]string{"rating", "user_id", "username", "film_id", "title", "date"})
 	expect := models.Feed{
-		{0, true, false, "j", 3, "title1", 6, "gen@r.e", 78},
-		{0, true, false, "k", 3, "title2", 7, "gen@hr.e", 782},
-		{0, true, false, "A", 3, "title3", 8, "gehn@r.e", 78},
+		{Id: 0, IsRating: true, IsReview: false, Body: "j", UserId: 3, UserLogin: "title1", FilmId: 6, FilmTitle: "gen@r.e", Date: 78},
+		{Id: 0, IsRating: true, IsReview: false, Body: "k", UserId: 3, UserLogin: "title2", FilmId: 7, FilmTitle: "gen@hr.e", Date: 782},
+		{Id: 0, IsRating: true, IsReview: false, Body: "A", UserId: 3, UserLogin: "title3", FilmId: 8, FilmTitle: "gen@r.e", Date: 78},
 	}
 
 	for _, elem := range expect {
@@ -282,9 +282,9 @@ func TestGetReviewFeed(t *testing.T) {
 	rows := sqlmock.
 		NewRows([]string{"rating", "user_id", "username", "film_id", "title", "date"})
 	expect := models.Feed{
-		{0, false, true, "j", 3, "title1", 6, "gen@r.e", 78},
-		{0, false, true, "k", 3, "title2", 7, "gen@hr.e", 782},
-		{0, false, true, "A", 3, "title3", 8, "gehn@r.e", 78},
+		{Id: 0, IsRating: false, IsReview: true, Body: "j", UserId: 3, UserLogin: "title1", FilmId: 6, FilmTitle: "gen@r.e", Date: 78},
+		{Id: 0, IsRating: false, IsReview: true, Body: "k", UserId: 3, UserLogin: "title2", FilmId: 7, FilmTitle: "gen@hr.e", Date: 782},
+		{Id: 0, IsRating: false, IsReview: true, Body: "A", UserId: 3, UserLogin: "title3", FilmId: 8, FilmTitle: "gen@r.e", Date: 78},
 	}
 
 	for _, elem := range expect {
@@ -414,6 +414,10 @@ func TestCheck(t *testing.T) {
 		WillReturnRows(rows)
 
 	_, err = repo.Check(subscriberId, authorId)
+	if err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("there were unfulfilled expectations: %s", err)
 		return

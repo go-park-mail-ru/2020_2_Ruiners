@@ -211,9 +211,9 @@ func TestGetList(t *testing.T) {
 	rows := sqlmock.
 		NewRows([]string{"id", "title", "user_id"})
 	expect := models.Playlists{
-		{1, "title1", nil, 5},
-		{2, "title2", nil, 6},
-		{9, "title9", nil, 5},
+		{Id: 1, Title: "title1", Films: nil, UserId: 5},
+		{Id: 2, Title: "title2", Films: nil, UserId: 6},
+		{Id: 9, Title: "title9", Films: nil, UserId: 5},
 	}
 
 	for _, people := range expect {

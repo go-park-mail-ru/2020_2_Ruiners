@@ -25,9 +25,9 @@ func TestGetReviewsByFilmId(t *testing.T) {
 	rows := sqlmock.
 		NewRows([]string{"id", "body", "film_id", "user_id"})
 	expect := models.Reviews{
-		{3, "", "text", 7, 8, 0},
-		{3, "", "text2", 7, 10, 0},
-		{3, "", "text5", 5, 2, 0},
+		{Id: 3, TextBody: "text", UserId: 7, FilmId: 8},
+		{Id: 3, TextBody: "text2", UserId: 7, FilmId: 10},
+		{Id: 3, TextBody: "text5", UserId: 5, FilmId: 2},
 	}
 
 	for _, review := range expect {

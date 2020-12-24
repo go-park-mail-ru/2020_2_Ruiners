@@ -26,7 +26,14 @@ func TestFindById(t *testing.T) {
 	rows := sqlmock.
 		NewRows([]string{"id", "name", "image", "born_date", "born_place"})
 	expect := []models.Person{
-		{elemID, "name", "image", "30.12.2000", "Moskow", emptyArray},
+		{
+			Id:       elemID,
+			Name:      "name",
+			Image:     "image",
+			BornDate:  "30.12.2000",
+			BornPlace: "Moskow",
+			FilmsId:   emptyArray,
+		},
 	}
 
 	for _, person := range expect {
@@ -106,9 +113,9 @@ func TestFindByFilmIdAndRole(t *testing.T) {
 	rows := sqlmock.
 		NewRows([]string{"id", "name"})
 	expect := models.FilmPersons{
-		{3, "name", ""},
-		{3, "name3", ""},
-		{3, "name10", ""},
+		{Id: 3, Name: "name",  Image: ""},
+		{Id: 3, Name: "name3",  Image: ""},
+		{Id: 3, Name: "name10",  Image: ""},
 	}
 
 	for _, person := range expect {
@@ -270,9 +277,9 @@ func TestSearch(t *testing.T) {
 	rows := sqlmock.
 		NewRows([]string{"id", "name", "img"})
 	expect := models.FilmPersons{
-		{3, "name", ""},
-		{3, "name3", ""},
-		{3, "name10", ""},
+		{Id: 3, Name: "name",  Image: ""},
+		{Id: 3, Name: "name3",  Image: ""},
+		{Id: 3, Name: "name10",  Image: ""},
 	}
 
 	for _, person := range expect {

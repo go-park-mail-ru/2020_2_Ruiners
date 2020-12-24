@@ -20,7 +20,7 @@ func TestFindByLogin(t *testing.T) {
 	repo := NewUserRepository(db)
 
 	var username = "Admin"
-	admin := models.User{1, username, "fdvvvccc", "gg@gmail.com", "my_img"}
+	admin := models.User{Id: 1, Username: username, Password: "fdvvvccc", Email: "gg@gmail.com", Image: "my_img"}
 
 	// good query
 	rows := sqlmock.
@@ -95,7 +95,7 @@ func TestFindById(t *testing.T) {
 
 	var user_id = 5
 
-	admin := models.User{user_id, "username", "fdvvvccc", "gg@gmail.com", "my_img"}
+	admin := models.User{Id: user_id, Username: "username", Password: "fdvvvccc", Email: "gg@gmail.com", Image: "my_img"}
 
 	// good query
 	rows := sqlmock.
@@ -168,7 +168,7 @@ func TestCreate(t *testing.T) {
 
 	repo := NewUserRepository(db)
 
-	admin := models.User{0, "username", "fdvvvccc", "gg@gmail.com", ""}
+	admin := models.User{Username: "username", Password: "fdvvvccc", Email: "gg@gmail.com"}
 
 	// good query
 	mock.
@@ -215,7 +215,7 @@ func TestCheckExist(t *testing.T) {
 	repo := NewUserRepository(db)
 
 	var username = "Admin"
-	admin := models.User{1, username, "fdvvvccc", "gg@gmail.com", "my_img"}
+	admin := models.User{Id: 1, Username: username, Password: "fdvvvccc", Email: "gg@gmail.com", Image: "my_img"}
 
 	// good query
 	rows := sqlmock.
@@ -269,6 +269,10 @@ func TestCheckExist(t *testing.T) {
 		WillReturnRows(rows)
 
 	_, err = repo.CheckExist(username)
+	if err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+		return
+	}
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("there were unfulfilled expectations: %s", err)
 		return

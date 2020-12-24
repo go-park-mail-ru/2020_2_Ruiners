@@ -25,7 +25,7 @@ func TestFindByLId(t *testing.T) {
 	rows := sqlmock.
 		NewRows([]string{"id", "title", "rating", "sumVotes", "description", "mainGenre", "youtubeLink", "bigImg", "smallImg", "year", "country"})
 	expect := []models.Film{
-		{elemID, "title", float64(6), 30, "description", "Vasa Pupkin", "http://youtube", "bigImg", "smallImg", 2020, "Russia"},
+		{Id: elemID, Title: "title", Rating: float64(6), SumVotes: 30, Description: "description", MainGenre: "Vasa Pupkin", YoutubeLink: "http://youtube", BigImg: "bigImg", SmallImg: "smallImg", Year: 2020, Country: "Russia"},
 	}
 
 	for _, film := range expect {
@@ -104,9 +104,9 @@ func TestFindFilmsByGenre(t *testing.T) {
 	rows := sqlmock.
 		NewRows([]string{"id", "title", "mainGenre", "smallImg", "year"})
 	expect := models.FilmCards{
-		{1, "title1", genre, "smallImg", 2005, 0},
-		{2, "title2", genre, "smallImg", 2020, 0},
-		{9, "title9", genre, "smallImg", 2000, 0},
+		{Id: 1, Title: "title1", MainGenre: genre, SmallImg: "smallImg", Year: 2005},
+		{Id: 2, Title: "title2", MainGenre: genre, SmallImg: "smallImg", Year: 2020},
+		{Id: 9, Title: "title9", MainGenre: genre, SmallImg: "smallImg", Year: 2000},
 	}
 
 	for _, film := range expect {
@@ -185,9 +185,9 @@ func TestFindFilmsByPerson(t *testing.T) {
 	rows := sqlmock.
 		NewRows([]string{"id", "title", "mainGenre", "smallImg", "year"})
 	expect := models.FilmCards{
-		{1, "title1", "genre", "smallImg", 2005, 0},
-		{2, "title2", "genre", "smallImg", 2020, 0},
-		{9, "title9", "genre", "smallImg", 2000, 0},
+		{Id: 1, Title: "title1", MainGenre: "genre", SmallImg: "smallImg", Year: 2005, Rating: 0},
+		{Id: 2, Title: "title2", MainGenre: "genre", SmallImg: "smallImg", Year: 2020, Rating: 0},
+		{Id: 9, Title: "title9", MainGenre: "genre", SmallImg: "smallImg", Year: 2000, Rating: 0},
 	}
 
 	for _, film := range expect {
@@ -266,9 +266,9 @@ func TestFindFilmsByPlaylist(t *testing.T) {
 	rows := sqlmock.
 		NewRows([]string{"id", "title", "mainGenre", "smallImg", "year"})
 	expect := models.FilmCards{
-		{1, "title1", "genre", "smallImg", 2005, 0},
-		{2, "title2", "genre", "smallImg", 2020, 0},
-		{9, "title9", "genre", "smallImg", 2000, 0},
+		{Id: 1, Title: "title1", MainGenre: "genre", SmallImg: "smallImg", Year: 2005, Rating: 0},
+		{Id: 2, Title: "title2", MainGenre: "genre", SmallImg: "smallImg", Year: 2020, Rating: 0},
+		{Id: 9, Title: "title9", MainGenre: "genre", SmallImg: "smallImg", Year: 2000, Rating: 0},
 	}
 
 	for _, film := range expect {
@@ -351,15 +351,15 @@ func TestSimilarFilms(t *testing.T) {
 	rows3 := sqlmock.
 		NewRows([]string{"id", "title", "mainGenre", "smallImg", "year"})
 	expect := models.FilmCards{
-		{1, "title1", "genre", "smallImg", 2005, 0},
-		{2, "title2", "genre", "smallImg", 2020, 0},
-		{9, "title9", "genre", "smallImg", 2000, 0},
-		{1, "title1", "genre", "smallImg", 2005, 0},
-		{2, "title2", "genre", "smallImg", 2020, 0},
-		{9, "title9", "genre", "smallImg", 2000, 0},
-		{1, "title1", "genre", "smallImg", 2005, 0},
-		{2, "title2", "genre", "smallImg", 2020, 0},
-		{9, "title9", "genre", "smallImg", 2000, 0},
+		{Id: 1, Title: "title1", MainGenre: "genre", SmallImg: "smallImg", Year: 2005, Rating: 0},
+		{Id: 2, Title: "title2", MainGenre: "genre", SmallImg: "smallImg", Year: 2020, Rating: 0},
+		{Id: 9, Title: "title9", MainGenre: "genre", SmallImg: "smallImg", Year: 2000, Rating: 0},
+		{Id: 1, Title: "title1", MainGenre: "genre", SmallImg: "smallImg", Year: 2005, Rating: 0},
+		{Id: 2, Title: "title2", MainGenre: "genre", SmallImg: "smallImg", Year: 2020, Rating: 0},
+		{Id: 9, Title: "title9", MainGenre: "genre", SmallImg: "smallImg", Year: 2000, Rating: 0},
+		{Id: 1, Title: "title1", MainGenre: "genre", SmallImg: "smallImg", Year: 2005, Rating: 0},
+		{Id: 2, Title: "title2", MainGenre: "genre", SmallImg: "smallImg", Year: 2020, Rating: 0},
+		{Id: 9, Title: "title9", MainGenre: "genre", SmallImg: "smallImg", Year: 2000, Rating: 0},
 	}
 
 	for i := 0; i < 3; i++ {
@@ -555,9 +555,9 @@ func TestSearch(t *testing.T) {
 	rows := sqlmock.
 		NewRows([]string{"id", "title", "mainGenre", "smallImg", "year", "rating"})
 	expect := models.FilmCards{
-		{1, "title1", search, "smallImg", 2005, 0},
-		{2, "title2", search, "smallImg", 2020, 0},
-		{9, "title9", search, "smallImg", 2000, 0},
+		{Id: 1, Title: "title1", MainGenre: "genre", SmallImg: "smallImg", Year: 2005, Rating: 0},
+		{Id: 2, Title: "title2", MainGenre: "genre", SmallImg: "smallImg", Year: 2020, Rating: 0},
+		{Id: 9, Title: "title9", MainGenre: "genre", SmallImg: "smallImg", Year: 2000, Rating: 0},
 	}
 
 	for _, film := range expect {
