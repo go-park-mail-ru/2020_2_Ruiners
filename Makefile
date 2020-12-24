@@ -1,9 +1,9 @@
 .PHONY: build
 build:
 	go build -o bin/apiserver -v ./cmd/apiserver
-	go build -o bin/session -v ./cmd/apiserver
-	go build -o bin/auth -v ./cmd/apiserver
-	go build -o bin/rate -v ./cmd/apiserver
+	go build -o bin/session -v ./internal/pkg/microsevice/session/cmd
+	go build -o bin/auth -v ./internal/pkg/microsevice/auth/cmd
+	go build -o bin/rate -v ./internal/pkg/microsevice/rate/cmd
 
 .PHONY: test
 test:
