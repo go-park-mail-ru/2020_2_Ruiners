@@ -112,3 +112,15 @@ func (mr *MockRecorderMockRepository) Search(login interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Search", reflect.TypeOf((*MockRepository)(nil).Search), login)
 }
+
+func (m *MockRepository) Delete(login string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delete", login)
+	ret1, _ := ret[1].(error)
+	return ret1
+}
+
+func (mr *MockRecorderMockRepository) Delete(login interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockRepository)(nil).Delete), login)
+}

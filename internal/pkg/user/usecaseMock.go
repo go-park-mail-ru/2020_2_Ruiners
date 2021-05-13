@@ -152,3 +152,15 @@ func (mr *MockRecorderMockUseCase) Search(s interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Search", reflect.TypeOf((*MockUseCase)(nil).Search), s)
 }
+
+func (m *MockUseCase) DeleteUser(s string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteUser", s)
+	ret1, _ := ret[1].(error)
+	return ret1
+}
+
+func (mr *MockRecorderMockUseCase) DeleteUser(s interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUser", reflect.TypeOf((*MockUseCase)(nil).DeleteUser), s)
+}
