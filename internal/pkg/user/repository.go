@@ -10,4 +10,5 @@ type Repository interface {
 	UpdateAvatar(login string, name string) error
 	CheckExist(login string) (bool, error)
 	Search(search string) (*models.PublicUsers, error)
+	Delete(login string) error
 }

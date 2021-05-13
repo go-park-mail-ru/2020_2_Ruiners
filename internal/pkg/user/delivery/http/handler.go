@@ -280,6 +280,55 @@ func (uh *UserHandler) Search(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
+func (uh *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
+	uh.Logger.Info("DeleteUser")
+	id, err := r.Cookie("session_id")
+	if err != nil {
+		uh.Logger.Warn("Error with user Delete delivery get cookie")
+		user := models.PublicUser{Login: "", Email: ""}
+		result, err := easyjson.Marshal(user)
+		if err != nil {
+			uh.Logger.Error("Error with user me delivery json")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(result)
+		return
+	}
+	err1 := uh.UseCase.DeleteUser(id.Value)
+	if err1 != nil {
+		uh.Logger.Error("error with usecase delete")
+		user := models.PublicUser{Login: "", Email: ""}
+		result, err := easyjson.Marshal(user)
+		if err != nil {
+			uh.Logger.Error("Error with user Delete delivery json-Marshal")
+			http.Error(w, err1.Error(), http.StatusBadRequest)
+			return
+		}
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(result)
+		return
+	}
+	id.Expires = time.Now().AddDate(0, 0, -1)
+	http.SetCookie(w, id)
+	err1 = uh.RpcAuth.Logout(id.Value)
+	if err1 != nil {
+		uh.Logger.Error("error with usecase logout")
+		http.Error(w, err1.Error(), http.StatusBadRequest)
+		return
+	}
+	user := models.PublicUser{Login: "", Email: ""}
+	result, err := easyjson.Marshal(user)
+	if err != nil {
+		uh.Logger.Error("Error with user delete delivery json - marshal")
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write(result)
+}
+
 func CreateSession(w http.ResponseWriter, sessionId string) {
 	cookie := http.Cookie{
 		Name:     "session_id",
