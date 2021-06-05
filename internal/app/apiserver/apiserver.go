@@ -90,6 +90,7 @@ func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/api/chengepass", user.ChangePassword())
 	s.router.HandleFunc("/api/changeAvatar", user.ChangeAvatar)
 	s.router.HandleFunc("/api/user/avatar/{id:[0-9]+}", user.AvatarById)
+	s.router.HandleFunc("/api/user/delete", user.DeleteUser)
 	s.router.HandleFunc("/api/people/{id:[0-9]+}", user.GetById)
 	s.router.HandleFunc("/api/users/search", user.Search).Queries("key", "{.*}")
 	//Film routes ...

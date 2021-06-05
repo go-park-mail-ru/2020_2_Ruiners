@@ -155,3 +155,15 @@ func (u *UserUseCase) Search(search string) (*models.PublicUsers, error) {
 	}
 	return users, nil
 }
+
+func (u *UserUseCase) DeleteUser(s string) error {
+	_, login, err := u.RpcSession.FindById(s)
+	if err != nil {
+		return err
+	}
+	err1 := u.UserRepository.Delete(login)
+	if err1 != nil {
+		return err1
+	}
+	return nil
+}

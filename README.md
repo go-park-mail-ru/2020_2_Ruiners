@@ -7,7 +7,7 @@ https://kino-park.online/
 ## Cсылка на репозиторий фронтенда:
 https://github.com/frontend-park-mail-ru/2020_2_Ruiners
 
-## Запуск с тестовой базой
+## Запуск с тестовой  базой
 ~$ mysql -u root -p
 
 stcripts/create.sql копируем в терминал

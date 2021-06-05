@@ -33,4 +33,5 @@ var TranslateGenre = map[string]string{
 	"drama":   "Драма",
 	"triller": "Триллер",
 	"war":     "Боевик",
+	"mult":    "Мультфильм",
 }

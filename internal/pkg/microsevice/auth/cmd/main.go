@@ -12,8 +12,7 @@ import (
 
 func main() {
 
-	config := apiserver.NewConfig()
-	config = &apiserver.Config{
+	config := &apiserver.Config{
 		BindAddr: ":8001",
 		LogLevel: "debug",
 		Store:    &store.Config{DatabaseURL: "root:password@/kino_park"},

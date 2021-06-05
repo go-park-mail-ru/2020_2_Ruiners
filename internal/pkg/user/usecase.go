@@ -14,4 +14,5 @@ type UseCase interface {
 	ChangeAvatar(s string, file multipart.File) error
 	GetAvatar(id string) (*os.File, error)
 	Search(search string) (*models.PublicUsers, error)
+	DeleteUser(s string) error
 }

@@ -95,3 +95,11 @@ func (r *UserRepository) Search(search string) (*models.PublicUsers, error) {
 	}
 	return &users, nil
 }
+
+func (r *UserRepository) Delete(login string) error {
+	_, err := r.db.Exec("DELETE FROM users WHERE username=?", login)
+	if err != nil {
+		return err
+	}
+	return nil
+}
